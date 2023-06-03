@@ -26,6 +26,14 @@ const SizedBox verticalGap50 = SizedBox(
   height: 50,
 );
 
+double phoneHeight(context) {
+  return MediaQuery.of(context).size.height;
+}
+
+double phoneWeight(context) {
+  return MediaQuery.of(context).size.width;
+}
+
 class AppTheme {
   static SizedBox appIcon(double size) {
     return SizedBox(

@@ -13,7 +13,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   _initalData() async {
     await Future.delayed(const Duration(seconds: 2)).whenComplete(() =>
-        Navigator.pushReplacementNamed(context, Routes.loginScreen,
+        Navigator.pushReplacementNamed(context, Routes.startUpScreen,
             arguments: {'animation': 'fade'}));
   }
 
