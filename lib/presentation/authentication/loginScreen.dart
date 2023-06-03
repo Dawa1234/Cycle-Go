@@ -10,7 +10,7 @@ class LoginScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
       ),
-      backgroundColor: Colors.yellow,
+      backgroundColor: const Color.fromARGB(255, 151, 145, 85),
       body: const Center(
         child: Text("Login Screen"),
       ),
