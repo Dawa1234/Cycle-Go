@@ -1,5 +1,6 @@
 import 'package:cyclego/constants/ui/light_theme.data.dart';
 import 'package:cyclego/constants/utils/utils.dart';
+import 'package:cyclego/routes/routes.dart';
 import 'package:flutter/material.dart';
 
 class StartUpScreen extends StatelessWidget {
@@ -38,8 +39,8 @@ class StartUpScreen extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(40, 0, 130, 0),
                     alignment: Alignment.centerLeft,
                     child: Stack(
-                      children: const [
-                        Text(
+                      children: [
+                        const Text(
                           "All Your Needs In Your Hands",
                           style: TextStyle(
                               fontFamily: AutofillHints.addressCityAndState,
@@ -49,10 +50,9 @@ class StartUpScreen extends StatelessWidget {
                         Positioned(
                             bottom: 55,
                             right: 40,
-                            child: Icon(
-                              Icons.bike_scooter,
-                              size: 60,
-                              color: Colors.white,
+                            child: SizedBox(
+                              height: 60,
+                              child: Image.asset("assets/images/cycle.png"),
                             ))
                       ],
                     ),
@@ -72,7 +72,8 @@ class StartUpScreen extends StatelessWidget {
                     color: primaryColor,
                     splashColor: Colors.transparent,
                     textColor: Colors.white,
-                    onPressed: () {},
+                    onPressed: () => Navigator.pushReplacementNamed(
+                        context, Routes.homeScreen),
                     child: Text(
                       "GET STARTED",
                       style: Theme.of(context).textTheme.headlineSmall,
