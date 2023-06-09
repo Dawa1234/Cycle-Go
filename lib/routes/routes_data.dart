@@ -12,5 +12,5 @@ Map<String, Function> getRoutes = {
   Routes.splashScreen: (arugments) => const SplashScreen(),
   Routes.startUpScreen: (arugments) => const StartUpScreen(),
   Routes.loginScreen: (arugments) => const LoginScreen(),
-  Routes.homeScreen: (arugments) => const HomeScreen()
+  Routes.homeScreen: (arugments) => HomeScreen()
 };
