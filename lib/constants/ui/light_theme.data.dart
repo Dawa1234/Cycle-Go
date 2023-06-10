@@ -6,13 +6,17 @@ part 'light_theme_color.dart';
 
 class LightTheme {
   static ThemeData themeData(context) {
-    // const InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
-    //     contentPadding: EdgeInsets.all(10),
-    //     iconColor: primaryColor,
-    //     enabledBorder: OutlineInputBorder(
-    //         borderSide: BorderSide(width: 0.8, color: primaryColor)));
+    const InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
+      contentPadding: EdgeInsets.all(10),
+      iconColor: primaryColor,
+      enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(width: 0.8, color: primaryColor)),
+      focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(width: 0.8, color: primaryColor)),
+    );
     String _selectedFontFamily = 'Tondo';
     return ThemeData.light().copyWith(
+        inputDecorationTheme: inputDecorationTheme,
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: primaryColor,
           selectionHandleColor: Colors.transparent,

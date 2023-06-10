@@ -33,7 +33,8 @@ class CustomDrawer extends StatelessWidget {
             itemBuilder: (context, index) {
               return customerDrawerOptions(routes[index]);
             },
-          )
+          ),
+          const Divider()
         ],
       ),
     );
@@ -78,30 +79,33 @@ class CustomDrawer extends StatelessWidget {
   Widget customerDrawerOptions(String option) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: _getOptionsIcon(option),
-          ),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  _getOptionTitle(option),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                _getOptionSubTitle(option).isEmpty
-                    ? const SizedBox()
-                    : Text(_getOptionSubTitle(option),
-                        style: const TextStyle(fontSize: 12)),
-              ],
+      child: InkWell(
+        onTap: () {},
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: _getOptionsIcon(option),
             ),
-          )
-        ],
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _getOptionTitle(option),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  _getOptionSubTitle(option).isEmpty
+                      ? const SizedBox()
+                      : Text(_getOptionSubTitle(option),
+                          style: const TextStyle(fontSize: 12)),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

@@ -52,7 +52,8 @@ class StartUpScreen extends StatelessWidget {
                             right: 40,
                             child: SizedBox(
                               height: 60,
-                              child: Image.asset("assets/images/cycle.png"),
+                              child:
+                                  Image.asset("assets/images/cycle-icon.png"),
                             ))
                       ],
                     ),
