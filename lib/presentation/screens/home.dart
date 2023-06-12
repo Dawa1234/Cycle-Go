@@ -1,6 +1,7 @@
 import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/presentation/screens/custom_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 GlobalKey<ScaffoldState>? scaffoldKey;
 
@@ -12,12 +13,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  GoogleMapController? googleMapController;
+  Set<Marker> marker = {};
+  LatLng myLocation = const LatLng(27.706138023691675, 85.3299790407648);
   final _scaffoldKey = GlobalKey<ScaffoldState>(debugLabel: '_scaffoldKey');
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     scaffoldKey = _scaffoldKey;
+    marker.add(
+      Marker(
+          markerId: MarkerId(myLocation.toString()),
+          position: myLocation,
+          infoWindow: const InfoWindow(
+              title: 'Softwarica College', snippet: 'Bsc Hons(Computing)'),
+          icon: BitmapDescriptor.defaultMarker),
+    );
   }
 
   void openDrawer() {
@@ -28,77 +41,96 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      body: Stack(
-        children: [
-          Container(
-            height: phoneHeight(context),
-            width: phoneWeight(context),
-            color: Colors.white,
-            // color: primaryColor,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
-            child: Row(
-              children: [
-                InkWell(
-                  onTap: openDrawer,
-                  child: Container(
-                    height: 40,
-                    width: 45,
-                    alignment: Alignment.center,
-                    child: const Icon(
-                      Icons.menu,
-                      color: Colors.black,
-                    ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.grey.shade400,
-                              blurRadius: 2,
-                              spreadRadius: 1)
-                        ]),
-                  ),
+      body: SizedBox(
+        height: phoneHeight(context),
+        width: phoneWeight(context),
+        child: Stack(
+          children: [
+            SizedBox(
+              height: 560,
+              width: phoneWeight(context),
+              child: GoogleMap(
+                compassEnabled: true,
+                mapToolbarEnabled: true,
+                myLocationButtonEnabled: true,
+                zoomGesturesEnabled: true,
+                initialCameraPosition: CameraPosition(
+                  target: myLocation,
+                  zoom: 10,
                 ),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        alignment: Alignment.center,
-                        width: 180,
-                        height: 40,
-                        child: const Text(
-                          "Our Location",
-                          style: TextStyle(
-                              fontFamily: 'Tondo',
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 42, 42, 42)),
-                        ),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.grey.shade400,
-                                  offset: const Offset(0, 2),
-                                  blurRadius: 3,
-                                  spreadRadius: 1)
-                            ]),
-                      ),
-                      const SizedBox(
-                        width: 35,
-                      )
-                    ],
-                  ),
-                ),
-              ],
+                markers: marker,
+                mapType: MapType.normal,
+                onMapCreated: (controller) {
+                  setState(() {
+                    googleMapController = controller;
+                  });
+                },
+              ),
             ),
-          ),
-          const Positioned(bottom: 0, child: BottomInfo()),
-        ],
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
+              child: Row(
+                children: [
+                  InkWell(
+                    onTap: openDrawer,
+                    child: Container(
+                      height: 40,
+                      width: 45,
+                      alignment: Alignment.center,
+                      child: const Icon(
+                        Icons.menu,
+                        color: Colors.black,
+                      ),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey.shade400,
+                                blurRadius: 2,
+                                spreadRadius: 1)
+                          ]),
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          width: 180,
+                          height: 40,
+                          child: const Text(
+                            "Our Location",
+                            style: TextStyle(
+                                fontFamily: 'Tondo',
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 42, 42, 42)),
+                          ),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.grey.shade400,
+                                    offset: const Offset(0, 2),
+                                    blurRadius: 3,
+                                    spreadRadius: 1)
+                              ]),
+                        ),
+                        const SizedBox(
+                          width: 35,
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Positioned(bottom: 0, child: BottomInfo()),
+          ],
+        ),
       ),
       drawer: CustomDrawer(),
     );
@@ -180,71 +212,9 @@ class BottomInfo extends StatelessWidget {
                 width: 10,
               ),
               itemBuilder: (context, index) {
-                return cycleContainer(context);
+                return AppTheme.cycleContainer(context);
               },
             ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget cycleContainer(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(10),
-      width: 140,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(7),
-          color: Colors.white,
-          boxShadow: const [
-            BoxShadow(
-              blurRadius: 2,
-              spreadRadius: 1,
-              color: Colors.black26,
-            )
-          ]),
-      child: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.fromLTRB(10, 15, 10, 5),
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage("assets/images/cycle.png"))),
-            width: double.infinity,
-            height: 80,
-          ),
-          Text(
-            'CYCLE NAME',
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.underline,
-                decorationColor: Colors.grey.shade800,
-                color: Colors.transparent,
-                shadows: [
-                  Shadow(
-                      color: Colors.grey.shade800, offset: const Offset(0, -6))
-                ]),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: const [
-              SizedBox(
-                width: 7,
-              ),
-              Text(
-                "Type: ",
-                style: TextStyle(fontSize: 11),
-              ),
-              Text(
-                "Cycle Type",
-                style: TextStyle(fontSize: 11),
-              ),
-            ],
           )
         ],
       ),

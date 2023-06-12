@@ -51,4 +51,66 @@ class AppTheme {
       ),
     );
   }
+
+  static Widget cycleContainer(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(10),
+      width: 140,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(7),
+          color: Colors.white,
+          boxShadow: const [
+            BoxShadow(
+              blurRadius: 2,
+              spreadRadius: 1,
+              color: Colors.black26,
+            )
+          ]),
+      child: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.fromLTRB(10, 15, 10, 5),
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage("assets/images/cycle.png"))),
+            width: double.infinity,
+            height: 80,
+          ),
+          Text(
+            'CYCLE NAME',
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                decoration: TextDecoration.underline,
+                decorationColor: Colors.grey.shade800,
+                color: Colors.transparent,
+                shadows: [
+                  Shadow(
+                      color: Colors.grey.shade800, offset: const Offset(0, -6))
+                ]),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: const [
+              SizedBox(
+                width: 7,
+              ),
+              Text(
+                "Type: ",
+                style: TextStyle(fontSize: 11),
+              ),
+              Text(
+                "Cycle Type",
+                style: TextStyle(fontSize: 11),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
 }
