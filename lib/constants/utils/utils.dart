@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
+const SizedBox horizontalGap5 = SizedBox(
+  width: 10,
+);
 const SizedBox horizontalGap10 = SizedBox(
   width: 10,
 );
@@ -14,6 +18,9 @@ const SizedBox horizontalGap50 = SizedBox(
 );
 
 const SizedBox verticalGap10 = SizedBox(
+  height: 10,
+);
+const SizedBox verticalGap5 = SizedBox(
   height: 10,
 );
 const SizedBox verticalGap20 = SizedBox(
@@ -52,65 +59,155 @@ class AppTheme {
     );
   }
 
-  static Widget cycleContainer(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(10),
-      width: 140,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(7),
-          color: Colors.white,
-          boxShadow: const [
-            BoxShadow(
-              blurRadius: 2,
-              spreadRadius: 1,
-              color: Colors.black26,
+  static Widget cycleContainer(BuildContext context,
+      {required Function() onTap}) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.all(10),
+        width: 140,
+        decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            borderRadius: BorderRadius.circular(7),
+            boxShadow: [
+              BoxShadow(
+                  blurRadius: 3,
+                  spreadRadius: 3,
+                  color: Theme.of(context).highlightColor)
+            ]),
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.fromLTRB(10, 15, 10, 5),
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage("assets/images/cycle.png"))),
+              width: double.infinity,
+              height: 80,
+            ),
+            Text(
+              'CYCLE NAME',
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline,
+                  decorationColor: Theme.of(context).primaryColor,
+                  color: Colors.transparent,
+                  shadows: [
+                    Shadow(
+                        color: Theme.of(context).primaryColor,
+                        offset: const Offset(0, -6))
+                  ]),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: const [
+                SizedBox(
+                  width: 7,
+                ),
+                Text(
+                  "Type: ",
+                  style: TextStyle(fontSize: 11),
+                ),
+                Text(
+                  "Cycle Type",
+                  style: TextStyle(fontSize: 11),
+                ),
+              ],
             )
-          ]),
-      child: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.fromLTRB(10, 15, 10, 5),
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage("assets/images/cycle.png"))),
-            width: double.infinity,
-            height: 80,
-          ),
-          Text(
-            'CYCLE NAME',
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.underline,
-                decorationColor: Colors.grey.shade800,
-                color: Colors.transparent,
-                shadows: [
-                  Shadow(
-                      color: Colors.grey.shade800, offset: const Offset(0, -6))
-                ]),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: const [
-              SizedBox(
-                width: 7,
-              ),
-              Text(
-                "Type: ",
-                style: TextStyle(fontSize: 11),
-              ),
-              Text(
-                "Cycle Type",
-                style: TextStyle(fontSize: 11),
-              ),
-            ],
-          )
-        ],
+          ],
+        ),
       ),
     );
+  }
+}
+
+class ShowBottomModalSheet {
+  static void showDarkModeToggleSnackBar(
+      {required BuildContext context}) async {
+    await showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+              height: 220,
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  const Text('Theme',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  const Divider(),
+                  ListTile(
+                    title: const Text(
+                      "System",
+                      style:
+                          TextStyle(fontSize: 13, fontWeight: FontWeight.w300),
+                    ),
+                    leading: SvgPicture.asset(
+                      "assets/icons/system.svg",
+                      height: 20,
+                      width: 20,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    onTap: () {
+                      // Navigator.pop(context);
+                    },
+                    trailing: const Icon(Icons.check),
+                    // trailing: toggleState.modeValue == "System"
+                    //     ? Icon(
+                    //         Icons.check,
+                    //         color: Theme.of(context).primaryColor,
+                    //       )
+                    //     : const Icon(Icons.check, color: Colors.transparent),
+                  ),
+                  ListTile(
+                    title: const Text("Dark",
+                        style: TextStyle(
+                            fontSize: 13, fontWeight: FontWeight.w300)),
+
+                    leading: SvgPicture.asset(
+                      "assets/icons/moon.svg",
+                      height: 17,
+                      width: 17,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    onTap: () {},
+                    trailing: const Icon(Icons.check),
+                    // trailing: toggleState.modeValue == "Dark"
+                    //     ? Icon(
+                    //         Icons.check,
+                    //         color: Theme.of(context).primaryColor,
+                    //       )
+                    //     : const Icon(Icons.check, color: Colors.transparent),
+                  ),
+                  ListTile(
+                      title: const Text("Light",
+                          style: TextStyle(
+                              fontSize: 13, fontWeight: FontWeight.w300)),
+                      leading: SvgPicture.asset(
+                        "assets/icons/sun.svg",
+                        height: 20,
+                        width: 20,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      onTap: () {},
+                      trailing: const Icon(
+                        Icons.check,
+                      )
+
+                      // trailing: toggleState.modeValue == "Light"
+                      //     ? Icon(
+                      //         Icons.check,
+                      //         color: Theme.of(context).primaryColor,
+                      //       )
+                      //     : const Icon(Icons.check, color: Colors.transparent),
+                      ),
+                ],
+              ));
+        });
   }
 }

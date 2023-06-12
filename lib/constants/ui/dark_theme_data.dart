@@ -12,7 +12,9 @@ class DarkTheme {
         progressIndicatorTheme: const ProgressIndicatorThemeData(
             color: labelColor, circularTrackColor: Colors.black),
         appBarTheme: const AppBarTheme(
-            elevation: 0, backgroundColor: Colors.transparent),
+            iconTheme: IconThemeData(color: labelColor),
+            elevation: 0,
+            backgroundColor: Colors.transparent),
         primaryColor: primaryColor,
         textTheme: TextTheme(
           // labelLarge: TextStyle(

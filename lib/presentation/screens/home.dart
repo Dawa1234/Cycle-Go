@@ -1,5 +1,6 @@
 import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/presentation/drawer/custom_drawer.dart';
+import 'package:cyclego/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -60,11 +61,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       alignment: Alignment.center,
                       child: const Icon(
                         Icons.menu,
-                        color: Colors.black,
                       ),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
+                          color: Theme.of(context).scaffoldBackgroundColor,
                           boxShadow: [
                             BoxShadow(
                                 color: Colors.grey.shade400,
@@ -104,14 +104,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       child: const Text(
         "Our Location",
         style: TextStyle(
-            fontFamily: 'Tondo',
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 42, 42, 42)),
+          fontFamily: 'Tondo',
+          fontSize: 18.0,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
+          color: Theme.of(context).scaffoldBackgroundColor,
           boxShadow: [
             BoxShadow(
                 color: Colors.grey.shade400,
@@ -156,13 +156,15 @@ class BottomInfo extends StatelessWidget {
     return Container(
       height: 225,
       width: phoneWeight(context),
-      decoration: BoxDecoration(color: Colors.white, boxShadow: [
-        BoxShadow(
-            color: Colors.grey.shade500,
-            blurRadius: 5,
-            spreadRadius: 2,
-            offset: const Offset(0, -2))
-      ]),
+      decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          boxShadow: [
+            BoxShadow(
+                color: Colors.grey.shade500,
+                blurRadius: 5,
+                spreadRadius: 2,
+                offset: const Offset(0, -2))
+          ]),
       child: Column(
         children: [
           Padding(
@@ -174,11 +176,11 @@ class BottomInfo extends StatelessWidget {
                   'Choose Bicycle',
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       decoration: TextDecoration.underline,
-                      decorationColor: Colors.grey.shade800,
+                      decorationColor: Theme.of(context).primaryColor,
                       color: Colors.transparent,
                       shadows: [
                         Shadow(
-                            color: Colors.grey.shade800,
+                            color: Theme.of(context).primaryColor,
                             offset: const Offset(0, -6))
                       ]),
                 ),
@@ -218,7 +220,11 @@ class BottomInfo extends StatelessWidget {
                 width: 10,
               ),
               itemBuilder: (context, index) {
-                return AppTheme.cycleContainer(context);
+                return AppTheme.cycleContainer(
+                  context,
+                  onTap: () =>
+                      Navigator.pushNamed(context, Routes.cycleDescription),
+                );
               },
             ),
           )

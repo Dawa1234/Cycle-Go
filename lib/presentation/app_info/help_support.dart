@@ -1,3 +1,4 @@
+import 'package:cyclego/constants/utils/backButton.dart';
 import 'package:flutter/material.dart';
 
 class HelpAndSupportScreen extends StatelessWidget {
@@ -5,8 +6,11 @@ class HelpAndSupportScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
+    return Scaffold(
+      appBar: AppBar(
+        leading: const AppBackButton(),
+      ),
+      body: const Center(
         child: Text("Help And Support."),
       ),
     );

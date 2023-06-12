@@ -1,4 +1,3 @@
-import 'package:cyclego/constants/ui/light_theme.data.dart';
 import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/routes/routes.dart';
 import 'package:flutter/material.dart';
@@ -61,28 +60,48 @@ class StartUpScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
+            FullButton(
+              onTap: () =>
+                  Navigator.pushReplacementNamed(context, Routes.homeScreen),
               padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
-              child: Container(
-                height: 55,
-                width: phoneWeight(context),
-                clipBehavior: Clip.hardEdge,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                child: MaterialButton(
-                    color: primaryColor,
-                    splashColor: Colors.transparent,
-                    textColor: Colors.white,
-                    onPressed: () => Navigator.pushReplacementNamed(
-                        context, Routes.homeScreen),
-                    child: Text(
-                      "GET STARTED",
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    )),
-              ),
+              text: "GET STARTED",
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class FullButton extends StatelessWidget {
+  final Function() onTap;
+  final String text;
+  final EdgeInsetsGeometry padding;
+  const FullButton({
+    Key? key,
+    required this.onTap,
+    required this.text,
+    required this.padding,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: padding,
+      child: Container(
+        height: 55,
+        width: phoneWeight(context),
+        clipBehavior: Clip.hardEdge,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+        child: MaterialButton(
+            color: const Color.fromARGB(255, 39, 139, 233),
+            splashColor: Colors.transparent,
+            textColor: Colors.white,
+            onPressed: onTap,
+            child: Text(
+              text,
+              style: Theme.of(context).textTheme.headlineSmall,
+            )),
       ),
     );
   }

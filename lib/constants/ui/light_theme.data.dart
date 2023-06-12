@@ -24,7 +24,7 @@ class LightTheme {
         progressIndicatorTheme: const ProgressIndicatorThemeData(
             color: labelColor, circularTrackColor: Colors.grey),
         appBarTheme: AppBarTheme(
-          toolbarHeight: 80,
+          iconTheme: IconThemeData(color: Colors.grey.shade800),
           toolbarTextStyle: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 14.0,

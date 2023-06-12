@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 
 class CustomDrawer extends StatelessWidget {
   CustomDrawer({Key? key}) : super(key: key);
-  List<String> routes = [
+  final List<String> routes = [
     'Theme',
     'HelpAndSupport',
     'AboutUs',
@@ -19,7 +19,8 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 230,
-      color: Colors.white,
+      color: Theme.of(context).scaffoldBackgroundColor,
+      // color: Colors.grey.shade900,
       padding: const EdgeInsets.only(top: 10),
       child: ListView(
         children: [
@@ -88,7 +89,7 @@ class CustomDrawer extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(right: 10),
-              child: _getOptionsIcon(option),
+              child: _getOptionsIcon(option, context),
             ),
             Expanded(
               child: Column(
@@ -112,23 +113,27 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 
-  Widget _getOptionsIcon(String option) {
+  Widget _getOptionsIcon(String option, BuildContext context) {
     switch (option) {
       case 'Theme':
         return SvgPicture.asset(
           "assets/icons/dark_light.svg",
           width: 22,
+          color: Theme.of(context).primaryColor,
         );
       case 'HelpAndSupport':
         return const Icon(Icons.support_agent);
       case 'AboutUs':
         return const Icon(Icons.help);
       case 'Settings':
-        return const Icon(Icons.settings);
+        return const Icon(
+          Icons.settings,
+        );
       case 'Fav':
         return SvgPicture.asset(
           "assets/icons/heart.svg",
           width: 22,
+          color: Theme.of(context).primaryColor,
         );
       case 'LogOut':
         return const Icon(Icons.logout);
@@ -176,7 +181,7 @@ class CustomDrawer extends StatelessWidget {
   _navigateTo(String option, BuildContext ctx) {
     switch (option) {
       case 'Theme':
-        log("Theme");
+        ShowBottomModalSheet.showDarkModeToggleSnackBar(context: ctx);
         break;
       case 'HelpAndSupport':
         Navigator.pushNamed(ctx, Routes.helpAndSupport);
