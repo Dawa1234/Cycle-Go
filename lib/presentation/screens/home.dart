@@ -1,5 +1,5 @@
 import 'package:cyclego/constants/utils/utils.dart';
-import 'package:cyclego/presentation/screens/custom_drawer.dart';
+import 'package:cyclego/presentation/drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -46,31 +46,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         width: phoneWeight(context),
         child: Stack(
           children: [
-            SizedBox(
-              height: 560,
-              width: phoneWeight(context),
-              child: GoogleMap(
-                compassEnabled: true,
-                mapToolbarEnabled: true,
-                myLocationButtonEnabled: true,
-                zoomGesturesEnabled: true,
-                initialCameraPosition: CameraPosition(
-                  target: myLocation,
-                  zoom: 10,
-                ),
-                markers: marker,
-                mapType: MapType.normal,
-                onMapCreated: (controller) {
-                  setState(() {
-                    googleMapController = controller;
-                  });
-                },
-              ),
-            ),
+            _googleMapScreen(context),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
               child: Row(
                 children: [
+                  // drawer
                   InkWell(
                     onTap: openDrawer,
                     child: Container(
@@ -92,33 +73,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           ]),
                     ),
                   ),
+                  // title "Our Location"
                   Expanded(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          alignment: Alignment.center,
-                          width: 180,
-                          height: 40,
-                          child: const Text(
-                            "Our Location",
-                            style: TextStyle(
-                                fontFamily: 'Tondo',
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 42, 42, 42)),
-                          ),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.grey.shade400,
-                                    offset: const Offset(0, 2),
-                                    blurRadius: 3,
-                                    spreadRadius: 1)
-                              ]),
-                        ),
+                        _ourLoaction(),
                         const SizedBox(
                           width: 35,
                         )
@@ -133,6 +93,55 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
       ),
       drawer: CustomDrawer(),
+    );
+  }
+
+  Widget _ourLoaction() {
+    return Container(
+      alignment: Alignment.center,
+      width: 180,
+      height: 40,
+      child: const Text(
+        "Our Location",
+        style: TextStyle(
+            fontFamily: 'Tondo',
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 42, 42, 42)),
+      ),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+                color: Colors.grey.shade400,
+                offset: const Offset(0, 2),
+                blurRadius: 3,
+                spreadRadius: 1)
+          ]),
+    );
+  }
+
+  Widget _googleMapScreen(BuildContext context) {
+    return SizedBox(
+      height: 560,
+      width: phoneWeight(context),
+      child: GoogleMap(
+        compassEnabled: true,
+        mapToolbarEnabled: true,
+        zoomGesturesEnabled: true,
+        initialCameraPosition: CameraPosition(
+          target: myLocation,
+          zoom: 13,
+        ),
+        markers: marker,
+        mapType: MapType.normal,
+        onMapCreated: (controller) {
+          setState(() {
+            googleMapController = controller;
+          });
+        },
+      ),
     );
   }
 }
@@ -153,10 +162,7 @@ class BottomInfo extends StatelessWidget {
             blurRadius: 5,
             spreadRadius: 2,
             offset: const Offset(0, -2))
-      ]
-          // borderRadius: BorderRadius.only(
-          //     topLeft: Radius.circular(30), topRight: Radius.circular(30))
-          ),
+      ]),
       child: Column(
         children: [
           Padding(

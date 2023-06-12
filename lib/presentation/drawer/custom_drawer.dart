@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:cyclego/constants/utils/utils.dart';
+import 'package:cyclego/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class CustomDrawer extends StatelessWidget {
   CustomDrawer({Key? key}) : super(key: key);
@@ -20,9 +24,7 @@ class CustomDrawer extends StatelessWidget {
       child: ListView(
         children: [
           userProfile(),
-          const Divider(
-            thickness: 1,
-          ),
+          const Divider(),
           // options
           ListView.separated(
             shrinkWrap: true,
@@ -31,7 +33,7 @@ class CustomDrawer extends StatelessWidget {
               return const Divider();
             },
             itemBuilder: (context, index) {
-              return customerDrawerOptions(routes[index]);
+              return customerDrawerOptions(routes[index], context);
             },
           ),
           const Divider()
@@ -76,11 +78,11 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 
-  Widget customerDrawerOptions(String option) {
+  Widget customerDrawerOptions(String option, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
       child: InkWell(
-        onTap: () {},
+        onTap: () => _navigateTo(option, context),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -111,14 +113,12 @@ class CustomDrawer extends StatelessWidget {
   }
 
   Widget _getOptionsIcon(String option) {
-    // 'HelpAndSupport',
-    // 'AboutUs',
-    // 'Settings',
-    // 'Fav',
-    // 'LogOut',
     switch (option) {
       case 'Theme':
-        return const Icon(Icons.thermostat);
+        return SvgPicture.asset(
+          "assets/icons/dark_light.svg",
+          width: 22,
+        );
       case 'HelpAndSupport':
         return const Icon(Icons.support_agent);
       case 'AboutUs':
@@ -126,7 +126,10 @@ class CustomDrawer extends StatelessWidget {
       case 'Settings':
         return const Icon(Icons.settings);
       case 'Fav':
-        return const Icon(Icons.heart_broken_rounded);
+        return SvgPicture.asset(
+          "assets/icons/heart.svg",
+          width: 22,
+        );
       case 'LogOut':
         return const Icon(Icons.logout);
       default:
@@ -167,6 +170,29 @@ class CustomDrawer extends StatelessWidget {
         return "Your Favourites";
       default:
         return "";
+    }
+  }
+
+  _navigateTo(String option, BuildContext ctx) {
+    switch (option) {
+      case 'Theme':
+        log("Theme");
+        break;
+      case 'HelpAndSupport':
+        Navigator.pushNamed(ctx, Routes.helpAndSupport);
+        break;
+      case 'AboutUs':
+        Navigator.pushNamed(ctx, Routes.aboutUs);
+        break;
+      case 'Settings':
+        Navigator.pushNamed(ctx, Routes.settings);
+        break;
+      case 'Fav':
+        log("Favorite");
+        break;
+      default:
+        log("Log Out");
+        break;
     }
   }
 }
