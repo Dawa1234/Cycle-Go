@@ -211,3 +211,56 @@ class ShowBottomModalSheet {
         });
   }
 }
+
+class AppBarContainer extends StatelessWidget {
+  final double height;
+  final String topText;
+  final String bottomText;
+  const AppBarContainer({
+    Key? key,
+    required this.height,
+    required this.topText,
+    required this.bottomText,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      alignment: Alignment.bottomCenter,
+      height: height,
+      width: phoneWeight(context),
+      decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+                offset: const Offset(0, 3),
+                color: Theme.of(context).highlightColor,
+                blurRadius: 10,
+                spreadRadius: 2)
+          ],
+          color: const Color.fromARGB(255, 39, 139, 233),
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(30),
+            bottomRight: Radius.circular(30),
+          )),
+      child: Wrap(
+        children: [
+          Text(
+            topText,
+            style: Theme.of(context)
+                .textTheme
+                .headlineSmall!
+                .copyWith(fontSize: 45),
+          ),
+          Text(
+            bottomText,
+            style: Theme.of(context)
+                .textTheme
+                .headlineSmall!
+                .copyWith(fontSize: 45),
+          ),
+        ],
+      ),
+    );
+  }
+}

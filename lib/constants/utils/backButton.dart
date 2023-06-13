@@ -7,12 +7,13 @@ class AppBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
+      // padding: const EdgeInsets.all(0),
       padding: const EdgeInsets.fromLTRB(20, 16, 0, 4),
       child: Container(
         padding: const EdgeInsets.only(left: 4),
         decoration: BoxDecoration(
+            shape: BoxShape.circle,
             color: Theme.of(context).scaffoldBackgroundColor,
-            borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
                   blurRadius: 2,

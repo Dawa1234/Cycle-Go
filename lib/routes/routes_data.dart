@@ -15,10 +15,10 @@ class Routes {
 Map<String, Function> getRoutes = {
   Routes.splashScreen: (arugments) => const SplashScreen(),
   Routes.startUpScreen: (arugments) => const StartUpScreen(),
-  Routes.loginScreen: (arugments) => const LoginScreen(),
+  Routes.loginScreen: (arugments) => LoginScreen(),
   Routes.homeScreen: (arugments) => const HomeScreen(),
   Routes.helpAndSupport: (arugments) => const HelpAndSupportScreen(),
   Routes.aboutUs: (arugments) => const AboutUsScreen(),
   Routes.settings: (arugments) => const SettingsScreen(),
-  Routes.cycleDescription: (arugments) => const CycleDescriptionScreen(),
+  Routes.cycleDescription: (arugments) => CycleDescriptionScreen(),
 };

@@ -92,7 +92,7 @@ class FullButton extends StatelessWidget {
         height: 55,
         width: phoneWeight(context),
         clipBehavior: Clip.hardEdge,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
         child: MaterialButton(
             color: const Color.fromARGB(255, 39, 139, 233),
             splashColor: Colors.transparent,

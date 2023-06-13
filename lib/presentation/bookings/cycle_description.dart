@@ -1,10 +1,31 @@
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cyclego/constants/utils/authentication_popUp.dart';
 import 'package:cyclego/constants/utils/backButton.dart';
 import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/presentation/screens/start_up_screen.dart';
 import 'package:flutter/material.dart';
 
-class CycleDescriptionScreen extends StatelessWidget {
+class CycleDescriptionScreen extends StatefulWidget {
   const CycleDescriptionScreen({Key? key}) : super(key: key);
+
+  @override
+  State<CycleDescriptionScreen> createState() => _CycleDescriptionScreenState();
+}
+
+class _CycleDescriptionScreenState extends State<CycleDescriptionScreen> {
+  int _current = 0;
+  final List<String> _images = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _images.addAll([
+      "assets/images/cycle.png",
+      "assets/images/cycle-icon.png",
+      "assets/images/cycle-icon.png",
+    ]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +36,64 @@ class CycleDescriptionScreen extends StatelessWidget {
         body: Column(
           children: [
             Container(
-              // height: phoneHeight(context),
-              height: 370,
+              height: phoneHeight(context) * .45,
               width: phoneWeight(context),
               decoration: _boxDecoration(context),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: CarouselSlider(
+                        items: _images
+                            .map(
+                              (image) => Container(
+                                margin: const EdgeInsets.all(10),
+                                width: phoneWeight(context),
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(image))),
+                              ),
+                            )
+                            .toList(),
+                        options: CarouselOptions(
+                          aspectRatio: 11 / 9,
+                          onPageChanged: (index, reason) {
+                            setState(() => _current = index);
+                          },
+                        )),
+                  ),
+                  SizedBox(
+                    height: 25,
+                    child: MediaQuery.removePadding(
+                      context: context,
+                      removeTop: true,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 3,
+                          itemBuilder: (context, index) {
+                            return Center(
+                              child: Container(
+                                width: 5.0,
+                                height: 5.0,
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 4.0),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: index == _current
+                                      ? Theme.of(context).primaryColor
+                                      : Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.color
+                                          ?.withOpacity(.2),
+                                ),
+                              ),
+                            );
+                          }),
+                    ),
+                  )
+                ],
+              ),
             ),
             Expanded(
                 child: SizedBox(
@@ -88,7 +163,12 @@ class CycleDescriptionScreen extends StatelessWidget {
                         "This section is for the description of the cycle shown in the above image."),
                     const Expanded(child: SizedBox()),
                     FullButton(
-                      onTap: () {},
+                      onTap: () => showDialog(
+                        context: context,
+                        builder: (context) => const AuthenticationDialog(
+                          message: "Please login to access this feature.",
+                        ),
+                      ),
                       padding: const EdgeInsets.all(10),
                       text: "SET TIME",
                     )
