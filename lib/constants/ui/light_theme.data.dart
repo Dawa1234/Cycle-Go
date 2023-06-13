@@ -89,10 +89,10 @@ class LightTheme {
               fontSize: 12.0,
               color: labelColor),
           headlineSmall: const TextStyle(
-              letterSpacing: 1,
-              fontWeight: FontWeight.w700,
-              fontSize: 25.0,
-              color: Colors.white),
+            letterSpacing: 1,
+            fontWeight: FontWeight.w700,
+            fontSize: 25.0,
+          ),
           titleLarge: TextStyle(
               fontFamily: _selectedFontFamily,
               fontSize: 18.0,
