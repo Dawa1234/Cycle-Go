@@ -1,9 +1,9 @@
-import 'dart:developer';
-
 import 'package:cyclego/constants/utils/backButton.dart';
 import 'package:cyclego/constants/utils/utils.dart';
+import 'package:cyclego/logic/registration/registration_cubit.dart';
 import 'package:cyclego/presentation/screens/start_up_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -127,8 +127,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           if (value!.isEmpty) {
                             return "*This field is required*";
                           }
-                          if (value.length < 3) {
-                            return "*At least 3 charater is required*";
+                          if (value.length < 5) {
+                            return "*At least 5 charater is required*";
                           }
                           return null;
                         },
@@ -163,6 +163,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           if (value.length < 8) {
                             return "*Password must have atleast 8 character*";
                           }
+                          if (_passwrodController.text !=
+                              _confirmPasswrodController.text) {
+                            return "*Password did not match*";
+                          }
                           return null;
                         },
                       ),
@@ -195,6 +199,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           }
                           if (value.length < 8) {
                             return "*Password must have atleast 8 character*";
+                          }
+                          if (_passwrodController.text !=
+                              _confirmPasswrodController.text) {
+                            return "*Password did not match*";
                           }
                           return null;
                         },
@@ -242,7 +250,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   _handleLogin() {
     if (_formKey.currentState!.validate()) {
-      log("Register");
+      BlocProvider.of<RegistrationCubit>(context)
+          .registerUser(_usernameController.text, _passwrodController.text);
     }
   }
 
