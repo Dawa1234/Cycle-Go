@@ -27,7 +27,7 @@ class LoadingBar extends StatelessWidget {
 class PageLoading {
   static Future showProgress(BuildContext ctx, [String? message]) async {
     return showDialog(
-        // barrierDismissible: false,
+        barrierDismissible: false,
         context: ctx,
         builder: (BuildContext context) {
           return const Center(

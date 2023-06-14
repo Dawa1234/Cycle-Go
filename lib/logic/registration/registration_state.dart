@@ -15,9 +15,11 @@ class RegistrationLoading extends RegistrationState {
 }
 
 class RegistrationComplete extends RegistrationState {
+  String message;
+  RegistrationComplete({required this.message});
   @override
   // TODO: implement props
-  List<Object?> get props => [];
+  List<Object?> get props => [message];
 }
 
 class RegistrationError extends RegistrationState {
