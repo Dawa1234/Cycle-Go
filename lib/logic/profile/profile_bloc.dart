@@ -12,6 +12,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileInitial()) {
     on<ProfileInitialEvent>(_init);
     on<ProfileFetchEvent>(_fetchProfile);
+    on<PorfileLogOutEvent>(_logOutProfile);
     on<ProfileUpdateEvent>(_updatedProfile);
   }
   _init(ProfileInitialEvent event, emit) {
@@ -39,4 +40,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   _updatedProfile(event, emit) {}
+
+  _logOutProfile(event, emit) {
+    emit(PorfileLoggingOut());
+    try {
+      emit(PorfileLoggedOut());
+    } catch (e) {
+      emit(PorfileLogOutError(error: e.toString()));
+    }
+  }
 }

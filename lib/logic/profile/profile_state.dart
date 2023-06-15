@@ -27,6 +27,28 @@ class ProfileFecthed extends ProfileState {
   List<Object?> get props => [user, message];
 }
 
+class PorfileLoggingOut extends ProfileState {
+  PorfileLoggingOut();
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
+class PorfileLoggedOut extends ProfileState {
+  PorfileLoggedOut();
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
+class PorfileLogOutError extends ProfileState {
+  String error;
+  PorfileLogOutError({required this.error});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [error];
+}
+
 class ProfileFecthFailed extends ProfileState {
   String error;
   ProfileFecthFailed({required this.error});

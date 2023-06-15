@@ -10,6 +10,7 @@ class Routes {
   static const String aboutUs = "/aboutUs";
   static const String settings = "/settings";
   static const String cycleDescription = "/cycleDescription";
+  static const String cycleBookingScreen = "/cycleBookingScreen";
 }
 
 Map<String, Function> getRoutes = {
@@ -22,4 +23,5 @@ Map<String, Function> getRoutes = {
   Routes.aboutUs: (arugments) => const AboutUsScreen(),
   Routes.settings: (arugments) => const SettingsScreen(),
   Routes.cycleDescription: (arugments) => const CycleDescriptionScreen(),
+  Routes.cycleBookingScreen: (arugments) => const CycleBookingScreen(),
 };

@@ -36,38 +36,51 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: const AppBackButton(),
-        backgroundColor: const Color.fromARGB(255, 39, 139, 233),
-      ),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: ScrollConfiguration(
+        appBar: AppBar(
+          leading: const AppBackButton(),
+          backgroundColor: const Color.fromARGB(255, 39, 139, 233),
+        ),
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: ScrollConfiguration(
             behavior: const ScrollBehavior().copyWith(overscroll: false),
             // behavior: MyBehavior(),
-            child: BlocListener<RegistrationCubit, RegistrationState>(
-                listener: (context, state) {
-                  // TODO: implement listener
-                  if (state is RegistrationLoading) {
-                    PageLoading.showProgress(context);
-                  }
-                  if (state is RegistrationComplete) {
-                    BlocProvider.of<ProfileBloc>(context)
-                        .add(ProfileInitialEvent());
-                    Navigator.popUntil(
-                      context,
-                      (route) => route.isFirst,
-                    );
-                    Navigator.pushNamed(context, Routes.cycleDescription);
-                    SnackBarMessage.successMessage(context,
-                        message: state.message);
-                  }
-                  if (state is RegistrationError) {
-                    Navigator.pop(context);
-                    SnackBarMessage.errorMessage(context,
-                        message: state.errorMessage.split(']')[1]);
-                  }
-                },
+            child: MultiBlocListener(
+                listeners: [
+                  BlocListener<ProfileBloc, ProfileState>(
+                    listener: (context, state) {
+                      if (state is ProfileFecthed) {
+                        Navigator.popUntil(
+                          context,
+                          (route) => route.isFirst,
+                        );
+                        Navigator.pushNamed(context, Routes.cycleDescription);
+                        SnackBarMessage.successMessage(context,
+                            message: state.message);
+                      }
+                    },
+                  ),
+                  BlocListener<RegistrationCubit, RegistrationState>(
+                    listener: (context, state) {
+                      // TODO: implement listener
+                      if (state is RegistrationLoading) {
+                        PageLoading.showProgress(context);
+                      }
+                      if (state is RegistrationComplete) {
+                        BlocProvider.of<ProfileBloc>(context).add(
+                            ProfileFetchEvent(
+                                email: _emailController.text,
+                                password: _passwrodController.text));
+                        Navigator.pop(context);
+                      }
+                      if (state is RegistrationError) {
+                        Navigator.pop(context);
+                        SnackBarMessage.errorMessage(context,
+                            message: state.errorMessage.split(']')[1]);
+                      }
+                    },
+                  )
+                ],
                 child: Form(
                   key: _formKey,
                   child: ListView(
@@ -284,9 +297,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       )
                     ],
                   ),
-                ))),
-      ),
-    );
+                )),
+          ),
+        ));
   }
 
   _handleLogin() {

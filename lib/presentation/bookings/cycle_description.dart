@@ -2,8 +2,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cyclego/constants/utils/authentication_popUp.dart';
 import 'package:cyclego/constants/utils/backButton.dart';
 import 'package:cyclego/constants/utils/utils.dart';
+import 'package:cyclego/logic/profile/profile_bloc.dart';
 import 'package:cyclego/presentation/screens/start_up_screen.dart';
+import 'package:cyclego/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CycleDescriptionScreen extends StatefulWidget {
   const CycleDescriptionScreen({Key? key}) : super(key: key);
@@ -162,15 +165,24 @@ class _CycleDescriptionScreenState extends State<CycleDescriptionScreen> {
                     const Text(
                         "This section is for the description of the cycle shown in the above image."),
                     const Expanded(child: SizedBox()),
-                    FullButton(
-                      onTap: () => showDialog(
-                        context: context,
-                        builder: (context) => const AuthenticationDialog(
-                          message: "Please login to access this feature.",
-                        ),
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      text: "SET TIME",
+                    BlocBuilder<ProfileBloc, ProfileState>(
+                      builder: (context, state) {
+                        return FullButton(
+                          onTap: () => state is ProfileFecthed
+                              ? Navigator.pushNamed(
+                                  context, Routes.cycleBookingScreen)
+                              : showDialog(
+                                  context: context,
+                                  builder: (context) =>
+                                      const AuthenticationDialog(
+                                    message:
+                                        "Please login to access this feature.",
+                                  ),
+                                ),
+                          padding: const EdgeInsets.all(10),
+                          text: "SET TIME",
+                        );
+                      },
                     )
                   ],
                 ),

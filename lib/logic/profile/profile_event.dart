@@ -21,6 +21,12 @@ class ProfileFetchEvent extends ProfileEvent {
   List<Object?> get props => [email, password];
 }
 
+class PorfileLogOutEvent extends ProfileEvent {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
 class ProfileUpdateEvent extends ProfileEvent {
   @override
   // TODO: implement props
