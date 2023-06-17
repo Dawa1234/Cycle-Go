@@ -66,21 +66,24 @@ class CustomDrawer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Center(
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        boxShadow: const [
-                          BoxShadow(
-                              blurRadius: 1,
-                              spreadRadius: 2,
-                              color: Colors.black12)
-                        ],
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Icon(
-                      Icons.person,
-                      color: Colors.green.shade700,
+                  child: InkWell(
+                    onTap: () => Navigator.pushNamed(context, Routes.profile),
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                                blurRadius: 1,
+                                spreadRadius: 2,
+                                color: Colors.black12)
+                          ],
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Icon(
+                        Icons.person,
+                        color: Colors.green.shade700,
+                      ),
                     ),
                   ),
                 ),
@@ -256,7 +259,9 @@ class CustomDrawer extends StatelessWidget {
         Navigator.pushNamed(ctx, Routes.settings);
         break;
       case 'cycles':
-        Navigator.pushNamed(ctx, Routes.more_cycles);
+        if (ModalRoute.of(ctx)!.settings.name != Routes.moreCycles) {
+          Navigator.pushNamed(ctx, Routes.moreCycles);
+        }
         break;
       case 'Fav':
         Navigator.pushNamed(ctx, Routes.fav);

@@ -13,7 +13,7 @@ class Routes {
   static const String cycleBookingScreen = "/cycleBookingScreen";
   static const String profile = "/profile";
   static const String fav = "/fav";
-  static const String more_cycles = "/more_cycles";
+  static const String moreCycles = "/more_cycles";
 }
 
 Map<String, Function> getRoutes = {
@@ -25,7 +25,7 @@ Map<String, Function> getRoutes = {
   Routes.helpAndSupport: (arugments) => const HelpAndSupportScreen(),
   Routes.aboutUs: (arugments) => const AboutUsScreen(),
   Routes.settings: (arugments) => const SettingsScreen(),
-  Routes.more_cycles: (arugments) => const MoreCycleScreen(),
+  Routes.moreCycles: (arugments) => const MoreCycleScreen(),
   Routes.cycleDescription: (arugments) => const CycleDescriptionScreen(),
   Routes.cycleBookingScreen: (arugments) => const CycleBookingScreen(),
   Routes.profile: (arugments) => const ProfileScreen(),
