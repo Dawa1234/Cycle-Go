@@ -85,9 +85,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   key: _formKey,
                   child: ListView(
                     children: [
-                      const AppBarContainer(
-                        topText: "REGISTER",
-                        bottomText: "NEW ACCOUNT",
+                      AppBarContainer(
+                        topText: Text(
+                          "REGISTER NEW",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .copyWith(fontSize: 45),
+                        ),
+                        bottomText: Text(
+                          "ACCOUNT",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .copyWith(fontSize: 45),
+                        ),
                         height: 130,
                       ),
                       Padding(

@@ -47,13 +47,20 @@ class AppTheme {
       width: size,
       height: size,
       child: Container(
-        padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(200),
-          color: const Color.fromARGB(255, 35, 53, 71),
+          border: const Border.fromBorderSide(
+              BorderSide(width: 1, color: Colors.white)),
         ),
-        child: const CircleAvatar(
-          backgroundImage: AssetImage("assets/images/icon.jpg"),
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(200),
+            color: const Color.fromARGB(255, 35, 53, 71),
+          ),
+          child: const CircleAvatar(
+            backgroundImage: AssetImage("assets/images/icon.jpg"),
+          ),
         ),
       ),
     );
@@ -212,10 +219,50 @@ class ShowBottomModalSheet {
   }
 }
 
+class AppUtils {
+  static Widget bottomInformation() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Wrap(
+        children: const [
+          Text(
+              "For any queries regarding application. Please contact customer care with reference number"),
+          Text(
+            "+977-1-4000110",
+            style: TextStyle(fontWeight: FontWeight.w800),
+          )
+        ],
+      ),
+    );
+  }
+
+  static Widget socialMediaIcons(String imagePath, BuildContext context) {
+    return InkWell(
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      onTap: () {},
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 15),
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                  color: Theme.of(context).highlightColor,
+                  blurRadius: 2,
+                  spreadRadius: 1)
+            ],
+            borderRadius: BorderRadius.circular(7),
+            image: DecorationImage(image: AssetImage(imagePath))),
+      ),
+    );
+  }
+}
+
 class AppBarContainer extends StatelessWidget {
   final double height;
-  final String topText;
-  final String bottomText;
+  final Widget topText;
+  final Text bottomText;
   const AppBarContainer({
     Key? key,
     required this.height,
@@ -226,7 +273,7 @@ class AppBarContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
       alignment: Alignment.bottomCenter,
       height: height,
       width: phoneWeight(context),
@@ -240,26 +287,12 @@ class AppBarContainer extends StatelessWidget {
           ],
           color: const Color.fromARGB(255, 39, 139, 233),
           borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(30),
-            bottomRight: Radius.circular(30),
+            bottomLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),
           )),
-      child: Wrap(
-        children: [
-          Text(
-            topText,
-            style: Theme.of(context)
-                .textTheme
-                .headlineSmall!
-                .copyWith(fontSize: 45),
-          ),
-          Text(
-            bottomText,
-            style: Theme.of(context)
-                .textTheme
-                .headlineSmall!
-                .copyWith(fontSize: 45),
-          ),
-        ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [topText, bottomText],
       ),
     );
   }

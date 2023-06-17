@@ -56,9 +56,21 @@ class _LoginScreenState extends State<LoginScreen> {
             key: _formKey,
             child: ListView(
               children: [
-                const AppBarContainer(
-                  topText: "SIGN IN TO",
-                  bottomText: "YOUR ACCOUNT",
+                AppBarContainer(
+                  topText: Text(
+                    "SIGN INTO",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall!
+                        .copyWith(fontSize: 45),
+                  ),
+                  bottomText: Text(
+                    "YOUR ACCOUNT",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall!
+                        .copyWith(fontSize: 45),
+                  ),
                   height: 130,
                 ),
                 Padding(

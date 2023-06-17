@@ -4,6 +4,7 @@ import 'package:cyclego/presentation/authentication/loginScreen.dart';
 import 'package:cyclego/presentation/authentication/registerScreen.dart';
 import 'package:cyclego/presentation/bookings/cycle_booking.dart';
 import 'package:cyclego/presentation/bookings/cycle_description.dart';
+import 'package:cyclego/presentation/more_cycles.dart';
 import 'package:cyclego/presentation/profile/settings.dart';
 import 'package:cyclego/presentation/screens/home.dart';
 import 'package:cyclego/presentation/screens/splashScreen.dart';

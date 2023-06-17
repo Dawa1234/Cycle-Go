@@ -7,7 +7,7 @@ class SnackBarMessage {
         behavior: SnackBarBehavior.floating,
         duration: const Duration(milliseconds: 1500),
         backgroundColor: Colors.green.shade700,
-        content: Text(message)));
+        content: Text(message, style: const TextStyle(color: Colors.white))));
   }
 
   static errorMessage(BuildContext context, {required String message}) {
@@ -16,6 +16,9 @@ class SnackBarMessage {
         behavior: SnackBarBehavior.floating,
         duration: const Duration(milliseconds: 1500),
         backgroundColor: Colors.red.shade700,
-        content: Text(message)));
+        content: Text(
+          message,
+          style: const TextStyle(color: Colors.white),
+        )));
   }
 }

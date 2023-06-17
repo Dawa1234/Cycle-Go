@@ -76,12 +76,19 @@ class StartUpScreen extends StatelessWidget {
 class FullButton extends StatelessWidget {
   final Function() onTap;
   final String text;
+  final double? fontSize;
+  final double? buttonHeight;
+  final bool? showIcon;
   final EdgeInsetsGeometry padding;
+
   const FullButton({
     Key? key,
     required this.onTap,
     required this.text,
     required this.padding,
+    this.fontSize,
+    this.buttonHeight,
+    this.showIcon = false,
   }) : super(key: key);
 
   @override
@@ -89,7 +96,7 @@ class FullButton extends StatelessWidget {
     return Padding(
       padding: padding,
       child: Container(
-        height: 55,
+        height: buttonHeight ?? 55,
         width: phoneWeight(context),
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
@@ -98,9 +105,27 @@ class FullButton extends StatelessWidget {
             splashColor: Colors.transparent,
             textColor: Colors.white,
             onPressed: onTap,
-            child: Text(
-              text,
-              style: Theme.of(context).textTheme.headlineSmall,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  text,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall!
+                      .copyWith(fontSize: fontSize ?? 25),
+                ),
+                showIcon!
+                    ? const Padding(
+                        padding: EdgeInsets.only(left: 8.0),
+                        child: Icon(
+                          Icons.open_in_new,
+                          size: 20,
+                        ),
+                      )
+                    : const SizedBox(),
+              ],
             )),
       ),
     );

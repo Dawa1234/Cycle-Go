@@ -15,6 +15,7 @@ class CustomDrawer extends StatelessWidget {
     'HelpAndSupport',
     'AboutUs',
     'Settings',
+    'cycles',
     'Fav',
     'LogOut',
   ];
@@ -120,7 +121,7 @@ class CustomDrawer extends StatelessWidget {
                   const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
               child: InkWell(
                 onTap: () {
-                  if (option == "Settings") {
+                  if (option == "Settings" || option == "cycles") {
                     if (state is ProfileFecthed) {
                       _navigateTo(option, context);
                     } else {
@@ -137,34 +138,29 @@ class CustomDrawer extends StatelessWidget {
                     _navigateTo(option, context);
                   }
                 },
-                child: Column(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: _getOptionsIcon(option, context),
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                _getOptionTitle(option),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              _getOptionSubTitle(option).isEmpty
-                                  ? const SizedBox()
-                                  : Text(_getOptionSubTitle(option),
-                                      style: const TextStyle(fontSize: 12)),
-                            ],
-                          ),
-                        )
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: _getOptionsIcon(option, context),
                     ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _getOptionTitle(option),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          _getOptionSubTitle(option).isEmpty
+                              ? const SizedBox()
+                              : Text(_getOptionSubTitle(option),
+                                  style: const TextStyle(fontSize: 12)),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -192,6 +188,8 @@ class CustomDrawer extends StatelessWidget {
         return const Icon(
           Icons.settings,
         );
+      case 'cycles':
+        return const Icon(Icons.bike_scooter);
       case 'Fav':
         return SvgPicture.asset(
           "assets/icons/heart.svg",
@@ -215,6 +213,8 @@ class CustomDrawer extends StatelessWidget {
         return "About Us";
       case 'Settings':
         return "Settings";
+      case 'cycles':
+        return "Explore Cycles";
       case 'Fav':
         return "Favorite";
       case 'LogOut':
@@ -234,6 +234,8 @@ class CustomDrawer extends StatelessWidget {
         return "Version number / Release notes";
       case 'Settings':
         return "Edit Profile / Related Data";
+      case 'cycles':
+        return "See available cycles";
       case 'Fav':
         return "Your Favourites";
       default:
@@ -254,6 +256,9 @@ class CustomDrawer extends StatelessWidget {
         break;
       case 'Settings':
         Navigator.pushNamed(ctx, Routes.settings);
+        break;
+      case 'cycles':
+        Navigator.pushNamed(ctx, Routes.more_cycles);
         break;
       case 'Fav':
         log("Favorite");
