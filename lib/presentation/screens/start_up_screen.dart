@@ -17,7 +17,6 @@ class StartUpScreen extends StatelessWidget {
         child: Column(
           children: [
             verticalGap50,
-            verticalGap30,
             Expanded(
               child: Column(
                 children: [

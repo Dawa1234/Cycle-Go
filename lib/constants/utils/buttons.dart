@@ -28,7 +28,7 @@ class ProfileButton extends StatelessWidget {
             splashColor: Colors.transparent,
             iconSize: 20,
             onPressed:
-                onTap ?? () => Navigator.pushNamed(context, Routes.aboutUs),
+                onTap ?? () => Navigator.pushNamed(context, Routes.profile),
             icon: const Icon(
               Icons.person,
               color: Colors.green,

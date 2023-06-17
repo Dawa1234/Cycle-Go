@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cyclego/constants/utils/authentication_popUp.dart';
 import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/logic/profile/profile_bloc.dart';
@@ -261,7 +259,7 @@ class CustomDrawer extends StatelessWidget {
         Navigator.pushNamed(ctx, Routes.more_cycles);
         break;
       case 'Fav':
-        log("Favorite");
+        Navigator.pushNamed(ctx, Routes.fav);
         break;
       case 'LogOut':
         showDialog(

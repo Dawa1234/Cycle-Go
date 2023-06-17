@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 part 'light_theme_color.dart';
 
 class LightTheme {
@@ -36,15 +33,15 @@ class LightTheme {
           centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
-          systemOverlayStyle: Platform.isIOS
-              ? const SystemUiOverlayStyle(
-                  statusBarBrightness: Brightness.light,
-                  statusBarIconBrightness: Brightness.light,
-                )
-              : const SystemUiOverlayStyle(
-                  statusBarBrightness: Brightness.dark,
-                  statusBarIconBrightness: Brightness.dark,
-                ),
+          // systemOverlayStyle: Platform.isIOS
+          //     ? const SystemUiOverlayStyle(
+          //         statusBarBrightness: Brightness.light,
+          //         statusBarIconBrightness: Brightness.light,
+          //       )
+          //     : const SystemUiOverlayStyle(
+          //         statusBarBrightness: Brightness.dark,
+          //         statusBarIconBrightness: Brightness.dark,
+          //       ),
         ),
         primaryColor: primaryColor,
         textTheme: TextTheme(
