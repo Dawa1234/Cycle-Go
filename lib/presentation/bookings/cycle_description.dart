@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cyclego/constants/utils/authentication_popUp.dart';
 import 'package:cyclego/constants/utils/backButton.dart';
+import 'package:cyclego/constants/utils/buttons.dart';
 import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/logic/profile/profile_bloc.dart';
 import 'package:cyclego/presentation/screens/start_up_screen.dart';
@@ -35,6 +36,7 @@ class _CycleDescriptionScreenState extends State<CycleDescriptionScreen> {
     return Scaffold(
         appBar: AppBar(
           leading: const AppBackButton(),
+          actions: const [FavButton()],
         ),
         body: Column(
           children: [

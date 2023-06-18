@@ -15,6 +15,14 @@ class ProfileFetching extends ProfileState {
   List<Object?> get props => [];
 }
 
+class ProfileUpdating extends ProfileState {
+  UserModel user;
+  ProfileUpdating({required this.user});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
 class ProfileFecthed extends ProfileState {
   UserModel user;
   String message;

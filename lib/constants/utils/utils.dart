@@ -1,3 +1,4 @@
+import 'package:cyclego/constants/ui/dark_theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -309,7 +310,7 @@ class AppBarContainer extends StatelessWidget {
                 blurRadius: 10,
                 spreadRadius: 2)
           ],
-          color: const Color.fromARGB(255, 39, 139, 233),
+          color: appBarColor,
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(20),
             bottomRight: Radius.circular(20),

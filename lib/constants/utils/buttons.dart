@@ -75,6 +75,42 @@ class SearchButton extends StatelessWidget {
   }
 }
 
+class FavButton extends StatelessWidget {
+  final Function()? onTap;
+  const FavButton({
+    Key? key,
+    this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      // padding: const EdgeInsets.all(0),
+      padding: const EdgeInsets.fromLTRB(20, 10, 10, 10),
+      child: Container(
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Theme.of(context).scaffoldBackgroundColor,
+            boxShadow: [
+              BoxShadow(
+                  blurRadius: 2,
+                  spreadRadius: 1,
+                  color: Theme.of(context).highlightColor)
+            ]),
+        child: IconButton(
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            iconSize: 20,
+            onPressed: onTap ?? () {},
+            icon: const Icon(
+              Icons.favorite,
+              color: Colors.red,
+            )),
+      ),
+    );
+  }
+}
+
 class LanguageButton extends StatelessWidget {
   final Function()? onTap;
   const LanguageButton({
