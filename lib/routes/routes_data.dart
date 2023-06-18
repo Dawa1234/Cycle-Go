@@ -28,6 +28,6 @@ Map<String, Function> getRoutes = {
   Routes.moreCycles: (arugments) => const MoreCycleScreen(),
   Routes.cycleDescription: (arugments) => const CycleDescriptionScreen(),
   Routes.cycleBookingScreen: (arugments) => const CycleBookingScreen(),
-  Routes.profile: (arugments) => const ProfileScreen(),
+  Routes.profile: (arugments) => ProfileScreen(),
   Routes.fav: (arugments) => const FavoritesScreen(),
 };
