@@ -24,48 +24,10 @@ class _MoreCycleScreenState extends State<MoreCycleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      appBar: AppBar(
-        leading: const AppBackButton(),
-        backgroundColor: const Color.fromARGB(255, 39, 139, 233),
-        actions: const [ProfileButton()],
-      ),
+      appBar: _getCurrentAppBar(),
       body: Column(
         children: [
-          AppBarContainer(
-            height: 95,
-            topText: Row(
-              children: [
-                const Text(
-                  "Hello, ",
-                  style: TextStyle(color: Colors.white),
-                ),
-                BlocBuilder<ProfileBloc, ProfileState>(
-                  builder: (context, state) {
-                    if (state is ProfileFecthed) {
-                      return Text(
-                        "${state.user.firstName!} ${state.user.lastName!}",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.white),
-                      );
-                    }
-                    return const Text(
-                      "Anonymous",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
-                    );
-                  },
-                ),
-              ],
-            ),
-            bottomText: const Text(
-              "Choose Your Bike",
-              style: TextStyle(
-                  fontFamily: "",
-                  fontSize: 45,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
+          _appBarContainer(),
           Expanded(
               child: ScrollConfiguration(
             behavior: const ScrollBehavior().copyWith(overscroll: false),
@@ -92,7 +54,7 @@ class _MoreCycleScreenState extends State<MoreCycleScreen> {
               spreadRadius: 1,
               color: Theme.of(context).highlightColor)
         ], color: Colors.red, borderRadius: BorderRadius.circular(100)),
-        margin: const EdgeInsets.all(20.0),
+        margin: const EdgeInsets.fromLTRB(20.0, 0, 20, 20),
         child: BottomNavigationBar(
             unselectedItemColor: Colors.grey.shade500,
             selectedItemColor: Colors.green.shade700,
@@ -122,5 +84,99 @@ class _MoreCycleScreenState extends State<MoreCycleScreen> {
       ),
       drawer: CustomDrawer(),
     );
+  }
+
+  Widget _appBarContainer() {
+    switch (_currentBtmNavIndex) {
+      case 0:
+        return AppBarContainer(
+          height: 95,
+          topText: Row(
+            children: [
+              const Text(
+                "Hello, ",
+                style: TextStyle(color: Colors.white),
+              ),
+              BlocBuilder<ProfileBloc, ProfileState>(
+                builder: (context, state) {
+                  if (state is ProfileFecthed) {
+                    return Text(
+                      "${state.user.firstName!} ${state.user.lastName!}",
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
+                    );
+                  }
+                  return const Text(
+                    "Anonymous",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
+                  );
+                },
+              ),
+            ],
+          ),
+          bottomText: const Text(
+            "Choose Your Bike",
+            style: TextStyle(
+                fontFamily: "",
+                fontSize: 45,
+                color: Colors.white,
+                fontWeight: FontWeight.bold),
+          ),
+        );
+      case 1:
+        return const AppBarContainer(
+          height: 95,
+          topText: SizedBox(),
+          bottomText: Text(
+            "Your Favorites",
+            style: TextStyle(
+                fontFamily: "",
+                fontSize: 45,
+                color: Colors.white,
+                fontWeight: FontWeight.bold),
+          ),
+        );
+      case 2:
+        return const AppBarContainer(
+          height: 95,
+          topText: SizedBox(),
+          bottomText: Text(
+            "Booked Status",
+            style: TextStyle(
+                fontFamily: "",
+                fontSize: 45,
+                color: Colors.white,
+                fontWeight: FontWeight.bold),
+          ),
+        );
+      default:
+        return const SizedBox();
+    }
+  }
+
+  AppBar _getCurrentAppBar() {
+    switch (_currentBtmNavIndex) {
+      case 0:
+        return AppBar(
+          leading: const AppBackButton(),
+          backgroundColor: const Color.fromARGB(255, 39, 139, 233),
+          actions: const [ProfileButton()],
+        );
+      case 1:
+        return AppBar(
+          leading: const LanguageButton(),
+          backgroundColor: const Color.fromARGB(255, 39, 139, 233),
+          actions: const [SearchButton()],
+        );
+      case 2:
+        return AppBar(
+          leading: const LanguageButton(),
+          backgroundColor: const Color.fromARGB(255, 39, 139, 233),
+          actions: const [SearchButton()],
+        );
+      default:
+        return AppBar();
+    }
   }
 }

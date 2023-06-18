@@ -1,3 +1,5 @@
+import 'package:cyclego/constants/utils/utils.dart';
+import 'package:cyclego/routes/routes.dart';
 import 'package:flutter/material.dart';
 
 class FavoritesScreen extends StatelessWidget {
@@ -5,9 +7,21 @@ class FavoritesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text("Favorite"),
+    return Scaffold(
+      body: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, childAspectRatio: 1 / .87),
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 13.0),
+            child: AppTheme.cycleContainer(
+              context,
+              onTap: () =>
+                  Navigator.pushNamed(context, Routes.cycleDescription),
+            ),
+          );
+        },
       ),
     );
   }
