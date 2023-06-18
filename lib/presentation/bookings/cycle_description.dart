@@ -40,7 +40,7 @@ class _CycleDescriptionScreenState extends State<CycleDescriptionScreen> {
           children: [
             Container(
               height: phoneHeight(context) * .45,
-              width: phoneWeight(context),
+              width: phoneWidth(context),
               decoration: _boxDecoration(context),
               child: Column(
                 children: [
@@ -50,7 +50,7 @@ class _CycleDescriptionScreenState extends State<CycleDescriptionScreen> {
                             .map(
                               (image) => Container(
                                 margin: const EdgeInsets.all(10),
-                                width: phoneWeight(context),
+                                width: phoneWidth(context),
                                 decoration: BoxDecoration(
                                     image: DecorationImage(
                                         image: AssetImage(image))),
@@ -101,7 +101,7 @@ class _CycleDescriptionScreenState extends State<CycleDescriptionScreen> {
             Expanded(
                 child: SizedBox(
               // color: Colors.grey.shade600,
-              width: phoneWeight(context),
+              width: phoneWidth(context),
               child: Padding(
                 padding: const EdgeInsets.all(14.0),
                 child: Column(

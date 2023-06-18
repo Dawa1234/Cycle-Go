@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       key: scaffoldKey,
       body: SizedBox(
         height: phoneHeight(context),
-        width: phoneWeight(context),
+        width: phoneWidth(context),
         child: Stack(
           children: [
             _googleMapScreen(context),
@@ -125,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget _googleMapScreen(BuildContext context) {
     return SizedBox(
       height: 560,
-      width: phoneWeight(context),
+      width: phoneWidth(context),
       child: GoogleMap(
         compassEnabled: true,
         mapToolbarEnabled: true,
@@ -155,7 +155,7 @@ class BottomInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 225,
-      width: phoneWeight(context),
+      width: phoneWidth(context),
       decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
           boxShadow: [
@@ -185,11 +185,11 @@ class BottomInfo extends StatelessWidget {
                       ]),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () => Navigator.pushNamed(context, Routes.moreCycles),
                   child: Wrap(
                     children: [
                       Text(
-                        'More',
+                        'Explore More',
                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             fontWeight: FontWeight.bold,
                             decoration: TextDecoration.underline,

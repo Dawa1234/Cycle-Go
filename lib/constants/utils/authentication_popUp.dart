@@ -18,7 +18,7 @@ class AuthenticationDialog extends StatelessWidget {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
       insetPadding:
-          EdgeInsets.symmetric(horizontal: (phoneWeight(context) - 100) / 5),
+          EdgeInsets.symmetric(horizontal: (phoneWidth(context) - 100) / 5),
       child: Container(
         padding: const EdgeInsets.only(left: 10.0, top: 20.0, right: 10.0),
         child: Column(
@@ -116,7 +116,7 @@ class LogOutDialog extends StatelessWidget {
       child: Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
         insetPadding:
-            EdgeInsets.symmetric(horizontal: (phoneWeight(context) - 100) / 5),
+            EdgeInsets.symmetric(horizontal: (phoneWidth(context) - 100) / 5),
         child: Container(
           padding: const EdgeInsets.only(left: 10.0, top: 20.0, right: 10.0),
           child: Column(

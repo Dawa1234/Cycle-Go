@@ -15,6 +15,8 @@ class UserRepository {
     try {
       userCredential = await firebaseAuth.createUserWithEmailAndPassword(
           email: username, password: password);
+      // set id of user
+      userModel.uid = userCredential.user!.uid;
       await firebaseFirestore
           .collection('users')
           .doc(userCredential.user!.email)

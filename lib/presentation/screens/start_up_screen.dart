@@ -10,7 +10,7 @@ class StartUpScreen extends StatelessWidget {
     return Scaffold(
       body: Container(
         height: phoneHeight(context),
-        width: phoneWeight(context),
+        width: phoneWidth(context),
         decoration: const BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.fill, image: AssetImage("assets/images/map.jpg"))),
@@ -96,7 +96,7 @@ class FullButton extends StatelessWidget {
       padding: padding,
       child: Container(
         height: buttonHeight ?? 55,
-        width: phoneWeight(context),
+        width: phoneWidth(context),
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
         child: MaterialButton(

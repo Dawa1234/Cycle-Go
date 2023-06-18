@@ -186,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             children: [
                               Container(
                                 height: 55,
-                                width: phoneWeight(context),
+                                width: phoneWidth(context),
                                 clipBehavior: Clip.hardEdge,
                                 decoration: BoxDecoration(
                                     border: Border.fromBorderSide(BorderSide(

@@ -37,11 +37,25 @@ double phoneHeight(context) {
   return MediaQuery.of(context).size.height;
 }
 
-double phoneWeight(context) {
+double phoneWidth(context) {
   return MediaQuery.of(context).size.width;
 }
 
 class AppTheme {
+  static Text customUnderlineText({
+    required String text,
+    required double offSetHeight,
+  }) {
+    return Text(
+      "Rs. $text/hr",
+      style: TextStyle(
+          decoration: TextDecoration.underline,
+          decorationColor: Colors.black,
+          color: Colors.transparent,
+          shadows: [Shadow(offset: Offset(0, offSetHeight))]),
+    );
+  }
+
   static SizedBox appIcon(double size) {
     return SizedBox(
       width: size,
@@ -70,6 +84,8 @@ class AppTheme {
       {required Function() onTap}) {
     return InkWell(
       onTap: onTap,
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
       child: Container(
         margin: const EdgeInsets.all(10),
         width: 140,
@@ -83,9 +99,17 @@ class AppTheme {
                   color: Theme.of(context).highlightColor)
             ]),
         child: Column(
+          // crossAxisAlignment: CrossAxisAlignment.st,
           children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8.0, 5, 0, 0),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: customUnderlineText(text: "100", offSetHeight: -2),
+              ),
+            ),
             Container(
-              margin: const EdgeInsets.fromLTRB(10, 15, 10, 5),
+              margin: const EdgeInsets.fromLTRB(10, 0, 10, 5),
               decoration: const BoxDecoration(
                   image: DecorationImage(
                       fit: BoxFit.cover,
@@ -110,21 +134,21 @@ class AppTheme {
             const SizedBox(
               height: 5,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const [
-                SizedBox(
-                  width: 7,
-                ),
-                Text(
-                  "Type: ",
-                  style: TextStyle(fontSize: 11),
-                ),
-                Text(
-                  "Cycle Type",
-                  style: TextStyle(fontSize: 11),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  Text(
+                    "Type: ",
+                    style: TextStyle(fontSize: 11),
+                  ),
+                  Text(
+                    "Cycle Type",
+                    style: TextStyle(fontSize: 11),
+                  ),
+                ],
+              ),
             )
           ],
         ),
@@ -276,7 +300,7 @@ class AppBarContainer extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
       alignment: Alignment.bottomCenter,
       height: height,
-      width: phoneWeight(context),
+      width: phoneWidth(context),
       decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
