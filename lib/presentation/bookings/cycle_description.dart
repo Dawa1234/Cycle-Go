@@ -36,7 +36,16 @@ class _CycleDescriptionScreenState extends State<CycleDescriptionScreen> {
     return Scaffold(
         appBar: AppBar(
           leading: const AppBackButton(),
-          actions: const [FavButton()],
+          actions: [
+            BlocBuilder<ProfileBloc, ProfileState>(
+              builder: (context, state) {
+                if (state is ProfileFecthed) {
+                  return const FavButton();
+                }
+                return const SizedBox();
+              },
+            )
+          ],
         ),
         body: Column(
           children: [

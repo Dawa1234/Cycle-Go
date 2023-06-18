@@ -2,6 +2,7 @@ import 'package:cyclego/constants/utils/loading.dart';
 import 'package:cyclego/constants/utils/pop_up.dart';
 import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/logic/profile/profile_bloc.dart';
+import 'package:cyclego/presentation/screens/home.dart';
 import 'package:cyclego/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -108,6 +109,11 @@ class LogOutDialog extends StatelessWidget {
         if (state is PorfileLoggingOut) {
           Navigator.pop(context);
           Navigator.pop(context);
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HomeScreen(),
+              ));
         }
         if (state is PorfileLogOutError) {
           SnackBarMessage.errorMessage(context, message: state.error);
