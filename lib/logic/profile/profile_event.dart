@@ -28,7 +28,13 @@ class PorfileLogOutEvent extends ProfileEvent {
 }
 
 class ProfileUpdateEvent extends ProfileEvent {
+  UserModel user;
+  File? imageFile;
+  ProfileUpdateEvent({
+    required this.user,
+    this.imageFile,
+  });
   @override
   // TODO: implement props
-  List<Object?> get props => [];
+  List<Object?> get props => [user];
 }

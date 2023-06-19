@@ -4,17 +4,26 @@ import 'dart:io';
 import 'package:cyclego/constants/ui/dark_theme_data.dart';
 import 'package:cyclego/constants/utils/authentication_popUp.dart';
 import 'package:cyclego/constants/utils/backButton.dart';
+import 'package:cyclego/constants/utils/loading.dart';
 import 'package:cyclego/constants/utils/pop_up.dart';
 import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/data/models/user.dart';
 import 'package:cyclego/logic/profile/profile_bloc.dart';
+import 'package:cyclego/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ProfileScreen extends StatelessWidget {
-  ProfileScreen({Key? key}) : super(key: key);
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   File? imageFile;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,8 +41,12 @@ class ProfileScreen extends StatelessWidget {
         ),
         body: BlocListener<ProfileBloc, ProfileState>(
           listener: (context, state) {
-            if (state is ProfileUpdating) {}
-            if (state is ProfileFecthed) {}
+            if (state is ProfileUpdating) {
+              PageLoading.showProgress(context);
+            }
+            if (state is ProfileFecthed) {
+              Navigator.pop(context);
+            }
           },
           child: Column(
             children: [
@@ -95,7 +108,7 @@ class ProfileScreen extends StatelessWidget {
       builder: (context, state) {
         if (state is ProfileUpdating) {
           return Text(
-            state.user.firstName!,
+            "${state.user.firstName!} ${state.user.lastName!}",
             style: const TextStyle(
                 letterSpacing: .5,
                 fontFamily: "",
@@ -126,6 +139,89 @@ class ProfileScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future profileImageConfrimation(BuildContext ctx, [String? message]) async {
+    return showDialog(
+        barrierDismissible: true,
+        context: ctx,
+        builder: (BuildContext context) {
+          return Material(
+            color: const Color.fromARGB(89, 0, 0, 0),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  CircleAvatar(
+                    backgroundImage: FileImage(imageFile!),
+                    radius: 100,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                            onTap: () {
+                              setState(() {
+                                imageFile = null;
+                              });
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            },
+                            child: const CircleAvatar(
+                              backgroundColor: Colors.white,
+                              child: Center(
+                                child: Icon(
+                                  Icons.remove,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                            )),
+                        InkWell(
+                            onTap: () {
+                              BlocProvider.of<ProfileBloc>(context).add(
+                                  ProfileUpdateEvent(
+                                      user:
+                                          BlocProvider.of<ProfileBloc>(context)
+                                              .state
+                                              .userData!,
+                                      imageFile: imageFile));
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            },
+                            child: const CircleAvatar(
+                              backgroundColor: Colors.white,
+                              child: Center(
+                                child: Icon(
+                                  Icons.check,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                            )),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  void _getImage(BuildContext context, {required ImageSource source}) async {
+    try {
+      var image = await ImagePicker().pickImage(source: source);
+      if (image == null) {
+        SnackBarMessage.errorMessage(context, message: "No Image Selected.");
+        return;
+      }
+      imageFile = File(image.path);
+      profileImageConfrimation(context);
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   Widget _profileImage(BuildContext context) {
@@ -197,44 +293,30 @@ class ProfileScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 ElevatedButton.icon(
-                                    onPressed: () async {
-                                      try {
-                                        var image = await ImagePicker()
-                                            .pickImage(
-                                                source: ImageSource.camera);
-                                        if (image == null) {
-                                          SnackBarMessage.errorMessage(context,
-                                              message: "No Image Selected.");
-                                          return;
-                                        }
-                                        imageFile = File(image.path);
-                                      } catch (e) {
-                                        log(e.toString());
-                                      }
-                                    },
+                                    onPressed: () async => _getImage(context,
+                                        source: ImageSource.camera),
                                     icon: const Icon(Icons.camera),
                                     label: const Text("Camera")),
                                 ElevatedButton.icon(
-                                    onPressed: () async {
-                                      try {
-                                        var image = await ImagePicker()
-                                            .pickImage(
-                                                source: ImageSource.gallery);
-                                        if (image == null) {
-                                          SnackBarMessage.errorMessage(context,
-                                              message: "No Image Selected.");
-                                          return;
-                                        }
-                                        imageFile = File(image.path);
-                                      } catch (e) {
-                                        log(e.toString());
-                                      }
-                                    },
+                                    onPressed: () async => _getImage(context,
+                                        source: ImageSource.gallery),
                                     icon: const Icon(
                                         Icons.photo_size_select_actual_sharp),
                                     label: const Text("Gallery")),
                                 ElevatedButton.icon(
-                                    onPressed: () {},
+                                    onPressed: imageFile == null &&
+                                            state.user.profileImage == ""
+                                        ? null
+                                        : () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return _removePhotoDialog(
+                                                    context: context,
+                                                    message: "Remove Photo?");
+                                              },
+                                            );
+                                          },
                                     icon: const Icon(Icons.remove_circle_sharp),
                                     label: const Text("Remove")),
                               ],
@@ -243,9 +325,9 @@ class ProfileScreen extends StatelessWidget {
                         },
                       );
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.edit_square,
-                      color: Colors.green.shade300,
+                      color: Colors.white,
                     ),
                   ),
                 )
@@ -281,6 +363,85 @@ class ProfileScreen extends StatelessWidget {
       },
     );
   }
+
+  Widget _removePhotoDialog(
+      {required BuildContext context, required String message}) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+      insetPadding:
+          EdgeInsets.symmetric(horizontal: (phoneWidth(context) - 30) / 5),
+      child: Container(
+        padding: const EdgeInsets.only(left: 10.0, top: 20.0, right: 10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 10),
+            Container(
+              decoration: const BoxDecoration(shape: BoxShape.circle),
+              alignment: Alignment.center,
+              clipBehavior: Clip.hardEdge,
+              child: Image.asset(
+                "assets/images/icon.jpg",
+                filterQuality: FilterQuality.high,
+                height: 55,
+                width: 85,
+              ),
+            ),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text(
+                    "Cancel",
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                TextButton(
+                  onPressed: () {
+                    if (imageFile != null) {
+                      setState(() => imageFile = null);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      SnackBarMessage.successMessage(context,
+                          message: "Photo Removed.");
+                    } else {
+                      SnackBarMessage.successMessage(context,
+                          message: "Photo Removed.");
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Text(
+                    imageFile != null
+                        ? "Remove Selected Photo"
+                        : "Remove Existing Photo",
+                    style: TextStyle(
+                      color: Colors.red.shade700,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class ProfileSectionContainer extends StatelessWidget {
@@ -304,13 +465,17 @@ class ProfileSectionContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
       onTap: i == 4
           ? () => showDialog(
                 context: context,
                 builder: (context) => const LogOutDialog(
                     message: "Are you sure? You want to log out?"),
               )
-          : null,
+          : i == 3
+              ? () => Navigator.pushNamed(context, Routes.helpAndSupport)
+              : null,
       child: Container(
         margin: const EdgeInsets.fromLTRB(20, 15, 20, 0),
         height: 65,

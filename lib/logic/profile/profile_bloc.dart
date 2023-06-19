@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:cyclego/data/models/user.dart';
 import 'package:cyclego/data/repository/userRepo.dart';
@@ -39,7 +41,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
   }
 
-  _updatedProfile(event, emit) {}
+  _updatedProfile(ProfileUpdateEvent event, emit) async {
+    emit(ProfileUpdating(user: event.user));
+    try {
+      Map<String, dynamic> response =
+          await userRepository.profileUpdate(imageFile: event.imageFile!);
+      if (response['success']) {
+        emit(ProfileFecthed(user: response['user'], message: ""));
+      }
+    } catch (e) {
+      emit(ProfileFecthFailed(error: e.toString()));
+    }
+  }
 
   _logOutProfile(event, emit) {
     emit(PorfileLoggingOut());

@@ -1,7 +1,12 @@
 part of 'profile_bloc.dart';
 
-@immutable
-abstract class ProfileState extends Equatable {}
+class ProfileState extends Equatable {
+  UserModel? userData;
+  ProfileState({this.userData});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
 
 class ProfileInitial extends ProfileState {
   @override
@@ -20,7 +25,7 @@ class ProfileUpdating extends ProfileState {
   ProfileUpdating({required this.user});
   @override
   // TODO: implement props
-  List<Object?> get props => [];
+  List<Object?> get props => [user];
 }
 
 class ProfileFecthed extends ProfileState {
@@ -29,7 +34,7 @@ class ProfileFecthed extends ProfileState {
   ProfileFecthed({
     required this.user,
     required this.message,
-  });
+  }) : super(userData: user);
   @override
   // TODO: implement props
   List<Object?> get props => [user, message];
