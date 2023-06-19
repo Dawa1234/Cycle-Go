@@ -12,6 +12,7 @@ class Routes {
   static const String cycleDescription = "/cycleDescription";
   static const String cycleBookingScreen = "/cycleBookingScreen";
   static const String profile = "/profile";
+  static const String updatePassword = "/updatePassword";
   static const String fav = "/fav";
   static const String moreCycles = "/more_cycles";
 }
@@ -28,6 +29,7 @@ Map<String, Function> getRoutes = {
   Routes.moreCycles: (arugments) => const MoreCycleScreen(),
   Routes.cycleDescription: (arugments) => const CycleDescriptionScreen(),
   Routes.cycleBookingScreen: (arugments) => const CycleBookingScreen(),
-  Routes.profile: (arugments) => ProfileScreen(),
+  Routes.profile: (arugments) => const ProfileScreen(),
+  Routes.updatePassword: (arugments) => UpdatePasswordScreen(),
   Routes.fav: (arugments) => const FavoritesScreen(),
 };

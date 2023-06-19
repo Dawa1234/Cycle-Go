@@ -14,6 +14,7 @@ class CustomDrawer extends StatelessWidget {
     'AboutUs',
     'Settings',
     'cycles',
+    'Login',
     'Fav',
     'LogOut',
   ];
@@ -42,6 +43,12 @@ class CustomDrawer extends StatelessWidget {
                         return customerDrawerOptions(routes[index], context);
                       } else {
                         return const SizedBox();
+                      }
+                    } else if (routes[index] == "Login") {
+                      if (state is ProfileFecthed) {
+                        return const SizedBox();
+                      } else {
+                        return customerDrawerOptions(routes[index], context);
                       }
                     } else {
                       return customerDrawerOptions(routes[index], context);
@@ -204,6 +211,8 @@ class CustomDrawer extends StatelessWidget {
           width: 22,
           color: Theme.of(context).primaryColor,
         );
+      case 'Login':
+        return const Icon(Icons.login);
       case 'LogOut':
         return const Icon(Icons.logout);
       default:
@@ -227,6 +236,8 @@ class CustomDrawer extends StatelessWidget {
         return "Favorite";
       case 'LogOut':
         return "Log Out";
+      case 'Login':
+        return "Log In";
       default:
         return "";
     }
@@ -246,6 +257,7 @@ class CustomDrawer extends StatelessWidget {
         return "See available cycles";
       case 'Fav':
         return "Your Favourites";
+
       default:
         return "";
     }
@@ -272,6 +284,9 @@ class CustomDrawer extends StatelessWidget {
         break;
       case 'Fav':
         Navigator.pushNamed(ctx, Routes.fav);
+        break;
+      case 'Login':
+        Navigator.pushNamed(ctx, Routes.loginScreen);
         break;
       case 'LogOut':
         showDialog(

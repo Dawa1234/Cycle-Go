@@ -79,6 +79,7 @@ class FullButton extends StatelessWidget {
   final double? buttonHeight;
   final bool? showIcon;
   final EdgeInsetsGeometry padding;
+  final double? letterSpacing;
 
   const FullButton({
     Key? key,
@@ -87,6 +88,7 @@ class FullButton extends StatelessWidget {
     required this.padding,
     this.fontSize,
     this.buttonHeight,
+    this.letterSpacing,
     this.showIcon = false,
   }) : super(key: key);
 
@@ -110,10 +112,9 @@ class FullButton extends StatelessWidget {
               children: [
                 Text(
                   text,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineSmall!
-                      .copyWith(fontSize: fontSize ?? 25),
+                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                      letterSpacing: letterSpacing ?? 1,
+                      fontSize: fontSize ?? 25),
                 ),
                 showIcon!
                     ? const Padding(

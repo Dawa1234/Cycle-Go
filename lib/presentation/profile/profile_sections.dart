@@ -18,6 +18,8 @@ class ProfileSectionContainer extends StatefulWidget {
 class _ProfileSectionContainerState extends State<ProfileSectionContainer> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
+  String _currentFirstName = "";
+  String _currentLastName = "";
   final _formKey = GlobalKey<FormState>();
   String _obscureText(String text) {
     String obscuredText = "";
@@ -50,6 +52,8 @@ class _ProfileSectionContainerState extends State<ProfileSectionContainer> {
         BlocProvider.of<ProfileBloc>(context).state.userData!.firstName!;
     _lastNameController.text =
         BlocProvider.of<ProfileBloc>(context).state.userData!.lastName!;
+    _currentFirstName = _firstNameController.text;
+    _currentLastName = _lastNameController.text;
   }
 
   @override
@@ -233,8 +237,8 @@ class _ProfileSectionContainerState extends State<ProfileSectionContainer> {
                               );
                             }
                           : widget.i == 2
-                              ? () =>
-                                  Navigator.pushNamed(context, Routes.settings)
+                              ? () => Navigator.pushNamed(
+                                  context, Routes.updatePassword)
                               : widget.i == 3
                                   ? () => Navigator.pushNamed(
                                       context, Routes.helpAndSupport)
@@ -262,12 +266,17 @@ class _ProfileSectionContainerState extends State<ProfileSectionContainer> {
   }
 
   void handleDataUpdate() {
-    if (_formKey.currentState!.validate()) {
-      BlocProvider.of<ProfileBloc>(context).add(ProfileUpdateEvent(
-          firstName: _firstNameController.text,
-          lastName: _lastNameController.text,
-          user: BlocProvider.of<ProfileBloc>(context).state.userData!,
-          removePic: false));
+    if (_currentFirstName != _firstNameController.text ||
+        _currentLastName != _lastNameController.text) {
+      if (_formKey.currentState!.validate()) {
+        BlocProvider.of<ProfileBloc>(context).add(ProfileUpdateEvent(
+            firstName: _firstNameController.text,
+            lastName: _lastNameController.text,
+            user: BlocProvider.of<ProfileBloc>(context).state.userData!,
+            removePic: false));
+      }
+    } else {
+      log("Hehe");
     }
   }
 }
