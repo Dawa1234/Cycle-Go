@@ -13,6 +13,7 @@ import 'package:cyclego/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+part 'profile_sections.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -45,7 +46,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               PageLoading.showProgress(context);
             }
             if (state is ProfileFecthed) {
-              Navigator.pop(context);
+              SnackBarMessage.successMessage(context, message: state.message);
+              Navigator.popUntil(context, ModalRoute.withName('/profile'));
             }
           },
           child: Column(
@@ -187,7 +189,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           BlocProvider.of<ProfileBloc>(context)
                                               .state
                                               .userData!,
-                                      imageFile: imageFile));
+                                      imageFile: imageFile,
+                                      removePic: false));
                               Navigator.pop(context);
                               Navigator.pop(context);
                             },
@@ -231,21 +234,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
           return Container(
             height: 150,
             width: 150,
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage("assets/images/map.jpg")),
-                color: Colors.red,
-                shape: BoxShape.circle),
+            decoration: imageFile != null
+                ? BoxDecoration(
+                    image: DecorationImage(
+                        fit: BoxFit.cover, image: FileImage(imageFile!)),
+                    color: Colors.white,
+                    shape: BoxShape.circle)
+                : state.user.profileImage! == ""
+                    ? const BoxDecoration(
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image:
+                                AssetImage("assets/images/default_user.jpg")),
+                        color: Colors.red,
+                        shape: BoxShape.circle)
+                    : BoxDecoration(
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(state.user.profileImage!)),
+                        color: Colors.white,
+                        shape: BoxShape.circle),
             child: Stack(
               children: [
                 Positioned(
-                  bottom: 10,
-                  right: -10,
+                  bottom: -12,
+                  right: -12,
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ElevatedButton.icon(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.camera),
+                                    label: const Text("Camera")),
+                                ElevatedButton.icon(
+                                    onPressed: () {},
+                                    icon: const Icon(
+                                        Icons.photo_size_select_actual_sharp),
+                                    label: const Text("Gallery")),
+                                ElevatedButton.icon(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.remove_circle_sharp),
+                                    label: const Text("Remove")),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
                     icon: const Icon(
                       Icons.edit_square,
+                      color: Colors.white,
                     ),
                   ),
                 )
@@ -261,7 +306,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ? BoxDecoration(
                     image: DecorationImage(
                         fit: BoxFit.cover, image: FileImage(imageFile!)),
-                    color: Colors.red,
+                    color: Colors.white,
                     shape: BoxShape.circle)
                 : state.user.profileImage! == ""
                     ? const BoxDecoration(
@@ -275,7 +320,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(state.user.profileImage!)),
-                        color: Colors.red,
+                        color: Colors.white,
                         shape: BoxShape.circle),
             child: Stack(
               children: [
@@ -411,19 +456,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 const SizedBox(width: 10),
                 TextButton(
-                  onPressed: () {
-                    if (imageFile != null) {
-                      setState(() => imageFile = null);
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                      SnackBarMessage.successMessage(context,
-                          message: "Photo Removed.");
-                    } else {
-                      SnackBarMessage.successMessage(context,
-                          message: "Photo Removed.");
-                      Navigator.pop(context);
-                    }
-                  },
+                  onPressed: imageFile != null
+                      ? () {
+                          if (imageFile != null) {
+                            setState(() => imageFile = null);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            SnackBarMessage.successMessage(context,
+                                message: "Photo Removed.");
+                          } else {
+                            SnackBarMessage.successMessage(context,
+                                message: "Photo Removed.");
+                            Navigator.pop(context);
+                          }
+                        }
+                      : () {
+                          BlocProvider.of<ProfileBloc>(context).add(
+                              ProfileUpdateEvent(
+                                  user: BlocProvider.of<ProfileBloc>(context)
+                                      .state
+                                      .userData!,
+                                  removePic: true));
+                        },
                   child: Text(
                     imageFile != null
                         ? "Remove Selected Photo"
@@ -439,103 +493,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             )
           ],
         ),
-      ),
-    );
-  }
-}
-
-class ProfileSectionContainer extends StatelessWidget {
-  const ProfileSectionContainer({
-    Key? key,
-    required this.i,
-    required this.user,
-  }) : super(key: key);
-
-  final int i;
-  final UserModel user;
-
-  String _obscureText(String text) {
-    String obscuredText = "";
-    for (int i = 0; i < text.length; i++) {
-      obscuredText = obscuredText + "*";
-    }
-    return obscuredText;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      highlightColor: Colors.transparent,
-      splashColor: Colors.transparent,
-      onTap: i == 4
-          ? () => showDialog(
-                context: context,
-                builder: (context) => const LogOutDialog(
-                    message: "Are you sure? You want to log out?"),
-              )
-          : i == 3
-              ? () => Navigator.pushNamed(context, Routes.helpAndSupport)
-              : null,
-      child: Container(
-        margin: const EdgeInsets.fromLTRB(20, 15, 20, 0),
-        height: 65,
-        width: phoneWidth(context),
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: Icon(
-                i == 2
-                    ? Icons.lock
-                    : i == 3
-                        ? Icons.support_agent
-                        : i == 4
-                            ? Icons.logout
-                            : Icons.person,
-                size: 30,
-              ),
-            ),
-            Expanded(
-              child: Text(
-                i == 0
-                    ? user.firstName ?? "none"
-                    : i == 1
-                        ? user.email ?? "none"
-                        : i == 2
-                            ? _obscureText(user.password ?? "none")
-                            : i == 3
-                                ? "Support"
-                                : "Log out",
-              ),
-            ),
-            i == 1 || i == 4
-                ? const SizedBox()
-                : Padding(
-                    padding: const EdgeInsets.only(right: 15.0),
-                    child: InkWell(
-                      onTap: i == 0
-                          ? () => log("Edit username")
-                          : i == 2
-                              ? () => log("Edit password")
-                              : i == 3
-                                  ? () => log("Support")
-                                  : null,
-                      child: Icon(
-                        i == 3 ? Icons.arrow_forward_ios : Icons.edit_square,
-                      ),
-                    ),
-                  )
-          ],
-        ),
-        decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                  blurRadius: 5,
-                  spreadRadius: 2,
-                  color: Theme.of(context).highlightColor)
-            ]),
       ),
     );
   }

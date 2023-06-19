@@ -1,7 +1,10 @@
+import 'package:cyclego/constants/utils/authentication_popUp.dart';
 import 'package:cyclego/constants/utils/utils.dart';
+import 'package:cyclego/logic/profile/profile_bloc.dart';
 import 'package:cyclego/presentation/drawer/custom_drawer.dart';
 import 'package:cyclego/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 GlobalKey<ScaffoldState>? scaffoldKey;
@@ -185,7 +188,18 @@ class BottomInfo extends StatelessWidget {
                       ]),
                 ),
                 InkWell(
-                  onTap: () => Navigator.pushNamed(context, Routes.moreCycles),
+                  onTap: () {
+                    if (BlocProvider.of<ProfileBloc>(context).state
+                        is ProfileFecthed) {
+                      Navigator.pushNamed(context, Routes.moreCycles);
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (context) => const AuthenticationDialog(
+                            message: "Please Login to access this feature."),
+                      );
+                    }
+                  },
                   child: Wrap(
                     children: [
                       Text(

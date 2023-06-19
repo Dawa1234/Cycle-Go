@@ -5,7 +5,7 @@ class ProfileState extends Equatable {
   ProfileState({this.userData});
   @override
   // TODO: implement props
-  List<Object?> get props => [];
+  List<Object?> get props => [userData];
 }
 
 class ProfileInitial extends ProfileState {

@@ -59,24 +59,41 @@ class UserRepository {
     }
   }
 
-  Future<Map<String, dynamic>> profileUpdate({required File imageFile}) async {
+  Future<Map<String, dynamic>> profilePicUpdate({
+    required File imageFile,
+    required bool toRemove,
+  }) async {
     bool profileImageUpdated = false;
+    String profileUrl = "";
     UserModel? user;
     try {
+      final unSuccess = {
+        'success': false,
+        'error': "Error setting profile picture.",
+      };
       // updated profile
       // -X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X
       final userId = firebaseAuth.currentUser!.uid;
       final email = firebaseAuth.currentUser!.email;
       Reference ref = firebaseStorage.ref('user_profile/image/$userId');
-      await ref.putFile(File(imageFile.path)).catchError((e) {
-        print(e.toString());
-      });
-      String profileUrl = await ref.getDownloadURL();
-      await firebaseFirestore
-          .collection('users')
-          .doc(email)
-          .update({'profileImage': profileUrl}).whenComplete(
-              () => profileImageUpdated = true);
+      if (!toRemove) {
+        await ref
+            .putFile(File(imageFile.path))
+            .catchError((e) => log(e.toString()));
+        profileUrl = await ref.getDownloadURL();
+        await firebaseFirestore
+            .collection('users')
+            .doc(email)
+            .update({'profileImage': profileUrl}).whenComplete(
+                () => profileImageUpdated = true);
+      } else {
+        await ref.delete();
+        await firebaseFirestore
+            .collection('users')
+            .doc(email)
+            .update({'profileImage': ""}).whenComplete(
+                () => profileImageUpdated = true);
+      }
       // -X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X
       // get udpated profile
       await firebaseFirestore
@@ -86,23 +103,53 @@ class UserRepository {
           .then((value) {
         user = UserModel.fromJson(value.data()!);
       });
-      if (profileUrl != null || profileUrl.isNotEmpty) {
-        if (profileImageUpdated && user != null) {
-          final success = {
-            'success': true,
-            'user': user,
-          };
-          return success;
-        }
-        final unSuccess = {
-          'success': false,
-          'error': "Error setting profile picture.",
+      if (profileImageUpdated && user != null) {
+        final success = {
+          'success': true,
+          'user': user,
         };
+        return success;
       }
-      final unSuccess = {
+
+      return unSuccess;
+    } catch (e) {
+      final error = {
         'success': false,
-        'error': "Error setting profile picture.",
+        'error': e.toString(),
       };
+      return error;
+    }
+  }
+
+  Future<Map<String, dynamic>> updateProfileInfo(
+      {required String firstName, required String lastName}) async {
+    bool updated = false;
+    UserModel? user;
+    final unSuccess = {
+      'success': false,
+      'error': 'Unable to update.',
+    };
+    try {
+      final email = firebaseAuth.currentUser!.email;
+      await firebaseFirestore.collection('users').doc(email).update({
+        'firstName': firstName,
+        'lastName': lastName,
+      }).whenComplete(() => updated = true);
+      await firebaseFirestore
+          .collection('users')
+          .doc(email)
+          .get()
+          .then((value) {
+        user = UserModel.fromJson(value.data()!);
+      });
+
+      if (updated && user != null) {
+        final success = {
+          'success': true,
+          'user': user,
+        };
+        return success;
+      }
       return unSuccess;
     } catch (e) {
       final error = {

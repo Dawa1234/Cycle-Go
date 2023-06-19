@@ -72,6 +72,11 @@ class CustomDrawer extends StatelessWidget {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
+                          image: state.user.profileImage!.isNotEmpty
+                              ? DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(state.user.profileImage!))
+                              : null,
                           boxShadow: const [
                             BoxShadow(
                                 blurRadius: 1,
@@ -80,10 +85,12 @@ class CustomDrawer extends StatelessWidget {
                           ],
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20)),
-                      child: Icon(
-                        Icons.person,
-                        color: Colors.green.shade700,
-                      ),
+                      child: state.user.profileImage!.isEmpty
+                          ? Icon(
+                              Icons.person,
+                              color: Colors.green.shade700,
+                            )
+                          : const SizedBox(),
                     ),
                   ),
                 ),

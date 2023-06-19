@@ -42,12 +42,24 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   _updatedProfile(ProfileUpdateEvent event, emit) async {
+    Map<String, dynamic> response = {};
     emit(ProfileUpdating(user: event.user));
     try {
-      Map<String, dynamic> response =
-          await userRepository.profileUpdate(imageFile: event.imageFile!);
+      if (event.firstName != null || event.lastName != null) {
+        response = await userRepository.updateProfileInfo(
+          firstName: event.firstName!,
+          lastName: event.lastName!,
+        );
+      } else {
+        response = await userRepository.profilePicUpdate(
+            toRemove: event.removePic, imageFile: event.imageFile ?? File(""));
+      }
+
       if (response['success']) {
-        emit(ProfileFecthed(user: response['user'], message: ""));
+        emit(ProfileFecthed(
+            user: response['user'], message: "Profile Picture Updated."));
+      } else {
+        emit(ProfileFecthed(user: event.user, message: "Some error occured."));
       }
     } catch (e) {
       emit(ProfileFecthFailed(error: e.toString()));

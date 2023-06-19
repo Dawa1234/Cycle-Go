@@ -92,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             focusedErrorBorder: outlineInputFocusedBorder,
                             errorBorder: outlineInputBorder,
                             prefixIcon: const Icon(Icons.person),
-                            labelText: "Username",
+                            labelText: "Email",
                             labelStyle: const TextStyle(
                               fontFamily: 'Tondo',
                             ),

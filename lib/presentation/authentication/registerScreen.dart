@@ -178,7 +178,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   focusedErrorBorder: outlineErrorBorder,
                                   errorBorder: outlineErrorBorder,
                                   prefixIcon: const Icon(Icons.person),
-                                  labelText: "Username",
+                                  labelText: "Email",
                                   labelStyle:
                                       const TextStyle(fontFamily: 'Tondo'),
                                   contentPadding: const EdgeInsets.all(18)),
