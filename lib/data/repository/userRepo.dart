@@ -159,4 +159,58 @@ class UserRepository {
       return error;
     }
   }
+
+  Future<Map<String, dynamic>> updatePassword(
+      {required String currentPassword, required String newPassword}) async {
+    try {
+      UserModel? user;
+      bool passwordMatched = false;
+      bool passwordUpdated = false;
+      final unSuccess = {
+        'success': false,
+        'error': 'Current password did not match.',
+      };
+      // -X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X
+      // password match validation
+      final email = firebaseAuth.currentUser!.email;
+      await firebaseFirestore
+          .collection('users')
+          .doc(email)
+          .get()
+          .then((value) {
+        if (value.data()!['password'] == currentPassword) {
+          passwordMatched = true;
+        }
+      });
+      if (!passwordMatched) return unSuccess;
+      // -X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X
+      // update password
+      await firebaseFirestore
+          .collection('users')
+          .doc(email)
+          .update({'password': newPassword});
+      await firebaseFirestore
+          .collection('users')
+          .doc(email)
+          .get()
+          .then((value) {
+        user = UserModel.fromJson(value.data()!);
+      });
+      await firebaseAuth.currentUser!
+          .updatePassword(newPassword)
+          .whenComplete(() => passwordUpdated = true);
+      if (!passwordUpdated) return unSuccess;
+      final success = {
+        'success': true,
+        'user': user,
+      };
+      return success;
+    } catch (e) {
+      final error = {
+        'success': false,
+        'error': e.toString(),
+      };
+      return error;
+    }
+  }
 }

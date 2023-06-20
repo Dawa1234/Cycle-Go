@@ -49,6 +49,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SnackBarMessage.successMessage(context, message: state.message);
               Navigator.popUntil(context, ModalRoute.withName('/profile'));
             }
+            if (state is ProfileFecthFailed) {
+              SnackBarMessage.errorMessage(context, message: state.error);
+              Navigator.popUntil(context, ModalRoute.withName('/profile'));
+            }
           },
           child: Column(
             children: [

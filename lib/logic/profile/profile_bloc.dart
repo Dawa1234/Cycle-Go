@@ -43,6 +43,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   _updatedProfile(ProfileUpdateEvent event, emit) async {
     Map<String, dynamic> response = {};
+    String successMessage = "";
     emit(ProfileUpdating(user: event.user));
     try {
       if (event.firstName != null || event.lastName != null) {
@@ -50,16 +51,22 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           firstName: event.firstName!,
           lastName: event.lastName!,
         );
+        successMessage = "Profile Updated.";
+      } else if (event.currentPassword != null && event.newPassword != null) {
+        response = await userRepository.updatePassword(
+            currentPassword: event.currentPassword!,
+            newPassword: event.newPassword!);
+        successMessage = "Password Updated.";
       } else {
         response = await userRepository.profilePicUpdate(
             toRemove: event.removePic, imageFile: event.imageFile ?? File(""));
+        successMessage = "Profile Picture Updated.";
       }
 
       if (response['success']) {
-        emit(ProfileFecthed(
-            user: response['user'], message: "Profile Picture Updated."));
+        emit(ProfileFecthed(user: response['user'], message: successMessage));
       } else {
-        emit(ProfileFecthed(user: event.user, message: "Some error occured."));
+        emit(ProfileFecthFailed(error: response['error']));
       }
     } catch (e) {
       emit(ProfileFecthFailed(error: e.toString()));

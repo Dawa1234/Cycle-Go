@@ -64,7 +64,9 @@ class PorfileLogOutError extends ProfileState {
 
 class ProfileFecthFailed extends ProfileState {
   String error;
-  ProfileFecthFailed({required this.error});
+  ProfileFecthFailed({
+    required this.error,
+  });
   @override
   // TODO: implement props
   List<Object?> get props => [error];

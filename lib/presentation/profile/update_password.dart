@@ -1,9 +1,11 @@
-import 'dart:developer';
-
 import 'package:cyclego/constants/utils/backButton.dart';
+import 'package:cyclego/constants/utils/loading.dart';
+import 'package:cyclego/constants/utils/pop_up.dart';
 import 'package:cyclego/constants/utils/utils.dart';
+import 'package:cyclego/logic/profile/profile_bloc.dart';
 import 'package:cyclego/presentation/screens/start_up_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UpdatePasswordScreen extends StatefulWidget {
   const UpdatePasswordScreen({
@@ -15,6 +17,7 @@ class UpdatePasswordScreen extends StatefulWidget {
 }
 
 class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
+  late ProfileBloc _profileBloc;
   bool _showCurrentPass = true;
   bool _showNewPass = true;
   bool _showRepeatPass = true;
@@ -22,6 +25,14 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
   final _showCurrentPassController = TextEditingController();
   final _showNewPassController = TextEditingController();
   final _showRepeatPassController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _profileBloc = ProfileBloc();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,126 +40,185 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
         leading: const AppBackButton(),
         title: const Text("Change Password"),
       ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            Container(
-              clipBehavior: Clip.hardEdge,
-              margin: const EdgeInsets.only(left: 20.0, top: 20, right: 20),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  boxShadow: [
-                    BoxShadow(
-                        color: Theme.of(context).highlightColor,
-                        blurRadius: 3,
-                        spreadRadius: 1)
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Form(
+          key: _formKey,
+          child: ScrollConfiguration(
+            behavior: const ScrollBehavior().copyWith(overscroll: false),
+            child: SingleChildScrollView(
+              child: BlocListener<ProfileBloc, ProfileState>(
+                bloc: _profileBloc,
+                listener: (context, state) {
+                  // TODO: implement listener
+                  if (state is ProfileUpdating) {
+                    PageLoading.showProgress(context);
+                  }
+                  if (state is ProfileFecthed) {
+                    Navigator.pop(context);
+                    SnackBarMessage.successMessage(context,
+                        message: state.message);
+                  }
+                  if (state is ProfileFecthFailed) {
+                    Navigator.pop(context);
+                    SnackBarMessage.errorMessage(context, message: state.error);
+                  }
+                },
+                child: Column(
+                  children: [
+                    Container(
+                      margin:
+                          const EdgeInsets.only(left: 20.0, top: 20, right: 20),
+                      height: 85,
+                      child: Stack(
+                        children: [
+                          Container(
+                            height: 60,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Theme.of(context).highlightColor,
+                                      blurRadius: 3,
+                                      spreadRadius: 1)
+                                ],
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                          TextFormField(
+                            controller: _showCurrentPassController,
+                            style: const TextStyle(color: Colors.black),
+                            obscureText: _showCurrentPass,
+                            validator: validatePassword,
+                            decoration: InputDecoration(
+                              suffixIcon: InkWell(
+                                onTap: () => setState(
+                                    () => _showCurrentPass = !_showCurrentPass),
+                                child: Icon(_showCurrentPass
+                                    ? Icons.visibility_off
+                                    : Icons.visibility),
+                              ),
+                              hintText: "Current Password",
+                              enabledBorder: outLineBorder,
+                              focusedBorder: outLineBorder,
+                              disabledBorder: outLineBorder,
+                              errorBorder: outLineBorder,
+                              focusedErrorBorder: outLineBorder,
+                              contentPadding: const EdgeInsets.all(20),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin:
+                          const EdgeInsets.only(left: 20.0, top: 20, right: 20),
+                      height: 85,
+                      child: Stack(
+                        children: [
+                          Container(
+                            height: 60,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Theme.of(context).highlightColor,
+                                      blurRadius: 3,
+                                      spreadRadius: 1)
+                                ],
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                          TextFormField(
+                            controller: _showNewPassController,
+                            style: const TextStyle(color: Colors.black),
+                            obscureText: _showNewPass,
+                            validator: validateNewPassword,
+                            decoration: InputDecoration(
+                              suffixIcon: InkWell(
+                                onTap: () => setState(
+                                    () => _showNewPass = !_showNewPass),
+                                child: Icon(_showNewPass
+                                    ? Icons.visibility_off
+                                    : Icons.visibility),
+                              ),
+                              hintText: "New Password",
+                              enabledBorder: outLineBorder,
+                              focusedBorder: outLineBorder,
+                              disabledBorder: outLineBorder,
+                              errorBorder: outLineBorder,
+                              focusedErrorBorder: outLineBorder,
+                              contentPadding: const EdgeInsets.all(20),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin:
+                          const EdgeInsets.only(left: 20.0, top: 20, right: 20),
+                      height: 85,
+                      child: Stack(
+                        children: [
+                          Container(
+                            height: 60,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Theme.of(context).highlightColor,
+                                      blurRadius: 3,
+                                      spreadRadius: 1)
+                                ],
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                          TextFormField(
+                            controller: _showRepeatPassController,
+                            style: const TextStyle(color: Colors.black),
+                            obscureText: _showRepeatPass,
+                            validator: validateNewPassword,
+                            decoration: InputDecoration(
+                              suffixIcon: InkWell(
+                                onTap: () => setState(
+                                    () => _showRepeatPass = !_showRepeatPass),
+                                child: Icon(_showRepeatPass
+                                    ? Icons.visibility_off
+                                    : Icons.visibility),
+                              ),
+                              hintText: "Repeat Password",
+                              enabledBorder: outLineBorder,
+                              focusedBorder: outLineBorder,
+                              disabledBorder: outLineBorder,
+                              errorBorder: outLineBorder,
+                              focusedErrorBorder: outLineBorder,
+                              contentPadding: const EdgeInsets.all(20),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    verticalGap30,
+                    FullButton(
+                        buttonHeight: 50,
+                        fontSize: 15,
+                        onTap: _handleChangePassword,
+                        text: "Change Passowrd",
+                        letterSpacing: .8,
+                        padding: const EdgeInsets.symmetric(horizontal: 30)),
+                    verticalGap10,
+                    verticalGap5,
+                    AppUtils.bottomInformation(),
+                    verticalGap10,
+                    verticalGap5,
                   ],
-                  borderRadius: BorderRadius.circular(10)),
-              child: TextFormField(
-                controller: _showCurrentPassController,
-                style: const TextStyle(color: Colors.black),
-                obscureText: _showCurrentPass,
-                validator: validatePassword,
-                decoration: InputDecoration(
-                  suffixIcon: InkWell(
-                    onTap: () =>
-                        setState(() => _showCurrentPass = !_showCurrentPass),
-                    child: Icon(_showCurrentPass
-                        ? Icons.visibility_off
-                        : Icons.visibility),
-                  ),
-                  hintText: "Current Password",
-                  enabledBorder: outLineBorder,
-                  focusedBorder: outLineBorder,
-                  disabledBorder: outLineBorder,
-                  errorBorder: outLineBorder,
-                  focusedErrorBorder: outLineBorder,
-                  contentPadding: const EdgeInsets.all(20),
                 ),
               ),
             ),
-            Container(
-              clipBehavior: Clip.hardEdge,
-              margin: const EdgeInsets.only(left: 20.0, top: 20, right: 20),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  boxShadow: [
-                    BoxShadow(
-                        color: Theme.of(context).highlightColor,
-                        blurRadius: 3,
-                        spreadRadius: 1)
-                  ],
-                  borderRadius: BorderRadius.circular(10)),
-              child: TextFormField(
-                controller: _showNewPassController,
-                style: const TextStyle(color: Colors.black),
-                obscureText: _showNewPass,
-                validator: validatePassword,
-                decoration: InputDecoration(
-                  suffixIcon: InkWell(
-                    onTap: () => setState(() => _showNewPass = !_showNewPass),
-                    child: Icon(
-                        _showNewPass ? Icons.visibility_off : Icons.visibility),
-                  ),
-                  hintText: "New Password",
-                  enabledBorder: outLineBorder,
-                  focusedBorder: outLineBorder,
-                  disabledBorder: outLineBorder,
-                  errorBorder: outLineBorder,
-                  focusedErrorBorder: outLineBorder,
-                  contentPadding: const EdgeInsets.all(20),
-                ),
-              ),
-            ),
-            Container(
-              clipBehavior: Clip.hardEdge,
-              margin: const EdgeInsets.only(left: 20.0, top: 20, right: 20),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  boxShadow: [
-                    BoxShadow(
-                        color: Theme.of(context).highlightColor,
-                        blurRadius: 3,
-                        spreadRadius: 1)
-                  ],
-                  borderRadius: BorderRadius.circular(10)),
-              child: TextFormField(
-                controller: _showRepeatPassController,
-                style: const TextStyle(color: Colors.black),
-                obscureText: _showRepeatPass,
-                validator: validatePassword,
-                decoration: InputDecoration(
-                  suffixIcon: InkWell(
-                    onTap: () =>
-                        setState(() => _showRepeatPass = !_showRepeatPass),
-                    child: Icon(_showRepeatPass
-                        ? Icons.visibility_off
-                        : Icons.visibility),
-                  ),
-                  hintText: "Repeat Password",
-                  enabledBorder: outLineBorder,
-                  focusedBorder: outLineBorder,
-                  disabledBorder: outLineBorder,
-                  errorBorder: outLineBorder,
-                  focusedErrorBorder: outLineBorder,
-                  contentPadding: const EdgeInsets.all(20),
-                ),
-              ),
-            ),
-            verticalGap30,
-            FullButton(
-                buttonHeight: 50,
-                fontSize: 15,
-                onTap: _handleChangePassword,
-                text: "Change Passowrd",
-                letterSpacing: .8,
-                padding: const EdgeInsets.symmetric(horizontal: 30)),
-            const Expanded(child: SizedBox()),
-            AppUtils.bottomInformation(),
-            verticalGap10,
-            verticalGap5,
-          ],
+          ),
         ),
       ),
     );
@@ -156,7 +226,11 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
 
   _handleChangePassword() {
     if (_formKey.currentState!.validate()) {
-      log("Change Password");
+      _profileBloc.add(ProfileUpdateEvent(
+          user: BlocProvider.of<ProfileBloc>(context).state.userData!,
+          currentPassword: _showCurrentPassController.text,
+          newPassword: _showNewPassController.text,
+          removePic: false));
     }
   }
 
@@ -165,6 +239,16 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
   String? validatePassword(String? value) {
     if (value!.length < 8) {
       return "*Password must have at least 8 characters*";
+    }
+    return null;
+  }
+
+  String? validateNewPassword(String? value) {
+    if (value!.length < 8) {
+      return "*Password must have at least 8 characters*";
+    }
+    if (_showNewPassController.text != _showRepeatPassController.text) {
+      return "*Password did not match*";
     }
     return null;
   }

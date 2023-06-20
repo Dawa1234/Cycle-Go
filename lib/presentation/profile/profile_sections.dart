@@ -274,9 +274,12 @@ class _ProfileSectionContainerState extends State<ProfileSectionContainer> {
             lastName: _lastNameController.text,
             user: BlocProvider.of<ProfileBloc>(context).state.userData!,
             removePic: false));
+        _currentFirstName = _firstNameController.text;
+        _currentLastName = _lastNameController.text;
       }
     } else {
-      log("Hehe");
+      Navigator.pop(context);
+      SnackBarMessage.errorMessage(context, message: "No changes.");
     }
   }
 }

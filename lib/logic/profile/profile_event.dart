@@ -33,11 +33,15 @@ class ProfileUpdateEvent extends ProfileEvent {
   bool removePic;
   String? firstName;
   String? lastName;
+  String? currentPassword;
+  String? newPassword;
   ProfileUpdateEvent(
       {required this.user,
       this.imageFile,
       this.firstName,
       this.lastName,
+      this.currentPassword,
+      this.newPassword,
       required this.removePic});
   @override
   // TODO: implement props
