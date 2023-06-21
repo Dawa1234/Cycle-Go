@@ -1,5 +1,7 @@
 import 'package:cyclego/constants/ui/dark_theme_data.dart';
+import 'package:cyclego/constants/utils/loading.dart';
 import 'package:cyclego/constants/utils/utils.dart';
+import 'package:cyclego/data/models/cycle.dart';
 import 'package:cyclego/logic/cycle/cycle_bloc.dart';
 import 'package:cyclego/routes/routes.dart';
 import 'package:flutter/material.dart';
@@ -90,19 +92,51 @@ class _AllCycleScreenState extends State<AllCycleScreen>
                   )
                   .toList()),
         ),
-        Expanded(
-            child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, childAspectRatio: 1 / .87),
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 13.0),
-              child: AppTheme.cycleContainer(
-                context,
-                onTap: () =>
-                    Navigator.pushNamed(context, Routes.cycleDescription),
-              ),
+        Expanded(child: BlocBuilder<CycleBloc, CycleState>(
+          builder: (context, state) {
+            if (state is CycleLoading) {
+              return Center(
+                child: LoadingBar(),
+              );
+            }
+            if (state is FilteredCycle) {
+              return Center(
+                child: LoadingBar(),
+              );
+            }
+            if (state is ErrorCycle) {
+              return Center(
+                child: Text(state.error),
+              );
+            }
+            if (state is CycleFetched) {
+              return RefreshIndicator(
+                displacement: 10,
+                onRefresh: () async {
+                  BlocProvider.of<CycleBloc>(context).add(InitialCycleEvent());
+                },
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, childAspectRatio: 1 / .87),
+                  itemCount: state.allCycles.length,
+                  itemBuilder: (context, index) {
+                    CycleModel cycle = state.allCycles[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 13.0),
+                      child: AppTheme.cycleContainer(
+                        context,
+                        cycle: cycle,
+                        onTap: () => Navigator.pushNamed(
+                            context, Routes.cycleDescription,
+                            arguments: {'cycleId': cycle.id}),
+                      ),
+                    );
+                  },
+                ),
+              );
+            }
+            return const Center(
+              child: Text('No data'),
             );
           },
         ))

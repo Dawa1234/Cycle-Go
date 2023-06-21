@@ -1,4 +1,5 @@
 import 'package:cyclego/constants/utils/utils.dart';
+import 'package:cyclego/data/models/cycle.dart';
 import 'package:cyclego/routes/routes.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,7 @@ class FavoritesScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 13.0),
             child: AppTheme.cycleContainer(
               context,
+              cycle: CycleModel(),
               onTap: () =>
                   Navigator.pushNamed(context, Routes.cycleDescription),
             ),

@@ -1,5 +1,6 @@
 import 'package:cyclego/constants/utils/authentication_popUp.dart';
 import 'package:cyclego/constants/utils/utils.dart';
+import 'package:cyclego/data/models/cycle.dart';
 import 'package:cyclego/logic/profile/profile_bloc.dart';
 import 'package:cyclego/presentation/drawer/custom_drawer.dart';
 import 'package:cyclego/routes/routes.dart';
@@ -236,6 +237,7 @@ class BottomInfo extends StatelessWidget {
               itemBuilder: (context, index) {
                 return AppTheme.cycleContainer(
                   context,
+                  cycle: CycleModel(),
                   onTap: () =>
                       Navigator.pushNamed(context, Routes.cycleDescription),
                 );

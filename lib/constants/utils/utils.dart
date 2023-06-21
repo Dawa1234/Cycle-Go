@@ -1,4 +1,5 @@
 import 'package:cyclego/constants/ui/dark_theme_data.dart';
+import 'package:cyclego/data/models/cycle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -82,7 +83,7 @@ class AppTheme {
   }
 
   static Widget cycleContainer(BuildContext context,
-      {required Function() onTap}) {
+      {required Function() onTap, required CycleModel cycle}) {
     return InkWell(
       onTap: onTap,
       highlightColor: Colors.transparent,
@@ -106,20 +107,25 @@ class AppTheme {
               padding: const EdgeInsets.fromLTRB(8.0, 5, 0, 0),
               child: Align(
                 alignment: Alignment.topLeft,
-                child: customUnderlineText(text: "100", offSetHeight: -2),
+                child: customUnderlineText(
+                    text: cycle.price ?? "100", offSetHeight: -2),
               ),
             ),
             Container(
               margin: const EdgeInsets.fromLTRB(10, 0, 10, 5),
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage("assets/images/cycle.png"))),
+              decoration: BoxDecoration(
+                  image: cycle.image != null
+                      ? DecorationImage(
+                          fit: BoxFit.contain,
+                          image: NetworkImage(cycle.image![0]))
+                      : const DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage("assets/images/cycle.png"))),
               width: double.infinity,
               height: 80,
             ),
             Text(
-              'CYCLE NAME',
+              cycle.name ?? 'CYCLE NAME',
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
@@ -139,14 +145,14 @@ class AppTheme {
               padding: const EdgeInsets.only(left: 8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  Text(
+                children: [
+                  const Text(
                     "Type: ",
                     style: TextStyle(fontSize: 11),
                   ),
                   Text(
-                    "Cycle Type",
-                    style: TextStyle(fontSize: 11),
+                    cycle.type ?? "Cycle Type",
+                    style: const TextStyle(fontSize: 11),
                   ),
                 ],
               ),

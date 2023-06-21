@@ -9,6 +9,14 @@ class InitialCycleEvent extends CycleEvent {
   List<Object?> get props => [];
 }
 
+class FetchCycleDetailEvent extends CycleEvent {
+  String cycleId;
+  FetchCycleDetailEvent({required this.cycleId});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [cycleId];
+}
+
 class BookCycleEvent extends CycleEvent {
   @override
   // TODO: implement props

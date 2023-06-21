@@ -2,7 +2,9 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cyclego/constants/urls.dart';
 import 'package:cyclego/data/models/user.dart';
+import 'package:cyclego/data/repository/response.dart';
 import 'package:cyclego/get_it/get_it.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -21,15 +23,12 @@ class UserRepository {
       // set id of user
       userModel.uid = userCredential.user!.uid;
       await firebaseFirestore
-          .collection('users')
+          .collection(CycleGoUrls.userUrl)
           .doc(userCredential.user!.email)
           .set(userModel.toJson());
-      final data = {'success': true, 'user_credential': userCredential};
-      return data;
+      return responseMessage(success: true, data: userCredential);
     } catch (e) {
-      log(e.toString());
-      final error = {'success': false, 'error': e.toString()};
-      return error;
+      return responseMessage(success: false, error: e.toString());
     }
   }
 
@@ -42,20 +41,19 @@ class UserRepository {
           email: username, password: password);
       // fetch rest of the data
       var responseData = await firebaseFirestore
-          .collection('users')
+          .collection(CycleGoUrls.userUrl)
           .doc(userCredential.user!.email)
           .get();
       // check fetched data
       if (responseData.data() != null) {
         UserModel user = UserModel.fromJson(responseData.data()!);
-        final data = {'success': true, 'user': user};
-        return data;
+        return responseMessage(success: true, data: user);
       } else {
-        return {'success': false, 'error': 'User does not exist.'};
+        return responseMessage(success: false, error: 'User does not exist.');
       }
     } catch (e) {
-      final error = {'success': false, 'error': e.toString().split(']')[1]};
-      return error;
+      final String error = e.toString().split(']')[1];
+      return responseMessage(success: false, error: error);
     }
   }
 
@@ -67,10 +65,6 @@ class UserRepository {
     String profileUrl = "";
     UserModel? user;
     try {
-      final unSuccess = {
-        'success': false,
-        'error': "Error setting profile picture.",
-      };
       // updated profile
       // -X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X
       final userId = firebaseAuth.currentUser!.uid;
@@ -82,14 +76,14 @@ class UserRepository {
             .catchError((e) => log(e.toString()));
         profileUrl = await ref.getDownloadURL();
         await firebaseFirestore
-            .collection('users')
+            .collection(CycleGoUrls.userUrl)
             .doc(email)
             .update({'profileImage': profileUrl}).whenComplete(
                 () => profileImageUpdated = true);
       } else {
         await ref.delete();
         await firebaseFirestore
-            .collection('users')
+            .collection(CycleGoUrls.userUrl)
             .doc(email)
             .update({'profileImage': ""}).whenComplete(
                 () => profileImageUpdated = true);
@@ -97,27 +91,20 @@ class UserRepository {
       // -X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X
       // get udpated profile
       await firebaseFirestore
-          .collection('users')
+          .collection(CycleGoUrls.userUrl)
           .doc(email)
           .get()
           .then((value) {
         user = UserModel.fromJson(value.data()!);
       });
       if (profileImageUpdated && user != null) {
-        final success = {
-          'success': true,
-          'user': user,
-        };
-        return success;
+        return responseMessage(success: true, data: user);
       }
 
-      return unSuccess;
+      return responseMessage(
+          success: false, error: "Error setting profile picture.");
     } catch (e) {
-      final error = {
-        'success': false,
-        'error': e.toString(),
-      };
-      return error;
+      return responseMessage(success: false, error: e.toString());
     }
   }
 
@@ -131,12 +118,15 @@ class UserRepository {
     };
     try {
       final email = firebaseAuth.currentUser!.email;
-      await firebaseFirestore.collection('users').doc(email).update({
+      await firebaseFirestore
+          .collection(CycleGoUrls.userUrl)
+          .doc(email)
+          .update({
         'firstName': firstName,
         'lastName': lastName,
       }).whenComplete(() => updated = true);
       await firebaseFirestore
-          .collection('users')
+          .collection(CycleGoUrls.userUrl)
           .doc(email)
           .get()
           .then((value) {
@@ -174,7 +164,7 @@ class UserRepository {
       // password match validation
       final email = firebaseAuth.currentUser!.email;
       await firebaseFirestore
-          .collection('users')
+          .collection(CycleGoUrls.userUrl)
           .doc(email)
           .get()
           .then((value) {
@@ -186,11 +176,11 @@ class UserRepository {
       // -X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X
       // update password
       await firebaseFirestore
-          .collection('users')
+          .collection(CycleGoUrls.userUrl)
           .doc(email)
           .update({'password': newPassword});
       await firebaseFirestore
-          .collection('users')
+          .collection(CycleGoUrls.userUrl)
           .doc(email)
           .get()
           .then((value) {

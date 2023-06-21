@@ -27,7 +27,9 @@ Map<String, Function> getRoutes = {
   Routes.aboutUs: (arugments) => const AboutUsScreen(),
   Routes.settings: (arugments) => const SettingsScreen(),
   Routes.moreCycles: (arugments) => const MoreCycleScreen(),
-  Routes.cycleDescription: (arugments) => const CycleDescriptionScreen(),
+  Routes.cycleDescription: (arugments) => CycleDescriptionScreen(
+        cycleId: arugments?['cycleId'] ?? "",
+      ),
   Routes.cycleBookingScreen: (arugments) => const CycleBookingScreen(),
   Routes.profile: (arugments) => const ProfileScreen(),
   Routes.updatePassword: (arugments) => UpdatePasswordScreen(),

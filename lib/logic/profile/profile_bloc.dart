@@ -32,7 +32,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           await userRepository.loginUser(event.email, event.password);
       error = userData['error'] ?? "";
       if (userData['success']) {
-        emit(ProfileFecthed(user: userData['user'], message: 'Login Success'));
+        emit(ProfileFecthed(user: userData['data'], message: 'Login Success'));
       } else {
         emit(ProfileFecthFailed(error: error));
       }
@@ -64,7 +64,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
 
       if (response['success']) {
-        emit(ProfileFecthed(user: response['user'], message: successMessage));
+        emit(ProfileFecthed(user: response['data'], message: successMessage));
       } else {
         emit(ProfileFecthFailed(error: response['error']));
       }

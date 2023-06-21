@@ -102,7 +102,7 @@ class _MoreCycleScreenState extends State<MoreCycleScreen> {
                 builder: (context, state) {
                   if (state is ProfileFecthed) {
                     return Text(
-                      "${state.user.firstName!} ${state.user.lastName!}",
+                      state.user.firstName!,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.white),
                     );
