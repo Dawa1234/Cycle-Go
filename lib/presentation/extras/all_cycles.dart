@@ -1,7 +1,9 @@
 import 'package:cyclego/constants/ui/dark_theme_data.dart';
 import 'package:cyclego/constants/utils/utils.dart';
+import 'package:cyclego/logic/cycle/cycle_bloc.dart';
 import 'package:cyclego/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AllCycleScreen extends StatefulWidget {
   const AllCycleScreen({Key? key}) : super(key: key);
@@ -14,7 +16,7 @@ class _AllCycleScreenState extends State<AllCycleScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
   int _currentIndex = 0;
-
+  late CycleBloc _cycleBloc;
   final List<Map<String, dynamic>> _cycleTypes = [
     {
       "cycle": "All",
@@ -43,6 +45,7 @@ class _AllCycleScreenState extends State<AllCycleScreen>
     // TODO: implement initState
     super.initState();
     _tabController = TabController(length: 5, vsync: this);
+    _cycleBloc = BlocProvider.of<CycleBloc>(context)..add(InitialCycleEvent());
   }
 
   @override

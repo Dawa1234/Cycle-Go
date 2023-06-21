@@ -1,6 +1,7 @@
 import 'package:cyclego/constants/ui/dark_theme_data.dart';
 import 'package:cyclego/constants/ui/light_theme.data.dart';
 import 'package:cyclego/get_it/get_it.dart';
+import 'package:cyclego/logic/cycle/cycle_bloc.dart';
 import 'package:cyclego/logic/profile/profile_bloc.dart';
 import 'package:cyclego/logic/registration/registration_cubit.dart';
 import 'package:cyclego/routes/routes_generate.dart';
@@ -32,12 +33,15 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => ProfileBloc()..add(ProfileInitialEvent()),
         ),
+        BlocProvider(
+          create: (context) => CycleBloc(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         // themeMode: ThemeMode.system,
-        themeMode: ThemeMode.dark,
-        // themeMode: ThemeMode.light,
+        // themeMode: ThemeMode.dark,
+        themeMode: ThemeMode.light,
         darkTheme: DarkTheme.themeData(context),
         theme: LightTheme.themeData(context),
         onGenerateRoute: GeneratedRoute.onGenerateRoute,

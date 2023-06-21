@@ -56,6 +56,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                   }
                   if (state is ProfileFecthed) {
                     Navigator.pop(context);
+                    Navigator.pop(context);
                     SnackBarMessage.successMessage(context,
                         message: state.message);
                   }
