@@ -24,6 +24,8 @@ class _CycleBookingScreenState extends State<CycleBookingScreen> {
   String selectedHour = "";
   String selectedDay = "";
   String selectedWeek = "";
+  double totalAmount = 1;
+  double discountedAmount = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -37,8 +39,8 @@ class _CycleBookingScreenState extends State<CycleBookingScreen> {
 
   List<String> units = [
     "Hour",
-    "Week(s)",
     "Day(s)",
+    "Week(s)",
   ];
   List<String> hours = [
     "Half",
@@ -376,8 +378,7 @@ class _CycleBookingScreenState extends State<CycleBookingScreen> {
             ),
           )),
           FullButton(
-              onTap: () => BlocProvider.of<TransactionBloc>(context)
-                  .add(StartTxnEvent(amount: 1000, context: context)),
+              onTap: _handleBooking,
               text: "Rent Bike".toUpperCase(),
               padding: const EdgeInsets.all(24)),
         ],
@@ -398,5 +399,46 @@ class _CycleBookingScreenState extends State<CycleBookingScreen> {
           bottomLeft: Radius.circular(20),
           bottomRight: Radius.circular(20),
         ));
+  }
+
+  _handleBooking() {
+    BlocProvider.of<TransactionBloc>(context).add(StartTxnEvent(
+        cycleId: cycleDetail.id!,
+        amount: _getTotalAmount().round(),
+        context: context));
+  }
+
+  double _getTotalAmount() {
+    // hour
+    if (selectedUnit == units[0]) {
+      if (hours.indexOf(selectedHour) == 0) {
+        return 0.5 * int.parse(cycleDetail.price!);
+      }
+      if (hours.indexOf(selectedHour) % 2 == 0) {
+        String seperatedAmount = selectedHour.split(' ')[0] + ".5";
+        totalAmount =
+            double.parse(seperatedAmount) * int.parse(cycleDetail.price!);
+        return totalAmount;
+      } else {
+        totalAmount =
+            double.parse(selectedHour) * int.parse(cycleDetail.price!);
+        return totalAmount;
+      }
+    }
+    // day
+    if (selectedUnit == units[1]) {
+      double totalHours = double.parse(selectedDay) * 24;
+      totalAmount = totalHours * int.parse(cycleDetail.price!);
+      discountedAmount = (totalAmount * 0.05);
+      return totalAmount - discountedAmount;
+    }
+    // week
+    if (selectedUnit == units[2]) {
+      double totalHours = double.parse(selectedWeek) * 168;
+      totalAmount = totalHours * int.parse(cycleDetail.price!);
+      discountedAmount = (totalAmount * 0.1);
+      return totalAmount - discountedAmount;
+    }
+    return -1;
   }
 }

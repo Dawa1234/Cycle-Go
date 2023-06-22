@@ -16,7 +16,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     emit(TransactionInProgress());
     try {
       Map<String, dynamic> response = await transactionRepository.executeTxn(
-          amount: event.amount, context: event.context);
+          cycleId: event.cycleId, amount: event.amount, context: event.context);
       if (response['success']) {
         emit(TransactionSuccess(successMessage: response['data']));
       } else {
