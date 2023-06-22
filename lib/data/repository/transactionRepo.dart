@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cyclego/constants/urls.dart';
+import 'package:cyclego/data/models/cycle.dart';
 import 'package:cyclego/data/repository/response.dart';
 import 'package:cyclego/data/transaction_configuration.dart';
 import 'package:cyclego/get_it/get_it.dart';
@@ -19,7 +20,18 @@ class TransactionRepository {
       required BuildContext context}) async {
     Map<String, dynamic> message = {};
     try {
+      List<CycleModel> bookedCycles = [];
       final email = firebaseAuth.currentUser!.email;
+      CycleModel cycleModel = CycleModel();
+      String date = DateTime.now().toString();
+      String currentDate = date.split(' ')[0] +
+          " " +
+          date.split(' ')[1].split(':')[0] +
+          ":" +
+          date.split(' ')[1].split(':')[1];
+
+      // -X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X
+      // booking process
       await KhaltiScope.of(context).pay(
         config: TransactionConfiguration.config(amount: amount * 100),
         preferences: [
@@ -29,23 +41,42 @@ class TransactionRepository {
           await firebaseFirestore
               .collection(CycleGoUrls.cycleUrl)
               .doc(cycleId)
-              .set({'bookedStatus': true});
+              .update({'bookedStatus': true});
           await firebaseFirestore
               .collection(CycleGoUrls.cycleUrl)
               .doc(cycleId)
               .collection(CycleGoUrls.cycleDetail)
               .doc(cycleId)
-              .set({
+              .update({
             'bookedStatus': true,
-            'bookedDate': "",
+            'bookedDate': currentDate,
             'returnDate': "",
+          });
+          await firebaseFirestore
+              .collection(CycleGoUrls.cycleUrl)
+              .doc(cycleId)
+              .get()
+              .then((value) {
+            cycleModel = CycleModel.fromJson(value.data()!);
+          });
+          await firebaseFirestore
+              .collection(CycleGoUrls.bookedCycles)
+              .doc(email)
+              .get()
+              .then((value) {
+            bookedCycles.add(cycleModel);
+            if (value.exists) {
+              for (var data in value.data()!['bookedCycles']) {
+                bookedCycles.add(CycleModel.fromJson(data));
+              }
+            }
           });
           await firebaseFirestore
               .collection(CycleGoUrls.bookedCycles)
               .doc(email)
               .set({
-            'email': email,
-            'cycleId': cycleId,
+            'bookedCycles':
+                bookedCycles.map((cycleModel) => cycleModel.toJson()).toList(),
           });
           message = responseMessage(success: true, data: "Success");
         },

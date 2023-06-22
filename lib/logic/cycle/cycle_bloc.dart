@@ -11,8 +11,8 @@ class CycleBloc extends Bloc<CycleEvent, CycleState> {
   CycleRepository cycleRepository = CycleRepository();
   CycleBloc() : super(CycleInitial()) {
     on<InitialCycleEvent>(_init);
-    on<AddCycleEvent>(_addNewCycle);
     on<FetchCycleDetailEvent>(_fetchCycleDetail);
+    on<AddCycleEvent>(_addNewCycle);
   }
 
   _init(event, emit) async {
