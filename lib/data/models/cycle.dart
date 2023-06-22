@@ -43,6 +43,23 @@ class CycleDetail {
       returnDate: json['returnDate'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'price': price,
+      'type': type,
+      'description': description,
+      'name': name,
+      'image': image!.toList(),
+      'color': color,
+      'speed': speed,
+      'rating': rating,
+      'bookedStatus': bookedStatus,
+      'id': id,
+      'bookedDate': bookedDate,
+      'returnDate': returnDate
+    };
+  }
 }
 
 class CycleModel {
@@ -71,6 +88,16 @@ class CycleModel {
       bookedStatus: json['bookedStatus'],
       id: json['id'],
     );
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'price': price,
+      'image': image!.toList(),
+      'type': type,
+      'name': name,
+      'bookedStatus': bookedStatus,
+      'id': id,
+    };
   }
 }
 

@@ -47,6 +47,8 @@ dependencies:
   connectivity_plus: ^4.0.1
   get_it: ^7.6.0
   image_picker: ^0.8.9
+  uuid: ^3.0.7
+  khalti_flutter: ^2.2.1
 
 dev_dependencies:
   flutter_test:

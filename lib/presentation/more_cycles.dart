@@ -162,7 +162,9 @@ class _MoreCycleScreenState extends State<MoreCycleScreen> {
         return AppBar(
           leading: const AppBackButton(),
           backgroundColor: appBarColor,
-          actions: const [ProfileButton()],
+          actions: const [
+            ProfileButton(),
+          ],
         );
       case 1:
         return AppBar(

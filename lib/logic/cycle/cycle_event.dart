@@ -5,26 +5,42 @@ abstract class CycleEvent extends Equatable {}
 
 class InitialCycleEvent extends CycleEvent {
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 }
 
+class AddCycleEvent extends CycleEvent {
+  final CycleDetail cycleDetail;
+  AddCycleEvent({required this.cycleDetail});
+  @override
+  List<Object?> get props => [cycleDetail];
+}
+
+class RemoveCycleEvent extends CycleEvent {
+  final String cycleId;
+  RemoveCycleEvent({required this.cycleId});
+  @override
+  List<Object?> get props => [cycleId];
+}
+
 class FetchCycleDetailEvent extends CycleEvent {
-  String cycleId;
+  final String cycleId;
   FetchCycleDetailEvent({required this.cycleId});
   @override
-  // TODO: implement props
   List<Object?> get props => [cycleId];
 }
 
 class BookCycleEvent extends CycleEvent {
+  final String userId;
+  final String cycleId;
+  BookCycleEvent({
+    required this.userId,
+    required this.cycleId,
+  });
   @override
-  // TODO: implement props
-  List<Object?> get props => [];
+  List<Object?> get props => [userId, cycleId];
 }
 
 class AddToFavCycleEvent extends CycleEvent {
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 }

@@ -210,7 +210,10 @@ class _CycleDescriptionScreenState extends State<CycleDescriptionScreen> {
                                 return FullButton(
                                   onTap: () => state is ProfileFecthed
                                       ? Navigator.pushNamed(
-                                          context, Routes.cycleBookingScreen)
+                                          context, Routes.cycleBookingScreen,
+                                          arguments: {
+                                              'cycleDetail': cycleDetail
+                                            })
                                       : showDialog(
                                           context: context,
                                           builder: (context) =>

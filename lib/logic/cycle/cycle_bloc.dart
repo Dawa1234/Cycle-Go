@@ -11,6 +11,7 @@ class CycleBloc extends Bloc<CycleEvent, CycleState> {
   CycleRepository cycleRepository = CycleRepository();
   CycleBloc() : super(CycleInitial()) {
     on<InitialCycleEvent>(_init);
+    on<AddCycleEvent>(_addNewCycle);
     on<FetchCycleDetailEvent>(_fetchCycleDetail);
   }
 
@@ -40,6 +41,20 @@ class CycleBloc extends Bloc<CycleEvent, CycleState> {
       }
     } catch (e) {
       emit(CycleLoading());
+    }
+  }
+
+  _addNewCycle(event, emit) async {
+    emit(CycleLoading());
+    try {
+      Map<String, dynamic> response = await cycleRepository.addNewCycle();
+      if (response['success']) {
+        emit(CycleAdded(successMessage: response['data']));
+      } else {
+        emit(ErrorCycle(error: response['error']));
+      }
+    } catch (e) {
+      emit(ErrorCycle(error: e.toString()));
     }
   }
 }

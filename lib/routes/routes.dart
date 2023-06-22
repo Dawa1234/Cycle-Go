@@ -1,3 +1,4 @@
+import 'package:cyclego/data/models/cycle.dart';
 import 'package:cyclego/presentation/app_info/about_us.dart';
 import 'package:cyclego/presentation/app_info/help_support.dart';
 import 'package:cyclego/presentation/authentication/loginScreen.dart';

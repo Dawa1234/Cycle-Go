@@ -30,8 +30,10 @@ Map<String, Function> getRoutes = {
   Routes.cycleDescription: (arugments) => CycleDescriptionScreen(
         cycleId: arugments?['cycleId'] ?? "",
       ),
-  Routes.cycleBookingScreen: (arugments) => const CycleBookingScreen(),
+  Routes.cycleBookingScreen: (arugments) => CycleBookingScreen(
+        cycleDetail: arugments?['cycleDetail'] ?? CycleDetail(),
+      ),
   Routes.profile: (arugments) => const ProfileScreen(),
-  Routes.updatePassword: (arugments) => UpdatePasswordScreen(),
+  Routes.updatePassword: (arugments) => const UpdatePasswordScreen(),
   Routes.fav: (arugments) => const FavoritesScreen(),
 };

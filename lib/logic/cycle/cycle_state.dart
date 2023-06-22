@@ -15,6 +15,14 @@ class CycleLoading extends CycleState {
   List<Object?> get props => [];
 }
 
+class CycleAdded extends CycleState {
+  final String successMessage;
+  CycleAdded({required this.successMessage});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [successMessage];
+}
+
 class FilteredCycle extends CycleState {
   final List<CycleModel> allCycle;
   FilteredCycle({required this.allCycle});
