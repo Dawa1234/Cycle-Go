@@ -1,6 +1,7 @@
 import 'package:cyclego/constants/ui/dark_theme_data.dart';
 import 'package:cyclego/constants/ui/light_theme.data.dart';
 import 'package:cyclego/get_it/get_it.dart';
+import 'package:cyclego/logic/booked_cycle/booked_cycle_cubit.dart';
 import 'package:cyclego/logic/cycle/cycle_bloc.dart';
 import 'package:cyclego/logic/profile/profile_bloc.dart';
 import 'package:cyclego/logic/registration/registration_cubit.dart';
@@ -40,6 +41,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => TransactionBloc(),
+        ),
+        BlocProvider(
+          create: (context) => BookedCycleCubit(),
         ),
       ],
       child: KhaltiScope(

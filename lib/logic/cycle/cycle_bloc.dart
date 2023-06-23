@@ -13,6 +13,7 @@ class CycleBloc extends Bloc<CycleEvent, CycleState> {
     on<InitialCycleEvent>(_init);
     on<FetchCycleDetailEvent>(_fetchCycleDetail);
     on<AddCycleEvent>(_addNewCycle);
+    on<BookCycleEvent>(_bookACycle);
   }
 
   _init(event, emit) async {
@@ -56,5 +57,9 @@ class CycleBloc extends Bloc<CycleEvent, CycleState> {
     } catch (e) {
       emit(ErrorCycle(error: e.toString()));
     }
+  }
+
+  _bookACycle(BookCycleEvent event, emit) async {
+    try {} catch (e) {}
   }
 }

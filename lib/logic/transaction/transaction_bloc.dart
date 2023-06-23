@@ -20,7 +20,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       if (response['success']) {
         emit(TransactionSuccess(successMessage: response['data']));
       } else {
-        emit(TransactionFailed(failedMessage: response['data']));
+        emit(TransactionFailed(failedMessage: response['error']));
       }
     } catch (e) {
       emit(TransactionFailed(failedMessage: e.toString()));

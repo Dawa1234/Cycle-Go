@@ -30,14 +30,12 @@ class FetchCycleDetailEvent extends CycleEvent {
 }
 
 class BookCycleEvent extends CycleEvent {
-  final String userId;
   final String cycleId;
   BookCycleEvent({
-    required this.userId,
     required this.cycleId,
   });
   @override
-  List<Object?> get props => [userId, cycleId];
+  List<Object?> get props => [cycleId];
 }
 
 class AddToFavCycleEvent extends CycleEvent {

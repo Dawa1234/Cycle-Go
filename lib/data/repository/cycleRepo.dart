@@ -111,4 +111,85 @@ class CycleRepository {
       return responseMessage(success: false, error: e.toString());
     }
   }
+
+  Future<Map<String, dynamic>> fetchBookedCycles() async {
+    AllCycles bookedCycles = AllCycles();
+    try {
+      final email = firebaseAuth.currentUser!.email;
+      await firebaseFirestore
+          .collection(CycleGoUrls.bookedCycles)
+          .doc(email)
+          .get()
+          .then((value) {
+        bookedCycles = AllCycles.fromJson(value.data()!);
+      });
+      if (bookedCycles.data == null || bookedCycles.data!.isEmpty) {
+        return responseMessage(success: false, error: 'Could not fetch data.');
+      }
+      return responseMessage(success: true, data: bookedCycles.data);
+    } catch (e) {
+      return responseMessage(success: false, error: e.toString());
+    }
+  }
+
+  Future<Map<String, dynamic>> bookACycle({required String cycleId}) async {
+    List<CycleModel> bookedCycles = [];
+    final email = firebaseAuth.currentUser!.email;
+    CycleModel cycleModel = CycleModel();
+    String date = DateTime.now().toString();
+    bool success = false;
+    String currentDate = date.split(' ')[0] +
+        " " +
+        date.split(' ')[1].split(':')[0] +
+        ":" +
+        date.split(' ')[1].split(':')[1];
+    try {
+      await firebaseFirestore
+          .collection(CycleGoUrls.cycleUrl)
+          .doc(cycleId)
+          .update({'bookedStatus': true});
+      await firebaseFirestore
+          .collection(CycleGoUrls.cycleUrl)
+          .doc(cycleId)
+          .collection(CycleGoUrls.cycleDetail)
+          .doc(cycleId)
+          .update({
+        'bookedStatus': true,
+        'bookedDate': currentDate,
+        'returnDate': "",
+      });
+      await firebaseFirestore
+          .collection(CycleGoUrls.cycleUrl)
+          .doc(cycleId)
+          .get()
+          .then((value) {
+        cycleModel = CycleModel.fromJson(value.data()!);
+      });
+      await firebaseFirestore
+          .collection(CycleGoUrls.bookedCycles)
+          .doc(email)
+          .get()
+          .then((value) {
+        bookedCycles.add(cycleModel);
+        if (value.exists) {
+          for (var data in value.data()!['data']) {
+            bookedCycles.add(CycleModel.fromJson(data));
+          }
+        }
+      });
+      await firebaseFirestore
+          .collection(CycleGoUrls.bookedCycles)
+          .doc(email)
+          .set({
+        'data': bookedCycles.map((cycleModel) => cycleModel.toJson()).toList(),
+      }).whenComplete(() => success = true);
+      if (!success) {
+        return responseMessage(
+            success: false, error: "Please try again later.");
+      }
+      return responseMessage(success: success, data: 'Succfully booked.');
+    } catch (e) {
+      return responseMessage(success: false, error: e.toString());
+    }
+  }
 }

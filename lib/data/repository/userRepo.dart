@@ -203,16 +203,4 @@ class UserRepository {
       return error;
     }
   }
-
-  // Future<Map<String, dynamic>> getBookedCycles() async {
-  //   try {
-  //     final email = firebaseAuth.currentUser!.email;
-  //     await firebaseFirestore
-  //         .collection(CycleGoUrls.bookedCycles)
-  //         .doc(email)
-  //         .get();
-  //   } catch (e) {
-  //     return responseMessage(success: false, error: e.toString());
-  //   }
-  // }
 }
