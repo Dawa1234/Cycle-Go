@@ -25,20 +25,24 @@ class _AllCycleScreenState extends State<AllCycleScreen>
       "index": 0,
     },
     {
-      "cycle": "City",
+      "cycle": "Available",
       "index": 1,
     },
     {
-      "cycle": "Tour",
+      "cycle": "City",
       "index": 2,
     },
     {
-      "cycle": "Hybrid",
+      "cycle": "Tour",
       "index": 3,
     },
     {
-      "cycle": "Road",
+      "cycle": "Hybrid",
       "index": 4,
+    },
+    {
+      "cycle": "Road",
+      "index": 5,
     }
   ];
 
@@ -46,7 +50,7 @@ class _AllCycleScreenState extends State<AllCycleScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 6, vsync: this);
     _cycleBloc = BlocProvider.of<CycleBloc>(context)..add(InitialCycleEvent());
   }
 
@@ -92,7 +96,9 @@ class _AllCycleScreenState extends State<AllCycleScreen>
                   )
                   .toList()),
         ),
-        Expanded(child: BlocBuilder<CycleBloc, CycleState>(
+        Expanded(
+            child: BlocBuilder<CycleBloc, CycleState>(
+          bloc: _cycleBloc,
           builder: (context, state) {
             if (state is CycleLoading) {
               return Center(

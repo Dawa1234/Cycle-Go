@@ -6,7 +6,6 @@ import 'package:cyclego/logic/cycle/cycle_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 
 class TransactionRepository {
@@ -30,8 +29,9 @@ class TransactionRepository {
         onSuccess: (successModel) async {
           message =
               responseMessage(success: true, data: "Transaction Success.");
-          BlocProvider.of<CycleBloc>(context)
-              .add(BookCycleEvent(cycleId: cycleId));
+          getIt.get<CycleBloc>().add(BookCycleEvent(cycleId: cycleId));
+          // BlocProvider.of<CycleBloc>(context)
+          //     .add(BookCycleEvent(cycleId: cycleId));
         },
         onFailure: (failureModel) {
           message = responseMessage(

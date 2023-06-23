@@ -4,8 +4,11 @@ import 'package:cyclego/constants/utils/backButton.dart';
 import 'package:cyclego/constants/utils/pop_up.dart';
 import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/data/models/cycle.dart';
+import 'package:cyclego/get_it/get_it.dart';
+import 'package:cyclego/logic/cycle/cycle_bloc.dart';
 import 'package:cyclego/logic/transaction/transaction_bloc.dart';
 import 'package:cyclego/presentation/screens/start_up_screen.dart';
+import 'package:cyclego/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,6 +30,7 @@ class _CycleBookingScreenState extends State<CycleBookingScreen> {
   String selectedWeek = "";
   double totalAmount = 1;
   double discountedAmount = 0;
+  late CycleBloc _cycleBloc;
   @override
   void initState() {
     // TODO: implement initState
@@ -36,6 +40,7 @@ class _CycleBookingScreenState extends State<CycleBookingScreen> {
     selectedHour = hours[0];
     selectedDay = day[0];
     selectedWeek = week[0];
+    _cycleBloc = getIt.get<CycleBloc>();
   }
 
   List<String> units = [
@@ -92,16 +97,40 @@ class _CycleBookingScreenState extends State<CycleBookingScreen> {
       appBar: AppBar(
         leading: const AppBackButton(),
       ),
-      body: BlocListener<TransactionBloc, TransactionState>(
-        listener: (context, state) {
-          if (state is TransactionSuccess) {
-            SnackBarMessage.successMessage(context,
-                message: state.successMessage);
-          }
-          if (state is TransactionFailed) {
-            SnackBarMessage.errorMessage(context, message: state.failedMessage);
-          }
-        },
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<TransactionBloc, TransactionState>(
+            listener: (context, state) {
+              if (state is TransactionSuccess) {
+                SnackBarMessage.successMessage(context,
+                    message: state.successMessage);
+              }
+              if (state is TransactionFailed) {
+                SnackBarMessage.errorMessage(context,
+                    message: state.failedMessage);
+              }
+            },
+          ),
+          BlocListener<CycleBloc, CycleState>(
+            bloc: _cycleBloc,
+            listener: (context, state) {
+              if (state is CycleBooked) {
+                Navigator.popUntil(
+                  context,
+                  ModalRoute.withName(Routes.homeScreen),
+                );
+                Navigator.pushNamed(context, Routes.moreCycles,
+                    arguments: {'currentIndex': 2});
+                SnackBarMessage.successMessage(context,
+                    message: state.successMessage);
+              }
+              if (state is ErrorCycle) {
+                Navigator.pop(context);
+                SnackBarMessage.errorMessage(context, message: state.error);
+              }
+            },
+          ),
+        ],
         child: Column(
           children: [
             Container(

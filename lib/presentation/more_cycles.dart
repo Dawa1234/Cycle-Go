@@ -11,16 +11,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MoreCycleScreen extends StatefulWidget {
-  const MoreCycleScreen({Key? key}) : super(key: key);
+  final int? currentBtmNavIndex;
+  const MoreCycleScreen({Key? key, this.currentBtmNavIndex}) : super(key: key);
 
   @override
   State<MoreCycleScreen> createState() => _MoreCycleScreenState();
 }
 
 class _MoreCycleScreenState extends State<MoreCycleScreen> {
-  int _currentBtmNavIndex = 0;
-  final PageController _pageController = PageController(initialPage: 0);
+  late int _currentBtmNavIndex;
+  late PageController _pageController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _currentBtmNavIndex = widget.currentBtmNavIndex!;
+    _pageController = PageController(initialPage: widget.currentBtmNavIndex!);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

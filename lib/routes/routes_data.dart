@@ -26,7 +26,9 @@ Map<String, Function> getRoutes = {
   Routes.helpAndSupport: (arugments) => const HelpAndSupportScreen(),
   Routes.aboutUs: (arugments) => const AboutUsScreen(),
   Routes.settings: (arugments) => const SettingsScreen(),
-  Routes.moreCycles: (arugments) => const MoreCycleScreen(),
+  Routes.moreCycles: (arugments) => MoreCycleScreen(
+        currentBtmNavIndex: arugments?['currentIndex'] ?? 0,
+      ),
   Routes.cycleDescription: (arugments) => CycleDescriptionScreen(
         cycleId: arugments?['cycleId'] ?? "",
       ),

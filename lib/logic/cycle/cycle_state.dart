@@ -47,6 +47,14 @@ class CycleDetailFetched extends CycleState {
   List<Object?> get props => [cycleDetail];
 }
 
+class CycleBooked extends CycleState {
+  final String successMessage;
+  CycleBooked({required this.successMessage});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [successMessage];
+}
+
 class ErrorCycle extends CycleState {
   final String error;
   ErrorCycle({required this.error});

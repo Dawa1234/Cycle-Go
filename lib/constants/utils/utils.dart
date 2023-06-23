@@ -142,18 +142,33 @@ class AppTheme {
               height: 5,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 8.0),
+              padding: const EdgeInsets.only(right: 8, left: 8.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    "Type: ",
-                    style: TextStyle(fontSize: 11),
+                  Wrap(
+                    children: [
+                      const Text(
+                        "Type: ",
+                        style: TextStyle(fontSize: 11),
+                      ),
+                      Text(
+                        cycle.type ?? "Cycle Type",
+                        style: const TextStyle(fontSize: 11),
+                      ),
+                    ],
                   ),
-                  Text(
-                    cycle.type ?? "Cycle Type",
-                    style: const TextStyle(fontSize: 11),
-                  ),
+                  cycle.bookedStatus == null
+                      ? const SizedBox()
+                      : cycle.bookedStatus!
+                          ? const Text(
+                              "Booked",
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red),
+                            )
+                          : const SizedBox()
                 ],
               ),
             )

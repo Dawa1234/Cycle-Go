@@ -60,6 +60,16 @@ class CycleBloc extends Bloc<CycleEvent, CycleState> {
   }
 
   _bookACycle(BookCycleEvent event, emit) async {
-    try {} catch (e) {}
+    emit(CycleLoading());
+    try {
+      final response = await cycleRepository.bookACycle(cycleId: event.cycleId);
+      if (response['success']) {
+        emit(CycleBooked(successMessage: response['data']));
+      } else {
+        emit(ErrorCycle(error: response['error']));
+      }
+    } catch (e) {
+      emit(ErrorCycle(error: e.toString()));
+    }
   }
 }

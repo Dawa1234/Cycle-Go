@@ -208,20 +208,22 @@ class _CycleDescriptionScreenState extends State<CycleDescriptionScreen> {
                             BlocBuilder<ProfileBloc, ProfileState>(
                               builder: (context, state) {
                                 return FullButton(
-                                  onTap: () => state is ProfileFecthed
-                                      ? Navigator.pushNamed(
-                                          context, Routes.cycleBookingScreen,
-                                          arguments: {
-                                              'cycleDetail': cycleDetail
-                                            })
-                                      : showDialog(
-                                          context: context,
-                                          builder: (context) =>
-                                              const AuthenticationDialog(
-                                            message:
-                                                "Please login to access this feature.",
+                                  onTap: state is ProfileFecthed
+                                      ? !cycleDetail.bookedStatus!
+                                          ? () => Navigator.pushNamed(context,
+                                                  Routes.cycleBookingScreen,
+                                                  arguments: {
+                                                    'cycleDetail': cycleDetail
+                                                  })
+                                          : null
+                                      : () => showDialog(
+                                            context: context,
+                                            builder: (context) =>
+                                                const AuthenticationDialog(
+                                              message:
+                                                  "Please login to access this feature.",
+                                            ),
                                           ),
-                                        ),
                                   padding: const EdgeInsets.all(10),
                                   text: "SET TIME",
                                 );

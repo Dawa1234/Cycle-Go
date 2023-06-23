@@ -73,7 +73,7 @@ class StartUpScreen extends StatelessWidget {
 }
 
 class FullButton extends StatelessWidget {
-  final Function() onTap;
+  final Function()? onTap;
   final String text;
   final double? fontSize;
   final double? buttonHeight;
@@ -83,7 +83,7 @@ class FullButton extends StatelessWidget {
 
   const FullButton({
     Key? key,
-    required this.onTap,
+    this.onTap,
     required this.text,
     required this.padding,
     this.fontSize,
@@ -106,6 +106,7 @@ class FullButton extends StatelessWidget {
             splashColor: Colors.transparent,
             textColor: Colors.white,
             onPressed: onTap,
+            disabledColor: const Color.fromARGB(85, 39, 139, 233),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
