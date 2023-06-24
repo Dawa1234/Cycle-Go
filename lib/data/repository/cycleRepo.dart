@@ -192,4 +192,115 @@ class CycleRepository {
       return responseMessage(success: false, error: e.toString());
     }
   }
+
+  Future<Map<String, dynamic>> addCycleToFav({required String cycleId}) async {
+    CycleModel cycleModel = CycleModel();
+    AllCycles allCycles = AllCycles();
+    bool addedToFav = false;
+    try {
+      final email = firebaseAuth.currentUser!.email;
+      await firebaseFirestore
+          .collection(CycleGoUrls.cycleUrl)
+          .doc(cycleId)
+          .get()
+          .then((value) {
+        cycleModel = CycleModel.fromJson(value.data()!);
+      });
+      await firebaseFirestore
+          .collection(CycleGoUrls.favorites)
+          .doc(email)
+          .get()
+          .then((value) {
+        if (value.exists) {
+          allCycles = AllCycles.fromJson(value.data()!);
+        }
+        allCycles.data!.add(cycleModel);
+      });
+      await firebaseFirestore.collection(CycleGoUrls.favorites).doc(email).set({
+        'data': allCycles.data!.map((cycle) => cycle.toJson()).toList()
+      }).whenComplete(() => addedToFav = true);
+      if (!addedToFav) {
+        return responseMessage(
+            success: false, error: "Could not add at the moment.");
+      }
+      return responseMessage(success: true, data: "Added To Favorites.");
+    } catch (e) {
+      return responseMessage(success: false, error: e.toString());
+    }
+  }
+
+  Future<Map<String, dynamic>> removeCycleFromFav(
+      {required String cycleId}) async {
+    CycleModel cycleModel = CycleModel();
+    AllCycles allCycles = AllCycles();
+    bool removeFromFav = false;
+    try {
+      final email = firebaseAuth.currentUser!.email;
+      await firebaseFirestore
+          .collection(CycleGoUrls.favorites)
+          .doc(email)
+          .get()
+          .then((value) {
+        if (value.exists) {
+          allCycles = AllCycles.fromJson(value.data()!);
+        }
+        cycleModel =
+            allCycles.data!.firstWhere((element) => element.id == cycleId);
+        allCycles.data!.remove(cycleModel);
+      });
+      await firebaseFirestore.collection(CycleGoUrls.favorites).doc(email).set({
+        'data': allCycles.data!.map((cycle) => cycle.toJson()).toList()
+      }).whenComplete(() => removeFromFav = true);
+      if (!removeFromFav) {
+        return responseMessage(
+            success: false, error: "Could not remove at the moment.");
+      }
+      return responseMessage(success: true, data: "Removed From Favorites.");
+    } catch (e) {
+      return responseMessage(success: false, error: e.toString());
+    }
+  }
+
+  Future<bool> cycleIsFav({required String cycleId}) async {
+    AllCycles allCycles = AllCycles();
+    bool isFav = false;
+    try {
+      final email = firebaseAuth.currentUser!.email;
+      await firebaseFirestore
+          .collection(CycleGoUrls.favorites)
+          .doc(email)
+          .get()
+          .then((value) {
+        allCycles = AllCycles.fromJson(value.data()!);
+      });
+      for (var data in allCycles.data!) {
+        if (data.id == cycleId) {
+          isFav = true;
+          break;
+        }
+      }
+      return isFav;
+    } catch (e) {
+      return isFav;
+    }
+  }
+
+  Future<List<CycleModel>> fetchFavCycle() async {
+    AllCycles allCycles = AllCycles();
+    try {
+      final email = firebaseAuth.currentUser!.email;
+      await firebaseFirestore
+          .collection(CycleGoUrls.favorites)
+          .doc(email)
+          .get()
+          .then((value) {
+        if (value.exists) {
+          allCycles = AllCycles.fromJson(value.data()!);
+        }
+      });
+      return allCycles.data ?? [];
+    } catch (e) {
+      return [];
+    }
+  }
 }

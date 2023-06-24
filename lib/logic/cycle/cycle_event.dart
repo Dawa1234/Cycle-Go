@@ -39,6 +39,10 @@ class BookCycleEvent extends CycleEvent {
 }
 
 class AddToFavCycleEvent extends CycleEvent {
+  final String cycleId;
+  AddToFavCycleEvent({
+    required this.cycleId,
+  });
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [cycleId];
 }

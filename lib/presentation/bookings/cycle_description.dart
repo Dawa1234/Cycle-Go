@@ -14,8 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CycleDescriptionScreen extends StatefulWidget {
-  String cycleId;
-  CycleDescriptionScreen({Key? key, required this.cycleId}) : super(key: key);
+  final String cycleId;
+  const CycleDescriptionScreen({Key? key, required this.cycleId})
+      : super(key: key);
 
   @override
   State<CycleDescriptionScreen> createState() => _CycleDescriptionScreenState();
@@ -67,7 +68,8 @@ class _CycleDescriptionScreenState extends State<CycleDescriptionScreen> {
                     BlocBuilder<ProfileBloc, ProfileState>(
                       builder: (context, state) {
                         if (state is ProfileFecthed) {
-                          return const FavButton();
+                          return FavButton(
+                              cycleId: cycleDetail.id!, onTap: () {});
                         }
                         return const SizedBox();
                       },
@@ -170,7 +172,7 @@ class _CycleDescriptionScreenState extends State<CycleDescriptionScreen> {
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    Text(cycleDetail.name!),
+                                    Text(cycleDetail.color!),
                                   ],
                                 ),
                                 Wrap(
