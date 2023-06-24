@@ -24,11 +24,13 @@ class CycleAdded extends CycleState {
 }
 
 class FilteredCycle extends CycleState {
-  final List<CycleModel> allCycle;
-  FilteredCycle({required this.allCycle});
+  final List<CycleModel> allCycles;
+  FilteredCycle({
+    required this.allCycles,
+  });
   @override
   // TODO: implement props
-  List<Object?> get props => [allCycle];
+  List<Object?> get props => [allCycles];
 }
 
 class CycleFetched extends CycleState {

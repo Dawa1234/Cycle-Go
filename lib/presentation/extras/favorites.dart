@@ -1,3 +1,4 @@
+import 'package:cyclego/constants/utils/empty_data_message.dart';
 import 'package:cyclego/constants/utils/loading.dart';
 import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/data/models/cycle.dart';
@@ -37,9 +38,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           if (state is FavoritesFetched) {
             List<CycleModel> favCycles = state.favCycles;
             return favCycles.isEmpty
-                ? const Center(
-                    child: Text("No any favourites."),
-                  )
+                ? EmptyDataMessage.emptyDataMessage(
+                    message: 'Add some bicycle in your favorite list.')
                 : GridView.builder(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -60,13 +60,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   );
           }
           if (state is ErrorFavorite) {
-            return Center(
-              child: Text(state.errorMessage),
-            );
+            return EmptyDataMessage.emptyDataMessage(
+                message: state.errorMessage);
           }
-          return const Center(
-            child: Text("Server error. Please try again later."),
-          );
+          return EmptyDataMessage.emptyDataMessage(
+              message: 'Server error. Please try again later.');
         },
       ),
     );

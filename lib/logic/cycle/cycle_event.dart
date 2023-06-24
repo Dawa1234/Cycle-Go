@@ -46,3 +46,14 @@ class AddToFavCycleEvent extends CycleEvent {
   @override
   List<Object?> get props => [cycleId];
 }
+
+class FilterCycleEvent extends CycleEvent {
+  final List<CycleModel> allCycles;
+  final String cycleType;
+  FilterCycleEvent({
+    required this.allCycles,
+    required this.cycleType,
+  });
+  @override
+  List<Object?> get props => [allCycles, cycleType];
+}

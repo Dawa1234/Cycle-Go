@@ -1,4 +1,5 @@
 import 'package:cyclego/constants/ui/dark_theme_data.dart';
+import 'package:cyclego/constants/utils/empty_data_message.dart';
 import 'package:cyclego/constants/utils/loading.dart';
 import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/data/models/cycle.dart';
@@ -19,6 +20,7 @@ class _AllCycleScreenState extends State<AllCycleScreen>
   late TabController _tabController;
   int _currentIndex = 0;
   late CycleBloc _cycleBloc;
+  List<CycleModel> allCycles = [];
   final List<Map<String, dynamic>> _cycleTypes = [
     {
       "cycle": "All",
@@ -70,7 +72,22 @@ class _AllCycleScreenState extends State<AllCycleScreen>
               labelColor: primaryColor,
               unselectedLabelColor: Colors.black54,
               indicatorSize: TabBarIndicatorSize.tab,
-              onTap: (value) => setState(() => _currentIndex = value),
+              onTap: (value) {
+                setState(() => _currentIndex = value);
+                if (_currentIndex == 0) {
+                  _cycleBloc.add(InitialCycleEvent());
+                  return;
+                }
+                if (_currentIndex == 1) {
+                  _cycleBloc.add(FilterCycleEvent(
+                      allCycles: allCycles,
+                      cycleType: _cycleTypes[_currentIndex]['cycle']));
+                  return;
+                }
+                _cycleBloc.add(FilterCycleEvent(
+                    allCycles: allCycles,
+                    cycleType: _cycleTypes[_currentIndex]['cycle']));
+              },
               physics: const BouncingScrollPhysics(),
               tabs: _cycleTypes
                   .map(
@@ -106,16 +123,34 @@ class _AllCycleScreenState extends State<AllCycleScreen>
               );
             }
             if (state is FilteredCycle) {
-              return Center(
-                child: LoadingBar(),
-              );
+              return state.allCycles.isEmpty
+                  ? EmptyDataMessage.emptyDataMessage(
+                      message: 'No any bicycle related to the query.')
+                  : GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2, childAspectRatio: 1 / .87),
+                      itemCount: state.allCycles.length,
+                      itemBuilder: (context, index) {
+                        CycleModel cycle = state.allCycles[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 13.0),
+                          child: AppTheme.cycleContainer(
+                            context,
+                            cycle: cycle,
+                            onTap: () => Navigator.pushNamed(
+                                context, Routes.cycleDescription,
+                                arguments: {'cycleId': cycle.id}),
+                          ),
+                        );
+                      },
+                    );
             }
             if (state is ErrorCycle) {
-              return Center(
-                child: Text(state.error),
-              );
+              return EmptyDataMessage.emptyDataMessage(message: state.error);
             }
             if (state is CycleFetched) {
+              allCycles = state.allCycles;
               return RefreshIndicator(
                 displacement: 10,
                 onRefresh: () async {
@@ -124,9 +159,9 @@ class _AllCycleScreenState extends State<AllCycleScreen>
                 child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2, childAspectRatio: 1 / .87),
-                  itemCount: state.allCycles.length,
+                  itemCount: allCycles.length,
                   itemBuilder: (context, index) {
-                    CycleModel cycle = state.allCycles[index];
+                    CycleModel cycle = allCycles[index];
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 13.0),
                       child: AppTheme.cycleContainer(
@@ -141,9 +176,7 @@ class _AllCycleScreenState extends State<AllCycleScreen>
                 ),
               );
             }
-            return const Center(
-              child: Text('No data'),
-            );
+            return EmptyDataMessage.emptyDataMessage(message: 'No data');
           },
         ))
       ],

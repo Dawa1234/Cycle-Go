@@ -1,5 +1,6 @@
 import 'package:cyclego/constants/enums/enum.dart';
 import 'package:cyclego/constants/utils/backButton.dart';
+import 'package:cyclego/constants/utils/empty_data_message.dart';
 import 'package:cyclego/constants/utils/loading.dart';
 import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/data/models/cycle.dart';
@@ -90,9 +91,8 @@ class _SearchFavouritesState extends State<_SearchFavourites> {
           if (state is FavoritesFetched) {
             allFavCycles = state.favCycles;
             return allFavCycles.isEmpty
-                ? const Center(
-                    child: Text("No any favourites."),
-                  )
+                ? EmptyDataMessage.emptyDataMessage(
+                    message: 'Add some bicycle in your favorite list.')
                 : GridView.builder(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -115,9 +115,8 @@ class _SearchFavouritesState extends State<_SearchFavourites> {
           if (state is FilterFavorites) {
             List<CycleModel> filteredFavCycles = state.favCycles;
             return filteredFavCycles.isEmpty
-                ? const Center(
-                    child: Text("No any favourites."),
-                  )
+                ? EmptyDataMessage.emptyDataMessage(
+                    message: 'Add some bicycle in your favorite list.')
                 : GridView.builder(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -138,9 +137,8 @@ class _SearchFavouritesState extends State<_SearchFavourites> {
                     },
                   );
           }
-          return const Center(
-            child: Text("No Any Favorite cycles."),
-          );
+          return EmptyDataMessage.emptyDataMessage(
+              message: 'Add some bicycle in your favorite list.');
         },
       ),
     );
@@ -222,9 +220,8 @@ class _SearchBookedCyclesState extends State<_SearchBookedCycles> {
           if (state is BookedCycleFetched) {
             allBookedCycles = state.bookedCycles;
             return allBookedCycles.isEmpty
-                ? const Center(
-                    child: Text("No any favourites."),
-                  )
+                ? EmptyDataMessage.emptyDataMessage(
+                    message: 'Book some bicycles.')
                 : GridView.builder(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -248,9 +245,7 @@ class _SearchBookedCyclesState extends State<_SearchBookedCycles> {
           if (state is FilteredBookedCycle) {
             List<CycleModel> filteredBookedCycles = state.bookedCycles;
             return filteredBookedCycles.isEmpty
-                ? const Center(
-                    child: Text("No any Booked Cycles."),
-                  )
+                ? EmptyDataMessage.emptyDataMessage(message: 'No Results.')
                 : GridView.builder(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -271,9 +266,8 @@ class _SearchBookedCyclesState extends State<_SearchBookedCycles> {
                     },
                   );
           }
-          return const Center(
-            child: Text("No Any Favorite cycles."),
-          );
+          return EmptyDataMessage.emptyDataMessage(
+              message: 'No any booked cycles.');
         },
       ),
     );

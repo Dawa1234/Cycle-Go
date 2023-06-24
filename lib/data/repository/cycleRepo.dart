@@ -121,10 +121,12 @@ class CycleRepository {
           .doc(email)
           .get()
           .then((value) {
-        bookedCycles = AllCycles.fromJson(value.data()!);
+        if (value.exists) {
+          bookedCycles = AllCycles.fromJson(value.data()!);
+        }
       });
       if (bookedCycles.data == null || bookedCycles.data!.isEmpty) {
-        return responseMessage(success: false, error: 'Could not fetch data.');
+        return responseMessage(success: true, data: <CycleModel>[]);
       }
       return responseMessage(success: true, data: bookedCycles.data);
     } catch (e) {
@@ -196,6 +198,7 @@ class CycleRepository {
   Future<Map<String, dynamic>> addCycleToFav({required String cycleId}) async {
     CycleModel cycleModel = CycleModel();
     AllCycles allCycles = AllCycles();
+    List<CycleModel> existingFavCycle = [];
     bool addedToFav = false;
     try {
       final email = firebaseAuth.currentUser!.email;
@@ -213,11 +216,12 @@ class CycleRepository {
           .then((value) {
         if (value.exists) {
           allCycles = AllCycles.fromJson(value.data()!);
+          existingFavCycle = allCycles.data!;
         }
-        allCycles.data!.add(cycleModel);
+        existingFavCycle.add(cycleModel);
       });
       await firebaseFirestore.collection(CycleGoUrls.favorites).doc(email).set({
-        'data': allCycles.data!.map((cycle) => cycle.toJson()).toList()
+        'data': existingFavCycle.map((cycle) => cycle.toJson()).toList()
       }).whenComplete(() => addedToFav = true);
       if (!addedToFav) {
         return responseMessage(
@@ -271,12 +275,16 @@ class CycleRepository {
           .doc(email)
           .get()
           .then((value) {
-        allCycles = AllCycles.fromJson(value.data()!);
+        if (value.exists) {
+          allCycles = AllCycles.fromJson(value.data()!);
+        }
       });
-      for (var data in allCycles.data!) {
-        if (data.id == cycleId) {
-          isFav = true;
-          break;
+      if (allCycles.data != null) {
+        for (var data in allCycles.data!) {
+          if (data.id == cycleId) {
+            isFav = true;
+            break;
+          }
         }
       }
       return isFav;

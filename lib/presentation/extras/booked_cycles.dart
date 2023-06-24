@@ -1,3 +1,4 @@
+import 'package:cyclego/constants/utils/empty_data_message.dart';
 import 'package:cyclego/constants/utils/loading.dart';
 import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/data/models/cycle.dart';
@@ -33,34 +34,36 @@ class _BookedCyclesState extends State<BookedCycles> {
             );
           }
           if (state is BookedCycleFetched) {
-            return RefreshIndicator(
-              displacement: 10,
-              onRefresh: () async {
-                BlocProvider.of<BookedCycleCubit>(context).init();
-              },
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, childAspectRatio: 1 / .87),
-                itemCount: state.bookedCycles.length,
-                itemBuilder: (context, index) {
-                  CycleModel cycle = state.bookedCycles[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 13.0),
-                    child: AppTheme.cycleContainer(
-                      context,
-                      cycle: cycle,
-                      onTap: () => Navigator.pushNamed(
-                          context, Routes.cycleDescription,
-                          arguments: {'cycleId': cycle.id}),
+            return state.bookedCycles.isEmpty
+                ? EmptyDataMessage.emptyDataMessage(
+                    message: 'No any bicycles oin your booking list.')
+                : RefreshIndicator(
+                    displacement: 10,
+                    onRefresh: () async {
+                      BlocProvider.of<BookedCycleCubit>(context).init();
+                    },
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2, childAspectRatio: 1 / .87),
+                      itemCount: state.bookedCycles.length,
+                      itemBuilder: (context, index) {
+                        CycleModel cycle = state.bookedCycles[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 13.0),
+                          child: AppTheme.cycleContainer(
+                            context,
+                            cycle: cycle,
+                            onTap: () => Navigator.pushNamed(
+                                context, Routes.cycleDescription,
+                                arguments: {'cycleId': cycle.id}),
+                          ),
+                        );
+                      },
                     ),
                   );
-                },
-              ),
-            );
           }
-          return const Center(
-            child: Text("Booked Cycles"),
-          );
+          return EmptyDataMessage.emptyDataMessage(message: "No data");
         },
       ),
     );

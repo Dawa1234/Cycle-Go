@@ -14,7 +14,7 @@ class CycleBloc extends Bloc<CycleEvent, CycleState> {
     on<FetchCycleDetailEvent>(_fetchCycleDetail);
     on<AddCycleEvent>(_addNewCycle);
     on<BookCycleEvent>(_bookACycle);
-    // on<AddToFavCycleEvent>(_addToFavCycle);
+    on<FilterCycleEvent>(_filterCycle);
   }
 
   _init(event, emit) async {
@@ -74,18 +74,19 @@ class CycleBloc extends Bloc<CycleEvent, CycleState> {
     }
   }
 
-  // _addToFavCycle(AddToFavCycleEvent event, emit) async {
-  //   emit(CycleLoading());
-  //   try {
-  //     final response =
-  //         await cycleRepository.addCycleToFav(cycleId: event.cycleId);
-  //     if (response['success']) {
-  //       emit(CycleAddedToFav(successMessage: response['data']));
-  //     } else {
-  //       emit(ErrorCycle(error: response['error']));
-  //     }
-  //   } catch (e) {
-  //     emit(ErrorCycle(error: e.toString()));
-  //   }
-  // }
+  _filterCycle(FilterCycleEvent event, emit) {
+    List<CycleModel> filteredCycle = [];
+
+    if (event.cycleType == "Available") {
+      filteredCycle =
+          event.allCycles.where((element) => !element.bookedStatus!).toList();
+      emit(FilteredCycle(allCycles: filteredCycle));
+      return;
+    }
+    filteredCycle = event.allCycles
+        .where((element) =>
+            element.type!.toLowerCase().contains(event.cycleType.toLowerCase()))
+        .toList();
+    emit(FilteredCycle(allCycles: filteredCycle));
+  }
 }
