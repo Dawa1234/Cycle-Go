@@ -23,6 +23,14 @@ class BookedCycleFetched extends BookedCycleState {
   List<Object?> get props => [bookedCycles];
 }
 
+class FilteredBookedCycle extends BookedCycleState {
+  final List<CycleModel> bookedCycles;
+  FilteredBookedCycle({required this.bookedCycles});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [bookedCycles];
+}
+
 class ErrorBookedCycle extends BookedCycleState {
   final String errorMessage;
   ErrorBookedCycle({required this.errorMessage});

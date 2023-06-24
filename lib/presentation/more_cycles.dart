@@ -1,3 +1,4 @@
+import 'package:cyclego/constants/enums/enum.dart';
 import 'package:cyclego/constants/ui/dark_theme_data.dart';
 import 'package:cyclego/constants/utils/backButton.dart';
 import 'package:cyclego/constants/utils/buttons.dart';
@@ -180,13 +181,21 @@ class _MoreCycleScreenState extends State<MoreCycleScreen> {
         return AppBar(
           leading: const LanguageButton(),
           backgroundColor: appBarColor,
-          actions: const [SearchButton()],
+          actions: const [
+            SearchButton(
+              currentScreen: CurrentScreen.fav,
+            )
+          ],
         );
       case 2:
         return AppBar(
           leading: const LanguageButton(),
           backgroundColor: appBarColor,
-          actions: const [SearchButton()],
+          actions: const [
+            SearchButton(
+              currentScreen: CurrentScreen.book,
+            )
+          ],
         );
       default:
         return AppBar();

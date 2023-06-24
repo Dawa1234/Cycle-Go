@@ -58,4 +58,24 @@ class FavoritesCubit extends Cubit<FavoritesState> {
       emit(ErrorFavorite(errorMessage: e.toString()));
     }
   }
+
+  filterFavCycle(
+      {required List<CycleModel> allFavCycles,
+      required String cycleName}) async {
+    emit(FavoritesFetching());
+    try {
+      List<CycleModel> filteredfavCycles = allFavCycles
+          .where((element) =>
+              element.name!.toLowerCase().contains(cycleName.toLowerCase()))
+          .toList();
+
+      emit(FilterFavorites(favCycles: filteredfavCycles));
+    } catch (e) {
+      emit(ErrorFavorite(errorMessage: e.toString()));
+    }
+  }
+
+  fetchedFavCycle({required List<CycleModel> favCycles}) {
+    emit(FavoritesFetched(favCycles: favCycles));
+  }
 }

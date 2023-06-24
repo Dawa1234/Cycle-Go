@@ -23,4 +23,20 @@ class BookedCycleCubit extends Cubit<BookedCycleState> {
       emit(ErrorBookedCycle(errorMessage: e.toString()));
     }
   }
+
+  filterBookedCycle(
+      {required List<CycleModel> bookedCycles, required String cycleName}) {
+    List<CycleModel> filteredBookedCycles = bookedCycles
+        .where((element) =>
+            element.name!.toLowerCase().contains(cycleName.toLowerCase()))
+        .toList();
+
+    emit(FilteredBookedCycle(bookedCycles: filteredBookedCycles));
+  }
+
+  fetchedBookedCycle({
+    required List<CycleModel> bookedCycles,
+  }) {
+    emit(BookedCycleFetched(bookedCycles: bookedCycles));
+  }
 }

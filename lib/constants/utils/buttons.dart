@@ -1,7 +1,10 @@
+import 'package:cyclego/constants/enums/enum.dart';
 import 'package:cyclego/constants/utils/loading.dart';
 import 'package:cyclego/constants/utils/pop_up.dart';
+import 'package:cyclego/get_it/get_it.dart';
 import 'package:cyclego/logic/favorites/favorites_cubit.dart';
 import 'package:cyclego/logic/profile/profile_bloc.dart';
+import 'package:cyclego/presentation/screens/search_screen.dart';
 import 'package:cyclego/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,10 +62,9 @@ class ProfileButton extends StatelessWidget {
 
 class SearchButton extends StatelessWidget {
   final Function()? onTap;
-  const SearchButton({
-    Key? key,
-    this.onTap,
-  }) : super(key: key);
+  final CurrentScreen currentScreen;
+  const SearchButton({Key? key, this.onTap, required this.currentScreen})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -83,8 +85,13 @@ class SearchButton extends StatelessWidget {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             iconSize: 20,
-            onPressed:
-                onTap ?? () => Navigator.pushNamed(context, Routes.profile),
+            onPressed: onTap ??
+                () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          SearchScreen(searchBy: currentScreen),
+                    )),
             icon: const Icon(
               Icons.search,
               color: Colors.green,
@@ -127,11 +134,13 @@ class _FavButtonState extends State<FavButton> {
         }
         if (state is AddedCycleToFav) {
           Navigator.pop(context);
+          getIt.get<FavoritesCubit>().fectchFavCycle();
           SnackBarMessage.successMessage(context,
               message: state.successMessage);
         }
         if (state is RemovedCycleFromFav) {
           Navigator.pop(context);
+          getIt.get<FavoritesCubit>().fectchFavCycle();
           SnackBarMessage.successMessage(context,
               message: state.successMessage);
         }

@@ -49,6 +49,14 @@ class FavoritesFetched extends FavoritesState {
   List<Object?> get props => [favCycles];
 }
 
+class FilterFavorites extends FavoritesState {
+  final List<CycleModel> favCycles;
+  FilterFavorites({required this.favCycles});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [favCycles];
+}
+
 class ErrorFavorite extends FavoritesState {
   final String errorMessage;
   ErrorFavorite({required this.errorMessage});
