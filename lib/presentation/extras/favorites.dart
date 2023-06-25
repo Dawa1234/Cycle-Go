@@ -40,23 +40,28 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             return favCycles.isEmpty
                 ? EmptyDataMessage.emptyDataMessage(
                     message: 'Add some bicycle in your favorite list.')
-                : GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, childAspectRatio: 1 / .87),
-                    itemCount: favCycles.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 13.0),
-                        child: AppTheme.cycleContainer(
-                          context,
-                          cycle: favCycles[index],
-                          onTap: () => Navigator.pushNamed(
-                              context, Routes.cycleDescription,
-                              arguments: {'cycleId': favCycles[index].id}),
-                        ),
-                      );
+                : RefreshIndicator(
+                    onRefresh: () async {
+                      _favoritesCubit.fectchFavCycle();
                     },
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2, childAspectRatio: 1 / .87),
+                      itemCount: favCycles.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 13.0),
+                          child: AppTheme.cycleContainer(
+                            context,
+                            cycle: favCycles[index],
+                            onTap: () => Navigator.pushNamed(
+                                context, Routes.cycleDescription,
+                                arguments: {'cycleId': favCycles[index].id}),
+                          ),
+                        );
+                      },
+                    ),
                   );
           }
           if (state is ErrorFavorite) {

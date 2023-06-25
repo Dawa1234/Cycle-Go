@@ -282,15 +282,16 @@ class AppUtils {
     );
   }
 
-  static Widget socialMediaIcons(String imagePath, BuildContext context) {
+  static Widget socialMediaIcons(String imagePath, BuildContext context,
+      {double? size}) {
     return InkWell(
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       onTap: () {},
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 15),
-        width: 40,
-        height: 40,
+        width: size ?? 40,
+        height: size ?? 40,
         decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
@@ -298,7 +299,7 @@ class AppUtils {
                   blurRadius: 2,
                   spreadRadius: 1)
             ],
-            borderRadius: BorderRadius.circular(7),
+            borderRadius: BorderRadius.circular(8),
             image: DecorationImage(image: AssetImage(imagePath))),
       ),
     );

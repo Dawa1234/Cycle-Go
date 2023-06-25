@@ -14,8 +14,8 @@ class CustomDrawer extends StatelessWidget {
     'AboutUs',
     'Settings',
     'cycles',
+    'Language',
     'Login',
-    'Fav',
     'LogOut',
   ];
   @override
@@ -40,7 +40,7 @@ class CustomDrawer extends StatelessWidget {
                   itemBuilder: (context, index) {
                     if (routes[index] == "Fav" || routes[index] == "LogOut") {
                       if (state is ProfileFecthed) {
-                        return customerDrawerOptions(routes[index], context);
+                        return customDrawerOptions(routes[index], context);
                       } else {
                         return const SizedBox();
                       }
@@ -48,10 +48,10 @@ class CustomDrawer extends StatelessWidget {
                       if (state is ProfileFecthed) {
                         return const SizedBox();
                       } else {
-                        return customerDrawerOptions(routes[index], context);
+                        return customDrawerOptions(routes[index], context);
                       }
                     } else {
-                      return customerDrawerOptions(routes[index], context);
+                      return customDrawerOptions(routes[index], context);
                     }
                   },
                 ),
@@ -126,7 +126,7 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 
-  Widget customerDrawerOptions(String option, BuildContext context) {
+  Widget customDrawerOptions(String option, BuildContext context) {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
         return Column(
@@ -205,12 +205,13 @@ class CustomDrawer extends StatelessWidget {
         );
       case 'cycles':
         return const Icon(Icons.bike_scooter);
-      case 'Fav':
-        return SvgPicture.asset(
-          "assets/icons/heart.svg",
-          width: 22,
-          color: Theme.of(context).primaryColor,
-        );
+      case 'Language':
+        return const Icon(Icons.language);
+      // return SvgPicture.asset(
+      //   "assets/icons/heart.svg",
+      //   width: 22,
+      //   color: Theme.of(context).primaryColor,
+      // );
       case 'Login':
         return const Icon(Icons.login);
       case 'LogOut':
@@ -232,8 +233,8 @@ class CustomDrawer extends StatelessWidget {
         return "Settings";
       case 'cycles':
         return "Explore Cycles";
-      case 'Fav':
-        return "Favorite";
+      case 'Language':
+        return "Language";
       case 'LogOut':
         return "Log Out";
       case 'Login':
@@ -255,8 +256,8 @@ class CustomDrawer extends StatelessWidget {
         return "Edit Profile / Related Data";
       case 'cycles':
         return "See available cycles";
-      case 'Fav':
-        return "Your Favourites";
+      case 'Language':
+        return "Switch Langauge";
 
       default:
         return "";
@@ -282,8 +283,8 @@ class CustomDrawer extends StatelessWidget {
           Navigator.pushNamed(ctx, Routes.moreCycles);
         }
         break;
-      case 'Fav':
-        Navigator.pushNamed(ctx, Routes.fav);
+      case 'Language':
+        ShowBottomModalSheet.showDarkModeToggleSnackBar(context: ctx);
         break;
       case 'Login':
         Navigator.pushNamed(ctx, Routes.loginScreen);

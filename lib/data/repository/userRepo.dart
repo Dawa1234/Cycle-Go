@@ -136,7 +136,7 @@ class UserRepository {
       if (updated && user != null) {
         final success = {
           'success': true,
-          'user': user,
+          'data': user,
         };
         return success;
       }
@@ -192,7 +192,7 @@ class UserRepository {
       if (!passwordUpdated) return unSuccess;
       final success = {
         'success': true,
-        'user': user,
+        'data': user,
       };
       return success;
     } catch (e) {
