@@ -1,10 +1,13 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:cyclego/data/models/user.dart';
 import 'package:cyclego/data/repository/userRepo.dart';
+import 'package:cyclego/get_it/get_it.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
@@ -17,8 +20,20 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<PorfileLogOutEvent>(_logOutProfile);
     on<ProfileUpdateEvent>(_updatedProfile);
   }
-  _init(ProfileInitialEvent event, emit) {
-    try {} catch (e) {
+  _init(ProfileInitialEvent event, emit) async {
+    String error = "";
+    try {
+      final pref = getIt.get<SharedPreferences>();
+      final email = pref.getString('email') ?? "";
+      final password = pref.getString('password') ?? "";
+      final userData = await userRepository.loginUser(email, password);
+      error = userData['error'] ?? "";
+      if (userData['success']) {
+        emit(ProfileFecthed(user: userData['data'], message: 'Login Success'));
+      } else {
+        emit(ProfileFecthFailed(error: error));
+      }
+    } catch (e) {
       String error = e.toString().split("]")[1];
       emit(ProfileFecthFailed(error: error));
     }
@@ -32,7 +47,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           await userRepository.loginUser(event.email, event.password);
       error = userData['error'] ?? "";
       if (userData['success']) {
-        emit(ProfileFecthed(user: userData['data'], message: 'Login Success'));
+        await saveLoginData(event.email, event.password).whenComplete(() =>
+            emit(ProfileFecthed(
+                user: userData['data'], message: 'Login Success')));
       } else {
         emit(ProfileFecthFailed(error: error));
       }
@@ -73,12 +90,43 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
   }
 
-  _logOutProfile(event, emit) {
+  _logOutProfile(event, emit) async {
     emit(PorfileLoggingOut());
+    final pref = getIt.get<SharedPreferences>();
+    bool dataRemoved = false;
     try {
-      emit(PorfileLoggedOut());
+      await pref.remove('email').whenComplete(() => dataRemoved = true);
+      dataRemoved = false;
+      await pref.remove('password').whenComplete(() => dataRemoved = true);
+      if (dataRemoved) {
+        emit(PorfileLoggedOut());
+      } else {
+        emit(PorfileLogOutError(error: "Please restart application."));
+      }
     } catch (e) {
       emit(PorfileLogOutError(error: e.toString()));
+    }
+  }
+
+  Future<bool> saveLoginData(String email, String password) async {
+    bool dataSaved = false;
+    try {
+      final sharedPref = getIt.get<SharedPreferences>();
+      await sharedPref
+          .setString('email', email)
+          .whenComplete(() => dataSaved = true);
+      dataSaved = false;
+      await sharedPref
+          .setString('password', password)
+          .whenComplete(() => dataSaved = true);
+      final savedEmail = sharedPref.getString('email');
+      final savedPass = sharedPref.getString('password');
+      log(savedEmail.toString());
+      log(savedPass.toString());
+      return dataSaved;
+    } catch (e) {
+      log(e.toString());
+      return Future.value(false);
     }
   }
 }
