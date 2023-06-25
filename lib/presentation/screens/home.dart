@@ -4,6 +4,7 @@ import 'package:cyclego/data/models/cycle.dart';
 import 'package:cyclego/logic/profile/profile_bloc.dart';
 import 'package:cyclego/presentation/drawer/custom_drawer.dart';
 import 'package:cyclego/routes/routes.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -96,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ],
         ),
       ),
-      drawer: CustomDrawer(),
+      drawer: const CustomDrawer(),
     );
   }
 
@@ -177,7 +178,7 @@ class BottomInfo extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Choose Bicycle',
+                  'Choose Bicycle'.tr(),
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       decoration: TextDecoration.underline,
                       decorationColor: Theme.of(context).primaryColor,

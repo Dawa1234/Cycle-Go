@@ -2,12 +2,19 @@ import 'package:cyclego/constants/utils/authentication_popUp.dart';
 import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/logic/profile/profile_bloc.dart';
 import 'package:cyclego/routes/routes.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
-class CustomDrawer extends StatelessWidget {
-  CustomDrawer({Key? key}) : super(key: key);
+class CustomDrawer extends StatefulWidget {
+  const CustomDrawer({Key? key}) : super(key: key);
+
+  @override
+  State<CustomDrawer> createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
   final List<String> routes = [
     'Theme',
     'HelpAndSupport',
@@ -18,6 +25,7 @@ class CustomDrawer extends StatelessWidget {
     'Login',
     'LogOut',
   ];
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -166,7 +174,7 @@ class CustomDrawer extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            _getOptionTitle(option),
+                            _getOptionTitle(option).tr(),
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           _getOptionSubTitle(option).isEmpty
@@ -267,7 +275,7 @@ class CustomDrawer extends StatelessWidget {
   _navigateTo(String option, BuildContext ctx) {
     switch (option) {
       case 'Theme':
-        ShowBottomModalSheet.showDarkModeToggleSnackBar(context: ctx);
+        ShowBottomModalSheet.showDarkModeToggleBottomSheet(context: ctx);
         break;
       case 'HelpAndSupport':
         Navigator.pushNamed(ctx, Routes.helpAndSupport);
@@ -284,7 +292,68 @@ class CustomDrawer extends StatelessWidget {
         }
         break;
       case 'Language':
-        ShowBottomModalSheet.showDarkModeToggleSnackBar(context: ctx);
+        showModalBottomSheet(
+          context: ctx,
+          builder: (context) {
+            return Container(
+                height: 170,
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    const Text('Select Language',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    const Divider(),
+                    ListTile(
+                      title: const Text(
+                        "English",
+                        style: TextStyle(
+                            fontSize: 13, fontWeight: FontWeight.w300),
+                      ),
+                      leading: SizedBox(
+                        height: 25,
+                        width: 25,
+                        child: Image.asset("assets/images/english.png"),
+                      ),
+                      onTap: () {
+                        setState(() {
+                          context.setLocale(const Locale('en', 'US'));
+                        });
+                        Navigator.pop(context);
+                      },
+                      trailing: context.locale == const Locale('en', 'US')
+                          ? Icon(
+                              Icons.check,
+                              color: Theme.of(context).primaryColor,
+                            )
+                          : const Icon(Icons.check, color: Colors.transparent),
+                    ),
+                    ListTile(
+                      title: const Text("Nepali",
+                          style: TextStyle(
+                              fontSize: 13, fontWeight: FontWeight.w300)),
+                      leading: SizedBox(
+                        height: 25,
+                        width: 25,
+                        child: Image.asset("assets/images/flagNP.png"),
+                      ),
+                      onTap: () {
+                        setState(() {
+                          context.setLocale(const Locale('ne', 'NE'));
+                        });
+                        Navigator.pop(context);
+                      },
+                      trailing: context.locale == const Locale('ne', 'NE')
+                          ? Icon(
+                              Icons.check,
+                              color: Theme.of(context).primaryColor,
+                            )
+                          : const Icon(Icons.check, color: Colors.transparent),
+                    ),
+                  ],
+                ));
+          },
+        );
         break;
       case 'Login':
         Navigator.pushNamed(ctx, Routes.loginScreen);

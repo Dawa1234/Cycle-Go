@@ -2,6 +2,7 @@ import 'package:cyclego/constants/enums/enum.dart';
 import 'package:cyclego/constants/ui/dark_theme_data.dart';
 import 'package:cyclego/data/models/cycle.dart';
 import 'package:cyclego/logic/toggle/toggle_theme_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -183,7 +184,7 @@ class AppTheme {
 }
 
 class ShowBottomModalSheet {
-  static void showDarkModeToggleSnackBar(
+  static void showDarkModeToggleBottomSheet(
       {required BuildContext context}) async {
     await showModalBottomSheet(
         context: context,
@@ -269,6 +270,67 @@ class ShowBottomModalSheet {
             },
           );
         });
+  }
+
+  static void showLanguageToggleBottomSheet(
+      {required BuildContext context}) async {
+    await showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+            height: 170,
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                const Text('Select Language',
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                const Divider(),
+                ListTile(
+                  title: const Text(
+                    "English",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w300),
+                  ),
+                  leading: SizedBox(
+                    height: 25,
+                    width: 25,
+                    child: Image.asset("assets/images/english.png"),
+                  ),
+                  onTap: () {
+                    context.setLocale(const Locale('en', 'EN'));
+                    Navigator.pop(context);
+                  },
+                  trailing: context.locale == const Locale('en', 'US')
+                      ? Icon(
+                          Icons.check,
+                          color: Theme.of(context).primaryColor,
+                        )
+                      : const Icon(Icons.check, color: Colors.transparent),
+                ),
+                ListTile(
+                  title: const Text("Nepali",
+                      style:
+                          TextStyle(fontSize: 13, fontWeight: FontWeight.w300)),
+                  leading: SizedBox(
+                    height: 25,
+                    width: 25,
+                    child: Image.asset("assets/images/flagNP.png"),
+                  ),
+                  onTap: () {
+                    context.setLocale(const Locale('ne', 'NE'));
+                    Navigator.pop(context);
+                  },
+                  trailing: context.locale == const Locale('ne', 'NE')
+                      ? Icon(
+                          Icons.check,
+                          color: Theme.of(context).primaryColor,
+                        )
+                      : const Icon(Icons.check, color: Colors.transparent),
+                ),
+              ],
+            ));
+      },
+    );
   }
 }
 

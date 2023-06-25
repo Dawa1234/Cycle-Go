@@ -15,6 +15,7 @@ import 'package:cyclego/logic/theme_mode/theme_mode_cubit.dart';
 import 'package:cyclego/logic/toggle/toggle_theme_cubit.dart';
 import 'package:cyclego/logic/transaction/transaction_bloc.dart';
 import 'package:cyclego/routes/routes_generate.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,10 +26,21 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await setUpLocator();
+  await EasyLocalization.ensureInitialized();
+  EasyLocalization.logger.enableLevels = [];
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
-  ]).then((value) => runApp(const MyApp()));
+  ]).then((value) => runApp(EasyLocalization(
+        saveLocale: true,
+        supportedLocales: const [
+          Locale('en', 'US'),
+          Locale('ne', 'NE'),
+        ],
+        fallbackLocale: const Locale('en', 'US'),
+        path: 'assets/language',
+        child: const MyApp(),
+      )));
 }
 
 class MyApp extends StatelessWidget {

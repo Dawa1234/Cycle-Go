@@ -75,7 +75,7 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 _navigateTo(
                     onTap: () {
-                      ShowBottomModalSheet.showDarkModeToggleSnackBar(
+                      ShowBottomModalSheet.showDarkModeToggleBottomSheet(
                           context: context);
                     },
                     title: "Language"),
