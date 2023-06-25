@@ -1,6 +1,9 @@
+import 'package:cyclego/constants/enums/enum.dart';
 import 'package:cyclego/constants/ui/dark_theme_data.dart';
 import 'package:cyclego/data/models/cycle.dart';
+import 'package:cyclego/logic/toggle/toggle_theme_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 const SizedBox horizontalGap5 = SizedBox(
@@ -185,82 +188,86 @@ class ShowBottomModalSheet {
     await showModalBottomSheet(
         context: context,
         builder: (context) {
-          return Container(
-              height: 220,
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  const Text('Theme',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                  const Divider(),
-                  ListTile(
-                    title: const Text(
-                      "System",
-                      style:
-                          TextStyle(fontSize: 13, fontWeight: FontWeight.w300),
-                    ),
-                    leading: SvgPicture.asset(
-                      "assets/icons/system.svg",
-                      height: 20,
-                      width: 20,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    onTap: () {
-                      // Navigator.pop(context);
-                    },
-                    trailing: const Icon(Icons.check),
-                    // trailing: toggleState.modeValue == "System"
-                    //     ? Icon(
-                    //         Icons.check,
-                    //         color: Theme.of(context).primaryColor,
-                    //       )
-                    //     : const Icon(Icons.check, color: Colors.transparent),
-                  ),
-                  ListTile(
-                    title: const Text("Dark",
-                        style: TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.w300)),
-
-                    leading: SvgPicture.asset(
-                      "assets/icons/moon.svg",
-                      height: 17,
-                      width: 17,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    onTap: () {},
-                    trailing: const Icon(Icons.check),
-                    // trailing: toggleState.modeValue == "Dark"
-                    //     ? Icon(
-                    //         Icons.check,
-                    //         color: Theme.of(context).primaryColor,
-                    //       )
-                    //     : const Icon(Icons.check, color: Colors.transparent),
-                  ),
-                  ListTile(
-                      title: const Text("Light",
+          return BlocBuilder<ToggleThemeCubit, ToggleThemeState>(
+            builder: (context, toggleState) {
+              return Container(
+                  height: 220,
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      const Text('Theme',
                           style: TextStyle(
-                              fontSize: 13, fontWeight: FontWeight.w300)),
-                      leading: SvgPicture.asset(
-                        "assets/icons/sun.svg",
-                        height: 20,
-                        width: 20,
-                        color: Theme.of(context).primaryColor,
+                              fontSize: 16, fontWeight: FontWeight.bold)),
+                      const Divider(),
+                      ListTile(
+                        title: const Text(
+                          "System",
+                          style: TextStyle(
+                              fontSize: 13, fontWeight: FontWeight.w300),
+                        ),
+                        leading: SvgPicture.asset(
+                          "assets/icons/system.svg",
+                          height: 20,
+                          width: 20,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        onTap: () => BlocProvider.of<ToggleThemeCubit>(context)
+                            .systemMode(),
+                        trailing:
+                            toggleState.currentToggle == CurrentToggle.system
+                                ? Icon(
+                                    Icons.check,
+                                    color: Theme.of(context).primaryColor,
+                                  )
+                                : const Icon(Icons.check,
+                                    color: Colors.transparent),
                       ),
-                      onTap: () {},
-                      trailing: const Icon(
-                        Icons.check,
-                      )
-
-                      // trailing: toggleState.modeValue == "Light"
-                      //     ? Icon(
-                      //         Icons.check,
-                      //         color: Theme.of(context).primaryColor,
-                      //       )
-                      //     : const Icon(Icons.check, color: Colors.transparent),
+                      ListTile(
+                        title: const Text("Dark",
+                            style: TextStyle(
+                                fontSize: 13, fontWeight: FontWeight.w300)),
+                        leading: SvgPicture.asset(
+                          "assets/icons/moon.svg",
+                          height: 17,
+                          width: 17,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        onTap: () => BlocProvider.of<ToggleThemeCubit>(context)
+                            .darkMode(),
+                        trailing:
+                            toggleState.currentToggle == CurrentToggle.dark
+                                ? Icon(
+                                    Icons.check,
+                                    color: Theme.of(context).primaryColor,
+                                  )
+                                : const Icon(Icons.check,
+                                    color: Colors.transparent),
                       ),
-                ],
-              ));
+                      ListTile(
+                        title: const Text("Light",
+                            style: TextStyle(
+                                fontSize: 13, fontWeight: FontWeight.w300)),
+                        leading: SvgPicture.asset(
+                          "assets/icons/sun.svg",
+                          height: 20,
+                          width: 20,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        onTap: () => BlocProvider.of<ToggleThemeCubit>(context)
+                            .lightMode(),
+                        trailing:
+                            toggleState.currentToggle == CurrentToggle.light
+                                ? Icon(
+                                    Icons.check,
+                                    color: Theme.of(context).primaryColor,
+                                  )
+                                : const Icon(Icons.check,
+                                    color: Colors.transparent),
+                      ),
+                    ],
+                  ));
+            },
+          );
         });
   }
 }
