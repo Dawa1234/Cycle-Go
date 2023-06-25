@@ -49,6 +49,7 @@ dependencies:
   image_picker: ^0.8.9
   uuid: ^3.0.7
   khalti_flutter: ^2.2.1
+  shared_preferences: ^2.1.2
 
 dev_dependencies:
   flutter_test:
