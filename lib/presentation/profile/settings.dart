@@ -1,6 +1,7 @@
 import 'package:cyclego/constants/utils/backButton.dart';
 import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/routes/routes.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -21,11 +22,11 @@ class SettingsScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           verticalGap20,
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Text(
-              "Settings",
-              style: TextStyle(
+              "Settings".tr(),
+              style: const TextStyle(
                   fontWeight: FontWeight.bold, fontFamily: '', fontSize: 40),
             ),
           ),
@@ -109,7 +110,7 @@ class SettingsScreen extends StatelessWidget {
         icon,
         horizontalGap20,
         Text(
-          title,
+          title.tr(),
           style: const TextStyle(
               fontWeight: FontWeight.w500, fontFamily: '', fontSize: 25),
         ),
@@ -129,7 +130,7 @@ class SettingsScreen extends StatelessWidget {
         child: Row(
           children: [
             Text(
-              title,
+              title.tr(),
               style: const TextStyle(
                 fontSize: 16,
               ),

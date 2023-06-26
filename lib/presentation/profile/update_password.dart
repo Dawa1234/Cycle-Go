@@ -4,6 +4,7 @@ import 'package:cyclego/constants/utils/pop_up.dart';
 import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/logic/profile/profile_bloc.dart';
 import 'package:cyclego/presentation/screens/start_up_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,7 +39,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: const AppBackButton(),
-        title: const Text("Change Password"),
+        title: Text("Change Password".tr()),
       ),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
@@ -100,7 +101,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                     ? Icons.visibility_off
                                     : Icons.visibility),
                               ),
-                              hintText: "Current Password",
+                              hintText: "Current Password".tr(),
                               enabledBorder: outLineBorder,
                               focusedBorder: outLineBorder,
                               disabledBorder: outLineBorder,

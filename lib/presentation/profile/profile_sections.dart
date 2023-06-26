@@ -104,8 +104,8 @@ class _ProfileSectionContainerState extends State<ProfileSectionContainer> {
                         : widget.i == 2
                             ? _obscureText(widget.user.password ?? "none")
                             : widget.i == 3
-                                ? "Support"
-                                : "Log out",
+                                ? "Support".tr()
+                                : "Log Out".tr(),
               ),
             ),
             widget.i == 1 || widget.i == 4

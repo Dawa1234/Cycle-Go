@@ -1,6 +1,7 @@
 import 'package:cyclego/constants/utils/backButton.dart';
 import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/presentation/screens/start_up_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class HelpAndSupportScreen extends StatelessWidget {
@@ -20,7 +21,7 @@ class HelpAndSupportScreen extends StatelessWidget {
     {
       "question": "Are your panniers water proof?",
       "answer":
-          "Totally! Cycling Rentals offers the best bicycle pannier rental in the business: 100% water proof "
+          "Totally! Cycling Rentals offers the best bicycle pannier rental in the business: 100% water proof."
     },
     {
       "question": "What does your bicycle rental include?",
@@ -51,28 +52,29 @@ class HelpAndSupportScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Center(
+              Center(
                   child: Text(
-                "Frequent Asked Questions",
-                style: TextStyle(
+                "Frequent Asked Questions".tr(),
+                style: const TextStyle(
                     fontFamily: "", fontSize: 40, fontWeight: FontWeight.bold),
               )),
               Wrap(
-                children: const [
+                children: [
                   Text(
-                    "Quick answers to questions you may have. Can't find what you are looking for? Check out our",
-                    style: TextStyle(fontSize: 16),
+                    "Quick answers to questions you may have. Can't find what you are looking for? Check out our"
+                        .tr(),
+                    style: const TextStyle(fontSize: 16),
                   ),
                   Text(
-                    "full documentation",
-                    style: TextStyle(
+                    "full documentation".tr(),
+                    style: const TextStyle(
                         fontSize: 16,
                         decoration: TextDecoration.underline,
                         decorationColor: Colors.black,
                         color: Colors.transparent,
                         shadows: [Shadow(offset: Offset(0, -2))]),
                   ),
-                  Text(
+                  const Text(
                     ".",
                     style: TextStyle(fontSize: 16),
                   ),
@@ -81,7 +83,7 @@ class HelpAndSupportScreen extends StatelessWidget {
               verticalGap20,
               FullButton(
                   onTap: () {},
-                  text: "Documentation",
+                  text: "Documentation".tr(),
                   buttonHeight: 45,
                   fontSize: 18,
                   showIcon: true,
@@ -98,12 +100,12 @@ class HelpAndSupportScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    data['question']!,
+                                    data['question']!.tr(),
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  Text(data['answer']!),
+                                  Text(data['answer']!.tr()),
                                   verticalGap20,
                                 ],
                               ))

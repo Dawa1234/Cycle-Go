@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:cyclego/constants/enums/enum.dart';
 import 'package:equatable/equatable.dart';
@@ -15,6 +17,7 @@ class ToggleThemeCubit extends Cubit<ToggleThemeState> {
 
   getSavedToggleOption() {
     final option = sharedPreferences.getString('option') ?? "";
+    log(option);
     if (option == _system) {
       systemMode();
       return;
@@ -45,7 +48,7 @@ class ToggleThemeCubit extends Cubit<ToggleThemeState> {
   }
 
   systemMode() {
-    onOptionChange(_light);
+    onOptionChange(_system);
     emit(const ToggleThemeState(currentToggle: CurrentToggle.system));
   }
 

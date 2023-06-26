@@ -10,6 +10,7 @@ import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/data/models/user.dart';
 import 'package:cyclego/logic/profile/profile_bloc.dart';
 import 'package:cyclego/routes/routes.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -31,12 +32,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         appBar: AppBar(
           leading: const AppBackButton(),
           backgroundColor: appBarColor,
-          title: const Padding(
-            padding: EdgeInsets.only(top: 8.0),
+          title: Padding(
+            padding: const EdgeInsets.only(top: 8.0),
             child: Text(
-              "PROFILE",
-              style:
-                  TextStyle(fontFamily: "", color: Colors.white, fontSize: 35),
+              "PROFILE".tr(),
+              style: const TextStyle(
+                  fontFamily: "", color: Colors.white, fontSize: 35),
             ),
           ),
         ),

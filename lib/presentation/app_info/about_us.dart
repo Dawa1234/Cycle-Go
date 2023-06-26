@@ -1,5 +1,6 @@
 import 'package:cyclego/constants/utils/backButton.dart';
 import 'package:cyclego/constants/utils/utils.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class AboutUsScreen extends StatelessWidget {
@@ -19,7 +20,7 @@ class AboutUsScreen extends StatelessWidget {
       appBar: AppBar(
         leading: const AppBackButton(),
         title: Text(
-          "About CycleGo",
+          "About CycleGo".tr(),
           style: Theme.of(context)
               .textTheme
               .bodyLarge!
@@ -31,9 +32,9 @@ class AboutUsScreen extends StatelessWidget {
         children: [
           verticalGap30,
           Center(child: AppTheme.appIcon(100)),
-          const Text(
-            "Follow Us On",
-            style: TextStyle(fontSize: 20),
+          Text(
+            "Follow Us On".tr(),
+            style: const TextStyle(fontSize: 20),
           ),
           verticalGap30,
           Row(
@@ -46,12 +47,12 @@ class AboutUsScreen extends StatelessWidget {
           verticalGap30,
           _informationContainer(context,
               icon: const Icon(Icons.phone),
-              information: "+977-1-4114400",
+              information: "+977-1-4114400".tr(),
               showExtraIcon: false),
           verticalGap20,
           _informationContainer(context,
               icon: const Icon(Icons.phone_android_outlined),
-              information: "+977 9800000000",
+              information: "+977 9800000000".tr(),
               showExtraIcon: true),
           verticalGap20,
           _informationContainer(context,

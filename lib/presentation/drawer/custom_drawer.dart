@@ -113,7 +113,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Hello, '),
+                    Text('${"Hello".tr()}, '),
                     Text(
                       state.user.firstName!,
                       style: TextStyle(

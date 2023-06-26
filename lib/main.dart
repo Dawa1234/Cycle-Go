@@ -4,6 +4,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:cyclego/constants/enums/enum.dart';
 import 'package:cyclego/constants/ui/dark_theme_data.dart';
 import 'package:cyclego/constants/ui/light_theme.data.dart';
+import 'package:cyclego/constants/utils/no_glow_scroll.dart';
 import 'package:cyclego/get_it/get_it.dart';
 import 'package:cyclego/logic/booked_cycle/booked_cycle_cubit.dart';
 import 'package:cyclego/logic/connection/connection_cubit.dart';
@@ -39,7 +40,8 @@ void main() async {
         ],
         fallbackLocale: const Locale('en', 'US'),
         path: 'assets/language',
-        child: const MyApp(),
+        child: ScrollConfiguration(
+            behavior: NoGlowScrollBehavior(), child: const MyApp()),
       )));
 }
 
@@ -103,13 +105,12 @@ class MyApp extends StatelessWidget {
               builder: (context, state) {
                 return MaterialApp(
                   navigatorKey: navigatorKey,
-                  supportedLocales: const [
-                    Locale('en', 'US'),
-                    Locale('ne', 'NP'),
-                  ],
-                  localizationsDelegates: const [
+                  localizationsDelegates: [
                     KhaltiLocalizations.delegate,
+                    ...context.localizationDelegates
                   ],
+                  supportedLocales: context.supportedLocales,
+                  locale: context.locale,
                   debugShowCheckedModeBanner: false,
                   themeMode: state,
                   darkTheme: DarkTheme.themeData(context),

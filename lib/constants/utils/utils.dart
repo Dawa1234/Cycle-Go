@@ -53,7 +53,7 @@ class AppTheme {
     required double offSetHeight,
   }) {
     return Text(
-      "Rs. $text/hr",
+      "${"Rs".tr()}. $text ${"/hr".tr()}",
       style: TextStyle(
           decoration: TextDecoration.underline,
           decorationColor: Colors.black,
@@ -93,7 +93,7 @@ class AppTheme {
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       child: Container(
-        margin: const EdgeInsets.all(10),
+        margin: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 7),
         width: 140,
         decoration: BoxDecoration(
             color: Theme.of(context).scaffoldBackgroundColor,
@@ -152,9 +152,9 @@ class AppTheme {
                 children: [
                   Wrap(
                     children: [
-                      const Text(
-                        "Type: ",
-                        style: TextStyle(fontSize: 11),
+                      Text(
+                        "${"Type".tr()}: ",
+                        style: const TextStyle(fontSize: 11),
                       ),
                       Text(
                         cycle.type ?? "Cycle Type",
@@ -339,12 +339,13 @@ class AppUtils {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Wrap(
-        children: const [
+        children: [
           Text(
-              "For any queries regarding application. Please contact customer care with reference number"),
+              "For any queries regarding application. Please contact customer care with reference number"
+                  .tr()),
           Text(
-            "+977-1-4000110",
-            style: TextStyle(fontWeight: FontWeight.w800),
+            "+977-1-4000110".tr(),
+            style: const TextStyle(fontWeight: FontWeight.w800),
           )
         ],
       ),

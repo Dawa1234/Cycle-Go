@@ -106,9 +106,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       alignment: Alignment.center,
       width: 180,
       height: 40,
-      child: const Text(
-        "Our Location",
-        style: TextStyle(
+      child: Text(
+        "Our Location".tr(),
+        style: const TextStyle(
           fontFamily: 'Tondo',
           fontSize: 18.0,
           fontWeight: FontWeight.bold,
@@ -205,7 +205,7 @@ class BottomInfo extends StatelessWidget {
                   child: Wrap(
                     children: [
                       Text(
-                        'Explore More',
+                        'Explore More'.tr(),
                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             fontWeight: FontWeight.bold,
                             decoration: TextDecoration.underline,

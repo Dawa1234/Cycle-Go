@@ -7,6 +7,7 @@ import 'package:cyclego/logic/profile/profile_bloc.dart';
 import 'package:cyclego/logic/registration/registration_cubit.dart';
 import 'package:cyclego/presentation/screens/start_up_screen.dart';
 import 'package:cyclego/routes/routes.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,11 +20,11 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _firstNameController = TextEditingController(text: "123");
-  final _lastNameController = TextEditingController(text: "123");
-  final _emailController = TextEditingController(text: "abc@gmail.com");
-  final _passwrodController = TextEditingController(text: "123123123");
-  final _confirmPasswrodController = TextEditingController(text: "123123123");
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwrodController = TextEditingController();
+  final _confirmPasswrodController = TextEditingController();
   bool _showPass = true;
   bool _showPass1 = true;
 
@@ -87,20 +88,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     children: [
                       AppBarContainer(
                         topText: Text(
-                          "REGISTER NEW",
+                          "REGISTER NEW".tr(),
                           style: Theme.of(context)
                               .textTheme
                               .headlineSmall!
                               .copyWith(fontSize: 45),
                         ),
                         bottomText: Text(
-                          "ACCOUNT",
+                          "ACCOUNT".tr(),
                           style: Theme.of(context)
                               .textTheme
                               .headlineSmall!
                               .copyWith(fontSize: 45),
                         ),
-                        height: 130,
+                        height: 135,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -122,16 +123,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   focusedErrorBorder: outlineErrorBorder,
                                   errorBorder: outlineErrorBorder,
                                   prefixIcon: const Icon(Icons.person),
-                                  labelText: "First Name",
+                                  labelText: "First Name".tr(),
                                   labelStyle:
                                       const TextStyle(fontFamily: 'Tondo'),
                                   contentPadding: const EdgeInsets.all(18)),
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return "*This field is required*";
+                                  return "*This field is required*".tr();
                                 }
                                 if (value.length < 3) {
-                                  return "*At least 3 charater is required*";
+                                  return "*At least 3 charater is required*"
+                                      .tr();
                                 }
                                 return null;
                               },
@@ -150,16 +152,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   focusedErrorBorder: outlineErrorBorder,
                                   errorBorder: outlineErrorBorder,
                                   prefixIcon: const Icon(Icons.person),
-                                  labelText: "Last Name",
+                                  labelText: "Last Name".tr(),
                                   labelStyle:
                                       const TextStyle(fontFamily: 'Tondo'),
                                   contentPadding: const EdgeInsets.all(18)),
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return "*This field is required*";
+                                  return "*This field is required*".tr();
                                 }
                                 if (value.length < 3) {
-                                  return "*At least 3 charater is required*";
+                                  return "*At least 3 charater is required*"
+                                      .tr();
                                 }
                                 return null;
                               },
@@ -178,16 +181,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   focusedErrorBorder: outlineErrorBorder,
                                   errorBorder: outlineErrorBorder,
                                   prefixIcon: const Icon(Icons.person),
-                                  labelText: "Email",
+                                  labelText: "Email".tr(),
                                   labelStyle:
                                       const TextStyle(fontFamily: 'Tondo'),
                                   contentPadding: const EdgeInsets.all(18)),
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return "*This field is required*";
+                                  return "*This field is required*".tr();
                                 }
                                 if (value.length < 5) {
-                                  return "*At least 5 charater is required*";
+                                  return "*At least 5 charater is required*"
+                                      .tr();
                                 }
                                 return null;
                               },
@@ -208,7 +212,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   focusedErrorBorder: outlineErrorBorder,
                                   contentPadding: const EdgeInsets.all(18),
                                   prefixIcon: const Icon(Icons.lock),
-                                  labelText: "Password",
+                                  labelText: "Password".tr(),
                                   labelStyle:
                                       const TextStyle(fontFamily: 'Tondo'),
                                   suffixIcon: IconButton(
@@ -219,14 +223,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           : Icons.visibility))),
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return "*This field is required*";
+                                  return "*This field is required*".tr();
                                 }
                                 if (value.length < 8) {
-                                  return "*Password must have atleast 8 character*";
+                                  return "*Password must have atleast 8 character*"
+                                      .tr();
                                 }
                                 if (_passwrodController.text !=
                                     _confirmPasswrodController.text) {
-                                  return "*Password did not match*";
+                                  return "*Password did not match*".tr();
                                 }
                                 return null;
                               },
@@ -247,7 +252,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   focusedErrorBorder: outlineErrorBorder,
                                   contentPadding: const EdgeInsets.all(18),
                                   prefixIcon: const Icon(Icons.lock),
-                                  labelText: "Confirm Password",
+                                  labelText: "Confirm Password".tr(),
                                   labelStyle:
                                       const TextStyle(fontFamily: 'Tondo'),
                                   suffixIcon: IconButton(
@@ -258,14 +263,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           : Icons.visibility))),
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return "*This field is required*";
+                                  return "*This field is required*".tr();
                                 }
                                 if (value.length < 8) {
-                                  return "*Password must have atleast 8 character*";
+                                  return "*Password must have atleast 8 character*"
+                                      .tr();
                                 }
                                 if (_passwrodController.text !=
                                     _confirmPasswrodController.text) {
-                                  return "*Password did not match*";
+                                  return "*Password did not match*".tr();
                                 }
                                 return null;
                               },
@@ -274,19 +280,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             verticalGap20,
                             FullButton(
                                 onTap: _handleLogin,
-                                text: "REGISTER",
+                                text: "REGISTER".tr(),
                                 padding: const EdgeInsets.all(0)),
                             verticalGap30,
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text("Already have an account? "),
+                                Text("Already have an account?".tr()),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 5.0),
+                                  padding: const EdgeInsets.only(top: 2.0),
                                   child: InkWell(
                                     onTap: () => Navigator.pop(context),
                                     child: Text(
-                                      "Sign In.",
+                                      "Sign In.".tr(),
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           decoration: TextDecoration.underline,
