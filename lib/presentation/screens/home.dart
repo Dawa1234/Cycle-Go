@@ -1,6 +1,8 @@
 import 'package:cyclego/constants/utils/authentication_popUp.dart';
+import 'package:cyclego/constants/utils/empty_data_message.dart';
+import 'package:cyclego/constants/utils/loading.dart';
 import 'package:cyclego/constants/utils/utils.dart';
-import 'package:cyclego/data/models/cycle.dart';
+import 'package:cyclego/logic/cycle/cycle_bloc.dart';
 import 'package:cyclego/logic/profile/profile_bloc.dart';
 import 'package:cyclego/presentation/drawer/custom_drawer.dart';
 import 'package:cyclego/routes/routes.dart';
@@ -132,6 +134,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       height: 560,
       width: phoneWidth(context),
       child: GoogleMap(
+        myLocationButtonEnabled: true,
+        myLocationEnabled: true,
         compassEnabled: true,
         mapToolbarEnabled: true,
         zoomGesturesEnabled: true,
@@ -151,15 +155,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 }
 
-class BottomInfo extends StatelessWidget {
+class BottomInfo extends StatefulWidget {
   const BottomInfo({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<BottomInfo> createState() => _BottomInfoState();
+}
+
+class _BottomInfoState extends State<BottomInfo> {
+  late CycleBloc _cycleBloc;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _cycleBloc = CycleBloc()..add(InitialCycleEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      height: 225,
+      height: phoneHeight(context) * .29,
+      // height: 225,
       width: phoneWidth(context),
       decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
@@ -228,19 +246,36 @@ class BottomInfo extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ListView.separated(
-              physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              itemCount: 4,
-              separatorBuilder: (context, index) => const SizedBox(
-                width: 10,
-              ),
-              itemBuilder: (context, index) {
-                return AppTheme.cycleContainer(
-                  context,
-                  cycle: CycleModel(),
-                  onTap: () =>
-                      Navigator.pushNamed(context, Routes.cycleDescription),
+            child: BlocBuilder<CycleBloc, CycleState>(
+              bloc: _cycleBloc,
+              builder: (context, state) {
+                if (state is CycleLoading) {
+                  return Center(
+                    child: LoadingBar(),
+                  );
+                }
+                if (state is CycleFetched) {
+                  return ListView.separated(
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 3,
+                    separatorBuilder: (context, index) => const SizedBox(
+                      width: 10,
+                    ),
+                    itemBuilder: (context, index) {
+                      return AppTheme.cycleContainer(
+                        context,
+                        cycle: state.allCycles[index],
+                        onTap: () => Navigator.pushNamed(
+                            context, Routes.cycleDescription,
+                            arguments: {'cycleId': state.allCycles[index].id}),
+                      );
+                    },
+                  );
+                }
+                return Center(
+                  child: EmptyDataMessage.emptyDataMessage(
+                      height: 100, message: 'No Cycle for now'),
                 );
               },
             ),

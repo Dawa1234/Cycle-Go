@@ -8,6 +8,7 @@ import 'package:cyclego/data/repository/response.dart';
 import 'package:cyclego/get_it/get_it.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class UserRepository {
   FirebaseAuth firebaseAuth = getIt.get<FirebaseAuth>();
@@ -32,13 +33,29 @@ class UserRepository {
     }
   }
 
-  Future<Map<String, dynamic>> loginUser(
-      String username, String password) async {
+  Future<Map<String, dynamic>> loginUser(String username, String password,
+      {required bool useGoogle}) async {
     UserCredential userCredential;
+    final googleSignIn = GoogleSignIn();
+    GoogleSignInAuthentication googleAuth;
+    AuthCredential? credential;
     try {
       // handle login
-      userCredential = await firebaseAuth.signInWithEmailAndPassword(
-          email: username, password: password);
+      if (useGoogle) {
+        GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+        if (googleSignInAccount != null) {
+          googleAuth = await googleSignInAccount.authentication;
+          credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
+        }
+        userCredential = await firebaseAuth.signInWithCredential(credential!);
+      } else {
+        userCredential = await firebaseAuth.signInWithEmailAndPassword(
+            email: username, password: password);
+      }
+
       // fetch rest of the data
       var responseData = await firebaseFirestore
           .collection(CycleGoUrls.userUrl)

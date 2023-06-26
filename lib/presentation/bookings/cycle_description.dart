@@ -187,17 +187,17 @@ class _CycleDescriptionScreenState extends State<CycleDescriptionScreen> {
                                     const Text("Speed"),
                                   ],
                                 ),
-                                Wrap(
-                                  direction: Axis.vertical,
-                                  children: [
-                                    Text(
-                                      cycleDetail.rating.toString(),
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    const Text("Rating"),
-                                  ],
-                                ),
+                                // Wrap(
+                                //   direction: Axis.vertical,
+                                //   children: [
+                                //     Text(
+                                //       cycleDetail.rating.toString(),
+                                //       style: const TextStyle(
+                                //           fontWeight: FontWeight.bold),
+                                //     ),
+                                //     const Text("Rating"),
+                                //   ],
+                                // ),
                                 horizontalGap5
                               ],
                             ),

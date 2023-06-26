@@ -26,7 +26,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       final pref = getIt.get<SharedPreferences>();
       final email = pref.getString('email') ?? "";
       final password = pref.getString('password') ?? "";
-      final userData = await userRepository.loginUser(email, password);
+      final userData =
+          await userRepository.loginUser(email, password, useGoogle: false);
       error = userData['error'] ?? "";
       if (userData['success']) {
         emit(ProfileFecthed(user: userData['data'], message: 'Login Success'));
@@ -43,8 +44,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     String error = "";
     emit(ProfileFetching());
     try {
-      final userData =
-          await userRepository.loginUser(event.email, event.password);
+      final userData = await userRepository
+          .loginUser(event.email, event.password, useGoogle: false);
       error = userData['error'] ?? "";
       if (userData['success']) {
         await saveLoginData(event.email, event.password).whenComplete(() =>

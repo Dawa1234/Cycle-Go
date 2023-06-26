@@ -122,30 +122,37 @@ class MyApp extends StatelessWidget {
                         listener: (context, state) {
                           if (state is ConnectionEstablishedOnWifi) {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
                                     duration: Duration(seconds: 5),
                                     backgroundColor: Colors.green,
                                     content: Text(
-                                        "Connection Established on Wifi.")));
+                                      "Connection Established on Wifi.",
+                                      style: TextStyle(color: Colors.white),
+                                    )));
                           }
                           if (state is ConnectionEstablishedOnMobileData) {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
                                     duration: Duration(seconds: 5),
                                     backgroundColor: Colors.green,
                                     content: Text(
-                                        "Connection Established on Mobile Data.")));
+                                      "Connection Established on Mobile Data.",
+                                      style: TextStyle(color: Colors.white),
+                                    )));
                           }
                           if (state is ConnectionLost) {
                             log("no connection");
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
                                     duration: Duration(days: 1),
                                     backgroundColor: Colors.red,
-                                    content: Text("No internet connection.")));
+                                    content: Text(
+                                      "No internet connection.",
+                                      style: TextStyle(color: Colors.white),
+                                    )));
                           }
                         },
                         child: MediaQuery(

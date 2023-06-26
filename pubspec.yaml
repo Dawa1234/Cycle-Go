@@ -51,6 +51,7 @@ dependencies:
   khalti_flutter: ^2.2.1
   shared_preferences: ^2.1.2
   easy_localization: ^3.0.0
+  google_sign_in: ^6.1.4
 
 dev_dependencies:
   flutter_test:

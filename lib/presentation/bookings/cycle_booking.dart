@@ -1,11 +1,13 @@
+import 'dart:ui';
+
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:cyclego/constants/ui/light_theme.data.dart';
 import 'package:cyclego/constants/utils/backButton.dart';
 import 'package:cyclego/constants/utils/pop_up.dart';
 import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/data/models/cycle.dart';
 import 'package:cyclego/get_it/get_it.dart';
 import 'package:cyclego/logic/cycle/cycle_bloc.dart';
+import 'package:cyclego/logic/theme_mode/theme_mode_cubit.dart';
 import 'package:cyclego/logic/transaction/transaction_bloc.dart';
 import 'package:cyclego/presentation/screens/start_up_screen.dart';
 import 'package:cyclego/routes/routes.dart';
@@ -197,229 +199,269 @@ class _CycleBookingScreenState extends State<CycleBookingScreen> {
             Expanded(
                 child: Padding(
               padding: const EdgeInsets.all(14.0),
-              child: Column(
-                children: [
-                  verticalGap10,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: BlocBuilder<ThemeModeCubit, ThemeMode>(
+                builder: (context, themeMode) {
+                  return Column(
                     children: [
-                      Text(
-                        cycleDetail.name!,
-                        style: const TextStyle(
-                            wordSpacing: 2,
-                            letterSpacing: 1.5,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 35,
-                            color: Colors.green),
+                      verticalGap10,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            cycleDetail.name!,
+                            style: const TextStyle(
+                                wordSpacing: 2,
+                                letterSpacing: 1.5,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 35,
+                                color: Colors.green),
+                          ),
+                          Text(
+                            "${"Rs".tr()}.${cycleDetail.price!} ${"/hr".tr()}",
+                            style: const TextStyle(
+                              wordSpacing: 2,
+                              letterSpacing: 1.5,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        "${"Rs".tr()}.${cycleDetail.price!} ${"/hr".tr()}",
-                        style: const TextStyle(
-                          wordSpacing: 2,
-                          letterSpacing: 1.5,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      const Divider(
+                        thickness: 1,
                       ),
-                    ],
-                  ),
-                  const Divider(
-                    thickness: 1,
-                  ),
-                  verticalGap10,
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          height: 45,
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Theme.of(context).highlightColor,
-                                    blurRadius: 3,
-                                    spreadRadius: 1)
-                              ],
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                  child: Center(
-                                child: Text(
-                                  selectedUnit == units[0]
-                                      ? selectedHour
-                                      : selectedUnit == units[1]
-                                          ? selectedDay
-                                          : selectedWeek,
-                                  style: const TextStyle(color: primaryColor),
-                                ),
-                              )),
-                              InkWell(
-                                  onTap: () async {
-                                    await showModalBottomSheet(
-                                      context: context,
-                                      builder: (context) {
-                                        return SingleChildScrollView(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: selectedUnit == units[0]
-                                                ? hours.map((hour) {
-                                                    return ListTile(
-                                                      onTap: () {
-                                                        setState(() =>
-                                                            selectedHour =
-                                                                hour);
-                                                        Navigator.pop(context);
-                                                      },
-                                                      title: Center(
-                                                        child: Text(
-                                                          hour,
-                                                          style: const TextStyle(
-                                                              color:
-                                                                  primaryColor,
-                                                              fontSize: 13,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w300),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  }).toList()
-                                                : selectedUnit == units[1]
-                                                    ? day.map((day) {
-                                                        return ListTile(
-                                                          onTap: () {
-                                                            setState(() =>
-                                                                selectedDay =
-                                                                    day);
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          title: Center(
-                                                            child: Text(
-                                                              day,
-                                                              style: const TextStyle(
-                                                                  color:
-                                                                      primaryColor,
-                                                                  fontSize: 13,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w300),
-                                                            ),
-                                                          ),
-                                                        );
-                                                      }).toList()
-                                                    : week.map((week) {
-                                                        return ListTile(
-                                                          onTap: () {
-                                                            setState(() =>
-                                                                selectedWeek =
-                                                                    week);
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          title: Center(
-                                                            child: Text(
-                                                              week,
-                                                              style: const TextStyle(
-                                                                  color:
-                                                                      primaryColor,
-                                                                  fontSize: 13,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w300),
-                                                            ),
-                                                          ),
-                                                        );
-                                                      }).toList(),
-                                          ),
+                      verticalGap10,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: 45,
+                              decoration: BoxDecoration(
+                                  color:
+                                      Theme.of(context).scaffoldBackgroundColor,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Theme.of(context).highlightColor,
+                                        blurRadius: 3,
+                                        spreadRadius: 1)
+                                  ],
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      child: Center(
+                                    child: Text(
+                                      selectedUnit == units[0]
+                                          ? selectedHour
+                                          : selectedUnit == units[1]
+                                              ? selectedDay
+                                              : selectedWeek,
+                                      style: TextStyle(
+                                          color: themeMode == ThemeMode.dark
+                                              ? Colors.white
+                                              : themeMode == ThemeMode.system
+                                                  ? window.platformBrightness ==
+                                                          Brightness.dark
+                                                      ? Colors.white
+                                                      : Colors.black
+                                                  : Colors.black),
+                                    ),
+                                  )),
+                                  InkWell(
+                                      onTap: () async {
+                                        await showModalBottomSheet(
+                                          context: context,
+                                          builder: (context) {
+                                            return SingleChildScrollView(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children:
+                                                    selectedUnit == units[0]
+                                                        ? hours.map((hour) {
+                                                            return ListTile(
+                                                              onTap: () {
+                                                                setState(() =>
+                                                                    selectedHour =
+                                                                        hour);
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              title: Center(
+                                                                child: Text(
+                                                                  hour,
+                                                                  style: TextStyle(
+                                                                      color: themeMode == ThemeMode.dark
+                                                                          ? Colors.white
+                                                                          : themeMode == ThemeMode.system
+                                                                              ? window.platformBrightness == Brightness.dark
+                                                                                  ? Colors.white
+                                                                                  : Colors.black
+                                                                              : Colors.black,
+                                                                      fontSize: 13,
+                                                                      fontWeight: FontWeight.w300),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          }).toList()
+                                                        : selectedUnit ==
+                                                                units[1]
+                                                            ? day.map((day) {
+                                                                return ListTile(
+                                                                  onTap: () {
+                                                                    setState(() =>
+                                                                        selectedDay =
+                                                                            day);
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  title: Center(
+                                                                    child: Text(
+                                                                      day,
+                                                                      style: TextStyle(
+                                                                          color: themeMode == ThemeMode.dark
+                                                                              ? Colors.white
+                                                                              : themeMode == ThemeMode.system
+                                                                                  ? window.platformBrightness == Brightness.dark
+                                                                                      ? Colors.white
+                                                                                      : Colors.black
+                                                                                  : Colors.black,
+                                                                          fontSize: 13,
+                                                                          fontWeight: FontWeight.w300),
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              }).toList()
+                                                            : week.map((week) {
+                                                                return ListTile(
+                                                                  onTap: () {
+                                                                    setState(() =>
+                                                                        selectedWeek =
+                                                                            week);
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  title: Center(
+                                                                    child: Text(
+                                                                      week,
+                                                                      style: TextStyle(
+                                                                          color: themeMode == ThemeMode.dark
+                                                                              ? Colors.white
+                                                                              : themeMode == ThemeMode.system
+                                                                                  ? window.platformBrightness == Brightness.dark
+                                                                                      ? Colors.white
+                                                                                      : Colors.black
+                                                                                  : Colors.black,
+                                                                          fontSize: 13,
+                                                                          fontWeight: FontWeight.w300),
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              }).toList(),
+                                              ),
+                                            );
+                                          },
                                         );
                                       },
-                                    );
-                                  },
-                                  child: const Icon(
-                                      Icons.arrow_drop_down_circle_sharp))
-                            ],
+                                      child: const Icon(
+                                          Icons.arrow_drop_down_circle_sharp))
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      horizontalGap20,
-                      Container(
-                        height: 45,
-                        width: 100,
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Theme.of(context).highlightColor,
-                                  blurRadius: 3,
-                                  spreadRadius: 1)
-                            ],
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Row(
-                          children: [
-                            Expanded(child: Center(child: Text(selectedUnit))),
-                            InkWell(
-                                onTap: () async {
-                                  await showModalBottomSheet(
-                                    context: context,
-                                    builder: (context) {
-                                      return Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: units.map((unit) {
-                                          return ListTile(
-                                            onTap: () {
-                                              setState(
-                                                  () => selectedUnit = unit);
-                                              Navigator.pop(context);
-                                            },
-                                            title: Center(
-                                              child: Text(
-                                                unit,
-                                                style: const TextStyle(
-                                                    color: primaryColor,
-                                                    fontSize: 13,
-                                                    fontWeight:
-                                                        FontWeight.w300),
-                                              ),
-                                            ),
+                          horizontalGap20,
+                          Container(
+                            height: 45,
+                            width: 100,
+                            decoration: BoxDecoration(
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Theme.of(context).highlightColor,
+                                      blurRadius: 3,
+                                      spreadRadius: 1)
+                                ],
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                    child: Center(child: Text(selectedUnit))),
+                                InkWell(
+                                    onTap: () async {
+                                      await showModalBottomSheet(
+                                        context: context,
+                                        builder: (context) {
+                                          return Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: units.map((unit) {
+                                              return ListTile(
+                                                onTap: () {
+                                                  setState(() =>
+                                                      selectedUnit = unit);
+                                                  Navigator.pop(context);
+                                                },
+                                                title: Center(
+                                                  child: Text(
+                                                    unit,
+                                                    style: TextStyle(
+                                                        color: themeMode ==
+                                                                ThemeMode.dark
+                                                            ? Colors.white
+                                                            : themeMode ==
+                                                                    ThemeMode
+                                                                        .system
+                                                                ? window.platformBrightness ==
+                                                                        Brightness
+                                                                            .dark
+                                                                    ? Colors
+                                                                        .white
+                                                                    : Colors
+                                                                        .black
+                                                                : Colors.black,
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w300),
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
                                           );
-                                        }).toList(),
+                                        },
                                       );
                                     },
-                                  );
-                                },
-                                child: const Icon(
-                                    Icons.arrow_drop_down_circle_sharp))
-                          ],
-                        ),
+                                    child: const Icon(
+                                        Icons.arrow_drop_down_circle_sharp))
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      verticalGap10,
+                      const Divider(
+                        thickness: 1,
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Wrap(alignment: WrapAlignment.start, children: [
+                          const Text("Note: Price is discounted by ").tr(),
+                          Text(
+                            "5%".tr(),
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic),
+                          ),
+                          Text(" for per day and ".tr()),
+                          Text(
+                            "10%".tr(),
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic),
+                          ),
+                          Text(" for per week".tr()),
+                        ]),
                       ),
                     ],
-                  ),
-                  verticalGap10,
-                  const Divider(
-                    thickness: 1,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Wrap(alignment: WrapAlignment.start, children: [
-                      const Text("Note: Price is discounted by ").tr(),
-                      Text(
-                        "5%".tr(),
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic),
-                      ),
-                      Text(" for per day and ".tr()),
-                      Text(
-                        "10%".tr(),
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic),
-                      ),
-                      Text(" for per week".tr()),
-                    ]),
-                  ),
-                ],
+                  );
+                },
               ),
             )),
             FullButton(

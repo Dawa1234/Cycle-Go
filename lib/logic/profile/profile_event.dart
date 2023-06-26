@@ -12,13 +12,15 @@ class ProfileInitialEvent extends ProfileEvent {
 class ProfileFetchEvent extends ProfileEvent {
   String email;
   String password;
+  bool googleLogin;
   ProfileFetchEvent({
     required this.email,
     required this.password,
+    required this.googleLogin,
   });
   @override
   // TODO: implement props
-  List<Object?> get props => [email, password];
+  List<Object?> get props => [email, password, googleLogin];
 }
 
 class PorfileLogOutEvent extends ProfileEvent {

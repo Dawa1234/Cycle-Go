@@ -30,8 +30,6 @@ class TransactionRepository {
           message =
               responseMessage(success: true, data: "Transaction Success.");
           getIt.get<CycleBloc>().add(BookCycleEvent(cycleId: cycleId));
-          // BlocProvider.of<CycleBloc>(context)
-          //     .add(BookCycleEvent(cycleId: cycleId));
         },
         onFailure: (failureModel) {
           message = responseMessage(

@@ -163,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         verticalGap20,
                         FullButton(
-                            onTap: _handleLogin,
+                            onTap: () => _handleLogin(googleLogin: false),
                             text: "LOGIN".tr(),
                             padding: const EdgeInsets.all(0)),
                         Column(
@@ -199,8 +199,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       borderRadius: BorderRadius.circular(10)),
                                   child: MaterialButton(
                                       splashColor: Colors.transparent,
-                                      textColor: Colors.white,
-                                      onPressed: () {},
+                                      onPressed:
+                                          _handleLogin(googleLogin: true),
                                       child: Row(
                                         children: [
                                           Container(
@@ -276,10 +276,17 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  _handleLogin() {
+  _handleLogin({required bool googleLogin}) {
+    if (googleLogin) {
+      BlocProvider.of<ProfileBloc>(context).add(
+          ProfileFetchEvent(email: "", password: "", googleLogin: googleLogin));
+      return;
+    }
     if (_formKey.currentState!.validate()) {
       BlocProvider.of<ProfileBloc>(context).add(ProfileFetchEvent(
-          email: _emailController.text, password: _passwrodController.text));
+          email: _emailController.text,
+          password: _passwrodController.text,
+          googleLogin: googleLogin));
     }
   }
 

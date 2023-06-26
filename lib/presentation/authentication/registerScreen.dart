@@ -6,7 +6,6 @@ import 'package:cyclego/data/models/user.dart';
 import 'package:cyclego/logic/profile/profile_bloc.dart';
 import 'package:cyclego/logic/registration/registration_cubit.dart';
 import 'package:cyclego/presentation/screens/start_up_screen.dart';
-import 'package:cyclego/routes/routes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,6 +34,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -51,13 +56,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   BlocListener<ProfileBloc, ProfileState>(
                     listener: (context, state) {
                       if (state is ProfileFecthed) {
-                        Navigator.popUntil(
-                          context,
-                          (route) => route.isFirst,
-                        );
-                        Navigator.pushNamed(context, Routes.cycleDescription);
-                        SnackBarMessage.successMessage(context,
-                            message: state.message);
+                        Navigator.pop(context);
                       }
                     },
                   ),
@@ -71,7 +70,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         BlocProvider.of<ProfileBloc>(context).add(
                             ProfileFetchEvent(
                                 email: _emailController.text,
-                                password: _passwrodController.text));
+                                password: _passwrodController.text,
+                                googleLogin: false));
                         Navigator.pop(context);
                       }
                       if (state is RegistrationError) {

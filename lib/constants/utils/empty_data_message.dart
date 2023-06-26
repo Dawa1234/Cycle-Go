@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class EmptyDataMessage {
-  static Widget emptyDataMessage({required String message}) {
+  static Widget emptyDataMessage({double? height, required String message}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -12,7 +12,7 @@ class EmptyDataMessage {
           child: SvgPicture.asset(
             "assets/icons/empty_data.svg",
             color: Colors.grey,
-            height: 175,
+            height: height ?? 175,
           ),
         ),
         Text(

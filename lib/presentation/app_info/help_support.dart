@@ -68,11 +68,10 @@ class HelpAndSupportScreen extends StatelessWidget {
                   Text(
                     "full documentation".tr(),
                     style: const TextStyle(
-                        fontSize: 16,
-                        decoration: TextDecoration.underline,
-                        decorationColor: Colors.black,
-                        color: Colors.transparent,
-                        shadows: [Shadow(offset: Offset(0, -2))]),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
+                    ),
                   ),
                   const Text(
                     ".",
