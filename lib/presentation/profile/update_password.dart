@@ -90,7 +90,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                           ),
                           TextFormField(
                             controller: _showCurrentPassController,
-                            style: const TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.grey.shade500),
                             obscureText: _showCurrentPass,
                             validator: validatePassword,
                             decoration: InputDecoration(
@@ -135,7 +135,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                           ),
                           TextFormField(
                             controller: _showNewPassController,
-                            style: const TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.grey.shade500),
                             obscureText: _showNewPass,
                             validator: validateNewPassword,
                             decoration: InputDecoration(
@@ -146,7 +146,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                     ? Icons.visibility_off
                                     : Icons.visibility),
                               ),
-                              hintText: "New Password",
+                              hintText: "New Password".tr(),
                               enabledBorder: outLineBorder,
                               focusedBorder: outLineBorder,
                               disabledBorder: outLineBorder,
@@ -180,7 +180,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                           ),
                           TextFormField(
                             controller: _showRepeatPassController,
-                            style: const TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.grey.shade500),
                             obscureText: _showRepeatPass,
                             validator: validateNewPassword,
                             decoration: InputDecoration(
@@ -191,7 +191,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                     ? Icons.visibility_off
                                     : Icons.visibility),
                               ),
-                              hintText: "Repeat Password",
+                              hintText: "Repeat Password".tr(),
                               enabledBorder: outLineBorder,
                               focusedBorder: outLineBorder,
                               disabledBorder: outLineBorder,
@@ -208,7 +208,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                         buttonHeight: 50,
                         fontSize: 15,
                         onTap: _handleChangePassword,
-                        text: "Change Passowrd",
+                        text: "Change Password".tr(),
                         letterSpacing: .8,
                         padding: const EdgeInsets.symmetric(horizontal: 30)),
                     verticalGap10,
@@ -240,17 +240,17 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
       borderSide: BorderSide(width: 0, color: Colors.transparent));
   String? validatePassword(String? value) {
     if (value!.length < 8) {
-      return "*Password must have at least 8 characters*";
+      return "*Password must have atleast 8 character*".tr();
     }
     return null;
   }
 
   String? validateNewPassword(String? value) {
     if (value!.length < 8) {
-      return "*Password must have at least 8 characters*";
+      return "*Password must have atleast 8 character*".tr();
     }
     if (_showNewPassController.text != _showRepeatPassController.text) {
-      return "*Password did not match*";
+      return "*Password did not match*".tr();
     }
     return null;
   }

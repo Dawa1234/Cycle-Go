@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:cyclego/constants/enums/enum.dart';
 import 'package:cyclego/constants/ui/dark_theme_data.dart';
 import 'package:cyclego/data/models/cycle.dart';
+import 'package:cyclego/logic/theme_mode/theme_mode_cubit.dart';
 import 'package:cyclego/logic/toggle/toggle_theme_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -48,17 +51,37 @@ double phoneWidth(context) {
 }
 
 class AppTheme {
-  static Text customUnderlineText({
-    required String text,
-    required double offSetHeight,
-  }) {
-    return Text(
-      "${"Rs".tr()}. $text ${"/hr".tr()}",
-      style: TextStyle(
-          decoration: TextDecoration.underline,
-          decorationColor: Colors.black,
-          color: Colors.transparent,
-          shadows: [Shadow(offset: Offset(0, offSetHeight))]),
+  static Widget customUnderlineText(
+      {required String text,
+      required double offSetHeight,
+      required BuildContext context}) {
+    return BlocBuilder<ThemeModeCubit, ThemeMode>(
+      builder: (context, themeMode) {
+        return Text(
+          "${"Rs".tr()}. $text ${"/hr".tr()}",
+          style: TextStyle(
+              decoration: TextDecoration.underline,
+              decorationColor: themeMode == ThemeMode.dark
+                  ? Colors.white
+                  : themeMode == ThemeMode.system
+                      ? window.platformBrightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black
+                      : Colors.black,
+              color: Colors.transparent,
+              shadows: [
+                Shadow(
+                    offset: Offset(0, offSetHeight),
+                    color: themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : themeMode == ThemeMode.system
+                            ? window.platformBrightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black
+                            : Colors.black)
+              ]),
+        );
+      },
     );
   }
 
@@ -112,7 +135,9 @@ class AppTheme {
               child: Align(
                 alignment: Alignment.topLeft,
                 child: customUnderlineText(
-                    text: cycle.price ?? "100", offSetHeight: -2),
+                    context: context,
+                    text: cycle.price ?? "100",
+                    offSetHeight: -2),
               ),
             ),
             Container(

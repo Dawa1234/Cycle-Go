@@ -4,6 +4,7 @@ import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/logic/profile/profile_bloc.dart';
 import 'package:cyclego/presentation/screens/home.dart';
 import 'package:cyclego/routes/routes.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -142,7 +143,7 @@ class LogOutDialog extends StatelessWidget {
                 ),
               ),
               Text(
-                message,
+                message.tr(),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
@@ -153,9 +154,9 @@ class LogOutDialog extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: const Text(
-                      "Cancel",
-                      style: TextStyle(
+                    child: Text(
+                      "Cancel".tr(),
+                      style: const TextStyle(
                         color: Colors.green,
                         fontSize: 14.0,
                         fontWeight: FontWeight.bold,
@@ -169,7 +170,7 @@ class LogOutDialog extends StatelessWidget {
                           .add(PorfileLogOutEvent());
                     },
                     child: Text(
-                      "Log Out",
+                      "Log Out".tr(),
                       style: TextStyle(
                         color: Colors.red.shade700,
                         fontSize: 14.0,

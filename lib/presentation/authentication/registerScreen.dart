@@ -226,7 +226,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   return "*This field is required*".tr();
                                 }
                                 if (value.length < 8) {
-                                  return "*Password must have atleast 8 character*"
+                                  return "*Password must have atleast 8 characters*"
                                       .tr();
                                 }
                                 if (_passwrodController.text !=
@@ -266,7 +266,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   return "*This field is required*".tr();
                                 }
                                 if (value.length < 8) {
-                                  return "*Password must have atleast 8 character*"
+                                  return "*Password must have atleast 8 characters*"
                                       .tr();
                                 }
                                 if (_passwrodController.text !=

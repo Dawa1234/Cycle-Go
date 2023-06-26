@@ -1,11 +1,15 @@
+import 'dart:ui';
+
 import 'package:cyclego/constants/enums/enum.dart';
 import 'package:cyclego/constants/utils/loading.dart';
 import 'package:cyclego/constants/utils/pop_up.dart';
 import 'package:cyclego/get_it/get_it.dart';
 import 'package:cyclego/logic/favorites/favorites_cubit.dart';
 import 'package:cyclego/logic/profile/profile_bloc.dart';
+import 'package:cyclego/logic/theme_mode/theme_mode_cubit.dart';
 import 'package:cyclego/presentation/screens/search_screen.dart';
 import 'package:cyclego/routes/routes.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -216,7 +220,7 @@ class _FavButtonState extends State<FavButton> {
   }
 }
 
-class LanguageButton extends StatelessWidget {
+class LanguageButton extends StatefulWidget {
   final Function()? onTap;
   const LanguageButton({
     Key? key,
@@ -224,30 +228,122 @@ class LanguageButton extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<LanguageButton> createState() => _LanguageButtonState();
+}
+
+class _LanguageButtonState extends State<LanguageButton> {
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-      child: InkWell(
-        highlightColor: Colors.transparent,
-        splashColor: Colors.transparent,
-        onTap: () {},
-        child: Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Theme.of(context).scaffoldBackgroundColor,
-              boxShadow: [
-                BoxShadow(
-                    blurRadius: 2,
-                    spreadRadius: 1,
-                    color: Theme.of(context).highlightColor)
-              ]),
-          child: const Text(
-            "EN",
-            style: TextStyle(letterSpacing: 1, color: Colors.blue),
+    return BlocBuilder<ThemeModeCubit, ThemeMode>(
+      builder: (context, themeMode) {
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+          child: InkWell(
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return Container(
+                      height: 170,
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          const Text('Select Language',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold)),
+                          const Divider(),
+                          ListTile(
+                            title: Text(
+                              "English",
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w300,
+                                  color: themeMode == ThemeMode.dark
+                                      ? Colors.white
+                                      : themeMode == ThemeMode.system
+                                          ? window.platformBrightness ==
+                                                  Brightness.dark
+                                              ? Colors.white
+                                              : Colors.black
+                                          : Colors.black),
+                            ),
+                            leading: SizedBox(
+                              height: 25,
+                              width: 25,
+                              child: Image.asset("assets/images/english.png"),
+                            ),
+                            onTap: () {
+                              setState(() {
+                                context.setLocale(const Locale('en', 'US'));
+                              });
+                              Navigator.pop(context);
+                            },
+                            trailing: context.locale == const Locale('en', 'US')
+                                ? Icon(
+                                    Icons.check,
+                                    color: Theme.of(context).primaryColor,
+                                  )
+                                : const Icon(Icons.check,
+                                    color: Colors.transparent),
+                          ),
+                          ListTile(
+                            title: Text("Nepali",
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w300,
+                                    color: themeMode == ThemeMode.dark
+                                        ? Colors.white
+                                        : themeMode == ThemeMode.system
+                                            ? window.platformBrightness ==
+                                                    Brightness.dark
+                                                ? Colors.white
+                                                : Colors.black
+                                            : Colors.black)),
+                            leading: SizedBox(
+                              height: 25,
+                              width: 25,
+                              child: Image.asset("assets/images/flagNP.png"),
+                            ),
+                            onTap: () {
+                              setState(() {
+                                context.setLocale(const Locale('ne', 'NE'));
+                              });
+                              Navigator.pop(context);
+                            },
+                            trailing: context.locale == const Locale('ne', 'NE')
+                                ? Icon(
+                                    Icons.check,
+                                    color: Theme.of(context).primaryColor,
+                                  )
+                                : const Icon(Icons.check,
+                                    color: Colors.transparent),
+                          ),
+                        ],
+                      ));
+                },
+              );
+            },
+            child: Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  boxShadow: [
+                    BoxShadow(
+                        blurRadius: 2,
+                        spreadRadius: 1,
+                        color: Theme.of(context).highlightColor)
+                  ]),
+              child: const Text(
+                "EN",
+                style: TextStyle(letterSpacing: 1, color: Colors.blue),
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

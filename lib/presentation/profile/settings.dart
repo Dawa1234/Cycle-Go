@@ -1,11 +1,21 @@
+import 'dart:ui';
+
 import 'package:cyclego/constants/utils/backButton.dart';
 import 'package:cyclego/constants/utils/utils.dart';
+import 'package:cyclego/logic/theme_mode/theme_mode_cubit.dart';
 import 'package:cyclego/routes/routes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
   final List<String> images = const [
     "assets/images/facebook.jpg",
     "assets/images/insta.jpg",
@@ -59,25 +69,110 @@ class SettingsScreen extends StatelessWidget {
                         Navigator.pushNamed(context, Routes.updatePassword),
                     title: "Delete Account"),
                 verticalGap30,
-                _settingTitle(
-                    icon: Container(
-                      height: 30,
-                      width: 30,
-                      decoration: const BoxDecoration(
-                          border: Border.fromBorderSide(
-                              BorderSide(width: 2, color: Colors.black)),
-                          shape: BoxShape.circle),
-                      child: const Icon(Icons.more_horiz),
-                    ),
-                    title: "More"),
+                BlocBuilder<ThemeModeCubit, ThemeMode>(
+                  builder: (context, themeMode) {
+                    return _settingTitle(
+                        icon: Container(
+                          height: 30,
+                          width: 30,
+                          decoration: BoxDecoration(
+                              border: Border.fromBorderSide(BorderSide(
+                                  width: 2,
+                                  color: themeMode == ThemeMode.dark
+                                      ? Colors.white
+                                      : themeMode == ThemeMode.system
+                                          ? window.platformBrightness ==
+                                                  Brightness.dark
+                                              ? Colors.white
+                                              : Colors.black
+                                          : Colors.black)),
+                              shape: BoxShape.circle),
+                          child: const Icon(Icons.more_horiz),
+                        ),
+                        title: "More");
+                  },
+                ),
                 const Divider(
                   color: Colors.grey,
                   thickness: 1,
                 ),
                 _navigateTo(
                     onTap: () {
-                      ShowBottomModalSheet.showDarkModeToggleBottomSheet(
-                          context: context);
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return Container(
+                              height: 170,
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  const Text('Select Language',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold)),
+                                  const Divider(),
+                                  ListTile(
+                                    title: const Text(
+                                      "English",
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w300),
+                                    ),
+                                    leading: SizedBox(
+                                      height: 25,
+                                      width: 25,
+                                      child: Image.asset(
+                                          "assets/images/english.png"),
+                                    ),
+                                    onTap: () {
+                                      setState(() {
+                                        context.setLocale(
+                                            const Locale('en', 'US'));
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                    trailing: context.locale ==
+                                            const Locale('en', 'US')
+                                        ? Icon(
+                                            Icons.check,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                          )
+                                        : const Icon(Icons.check,
+                                            color: Colors.transparent),
+                                  ),
+                                  ListTile(
+                                    title: const Text("Nepali",
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w300)),
+                                    leading: SizedBox(
+                                      height: 25,
+                                      width: 25,
+                                      child: Image.asset(
+                                          "assets/images/flagNP.png"),
+                                    ),
+                                    onTap: () {
+                                      setState(() {
+                                        context.setLocale(
+                                            const Locale('ne', 'NE'));
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                    trailing: context.locale ==
+                                            const Locale('ne', 'NE')
+                                        ? Icon(
+                                            Icons.check,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                          )
+                                        : const Icon(Icons.check,
+                                            color: Colors.transparent),
+                                  ),
+                                ],
+                              ));
+                        },
+                      );
                     },
                     title: "Language"),
               ],

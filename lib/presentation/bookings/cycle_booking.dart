@@ -9,6 +9,7 @@ import 'package:cyclego/logic/cycle/cycle_bloc.dart';
 import 'package:cyclego/logic/transaction/transaction_bloc.dart';
 import 'package:cyclego/presentation/screens/start_up_screen.dart';
 import 'package:cyclego/routes/routes.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -212,7 +213,7 @@ class _CycleBookingScreenState extends State<CycleBookingScreen> {
                             color: Colors.green),
                       ),
                       Text(
-                        "Rs.${cycleDetail.price!} /hr",
+                        "${"Rs".tr()}.${cycleDetail.price!} ${"/hr".tr()}",
                         style: const TextStyle(
                           wordSpacing: 2,
                           letterSpacing: 1.5,
@@ -400,23 +401,22 @@ class _CycleBookingScreenState extends State<CycleBookingScreen> {
                   ),
                   Align(
                     alignment: Alignment.centerLeft,
-                    child:
-                        Wrap(alignment: WrapAlignment.start, children: const [
-                      Text("Note: Price is discounted by "),
+                    child: Wrap(alignment: WrapAlignment.start, children: [
+                      const Text("Note: Price is discounted by ").tr(),
                       Text(
-                        "5%",
-                        style: TextStyle(
+                        "5%".tr(),
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontStyle: FontStyle.italic),
                       ),
-                      Text(" for per day and "),
+                      Text(" for per day and ".tr()),
                       Text(
-                        "10%",
-                        style: TextStyle(
+                        "10%".tr(),
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontStyle: FontStyle.italic),
                       ),
-                      Text(" for per week"),
+                      Text(" for per week".tr()),
                     ]),
                   ),
                 ],
@@ -424,7 +424,7 @@ class _CycleBookingScreenState extends State<CycleBookingScreen> {
             )),
             FullButton(
                 onTap: _handleBooking,
-                text: "Rent Bike".toUpperCase(),
+                text: "Rent Bike".toUpperCase().tr(),
                 padding: const EdgeInsets.all(24)),
           ],
         ),

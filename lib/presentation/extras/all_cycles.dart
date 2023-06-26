@@ -5,6 +5,7 @@ import 'package:cyclego/constants/utils/utils.dart';
 import 'package:cyclego/data/models/cycle.dart';
 import 'package:cyclego/logic/cycle/cycle_bloc.dart';
 import 'package:cyclego/routes/routes.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -108,7 +109,7 @@ class _AllCycleScreenState extends State<AllCycleScreen>
                       height: 110,
                       width: 70,
                       margin: const EdgeInsets.symmetric(vertical: 20),
-                      child: Text(cyclesType['cycle']),
+                      child: Text(cyclesType['cycle'].toString().tr()),
                     ),
                   )
                   .toList()),

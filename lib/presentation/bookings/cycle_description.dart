@@ -10,6 +10,7 @@ import 'package:cyclego/logic/cycle/cycle_bloc.dart';
 import 'package:cyclego/logic/profile/profile_bloc.dart';
 import 'package:cyclego/presentation/screens/start_up_screen.dart';
 import 'package:cyclego/routes/routes.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -221,13 +222,14 @@ class _CycleDescriptionScreenState extends State<CycleDescriptionScreen> {
                                       : () => showDialog(
                                             context: context,
                                             builder: (context) =>
-                                                const AuthenticationDialog(
+                                                AuthenticationDialog(
                                               message:
-                                                  "Please login to access this feature.",
+                                                  "Please login to access this feature."
+                                                      .tr(),
                                             ),
                                           ),
                                   padding: const EdgeInsets.all(10),
-                                  text: "SET TIME",
+                                  text: "SET TIME".toString().tr(),
                                 );
                               },
                             )

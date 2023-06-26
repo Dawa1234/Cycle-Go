@@ -8,6 +8,7 @@ import 'package:cyclego/presentation/drawer/custom_drawer.dart';
 import 'package:cyclego/presentation/extras/all_cycles.dart';
 import 'package:cyclego/presentation/extras/booked_cycles.dart';
 import 'package:cyclego/presentation/extras/favorites.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -59,7 +60,7 @@ class _MoreCycleScreenState extends State<MoreCycleScreen> {
       ),
       bottomNavigationBar: Container(
         clipBehavior: Clip.hardEdge,
-        height: 55,
+        height: 56,
         decoration: BoxDecoration(boxShadow: [
           BoxShadow(
               blurRadius: 3,
@@ -84,17 +85,18 @@ class _MoreCycleScreenState extends State<MoreCycleScreen> {
                 scaffoldKey.currentState!.openDrawer();
               }
             },
-            items: const [
-              BottomNavigationBarItem(label: "Home", icon: Icon(Icons.home)),
+            items: [
               BottomNavigationBarItem(
-                  label: "Favourite", icon: Icon(Icons.favorite)),
+                  label: "Home".tr(), icon: const Icon(Icons.home)),
               BottomNavigationBarItem(
-                  label: "Booked", icon: Icon(Icons.bookmark)),
+                  label: "Favourite".tr(), icon: const Icon(Icons.favorite)),
               BottomNavigationBarItem(
-                  label: "Navigation", icon: Icon(Icons.menu)),
+                  label: "Booked".tr(), icon: const Icon(Icons.bookmark)),
+              BottomNavigationBarItem(
+                  label: "Navigation".tr(), icon: const Icon(Icons.menu)),
             ]),
       ),
-      drawer: CustomDrawer(),
+      drawer: const CustomDrawer(),
     );
   }
 
@@ -102,12 +104,12 @@ class _MoreCycleScreenState extends State<MoreCycleScreen> {
     switch (_currentBtmNavIndex) {
       case 0:
         return AppBarContainer(
-          height: 95,
+          height: context.locale == const Locale('en', 'US') ? 90 : 150,
           topText: Row(
             children: [
-              const Text(
-                "Hello, ",
-                style: TextStyle(color: Colors.white),
+              Text(
+                "${"Hello".tr()}, ",
+                style: const TextStyle(color: Colors.white),
               ),
               BlocBuilder<ProfileBloc, ProfileState>(
                 builder: (context, state) {
@@ -127,9 +129,9 @@ class _MoreCycleScreenState extends State<MoreCycleScreen> {
               ),
             ],
           ),
-          bottomText: const Text(
-            "Choose Your Bike",
-            style: TextStyle(
+          bottomText: Text(
+            "Choose Your Bike".tr(),
+            style: const TextStyle(
                 fontFamily: "",
                 fontSize: 45,
                 color: Colors.white,
@@ -150,12 +152,12 @@ class _MoreCycleScreenState extends State<MoreCycleScreen> {
           ),
         );
       case 2:
-        return const AppBarContainer(
+        return AppBarContainer(
           height: 95,
-          topText: SizedBox(),
+          topText: const SizedBox(),
           bottomText: Text(
-            "Booked Status",
-            style: TextStyle(
+            "Booked Status".tr(),
+            style: const TextStyle(
                 fontFamily: "",
                 fontSize: 45,
                 color: Colors.white,
