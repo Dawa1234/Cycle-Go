@@ -51,16 +51,39 @@ class UserRepository {
           );
         }
         userCredential = await firebaseAuth.signInWithCredential(credential!);
+        return responseMessage(
+            success: true,
+            data: UserModel(
+                uid: userCredential.user!.uid,
+                email: userCredential.user!.email,
+                password: "",
+                firstName: userCredential.user!.displayName,
+                lastName: "",
+                profileImage: userCredential.user!.photoURL));
+        // await firebaseAuth.createUserWithEmailAndPassword(
+        //     email: userCredential.user!.email!,
+        //     password: userCredential.user!.uid);
+        // await firebaseFirestore
+        //     .collection(CycleGoUrls.userUrl)
+        //     .doc(userCredential.user!.email)
+        //     .set(UserModel(
+        //       firstName: userCredential.user!.displayName,
+        //       email: userCredential.user!.email,
+        //       uid: userCredential.user!.uid,
+        //       password: userCredential.user!.uid,
+        //       profileImage: userCredential.user!.photoURL,
+        //     ).toJson());
       } else {
         userCredential = await firebaseAuth.signInWithEmailAndPassword(
             email: username, password: password);
       }
 
       // fetch rest of the data
-      var responseData = await firebaseFirestore
-          .collection(CycleGoUrls.userUrl)
-          .doc(userCredential.user!.email)
-          .get();
+      DocumentSnapshot<Map<String, dynamic>> responseData =
+          await firebaseFirestore
+              .collection(CycleGoUrls.userUrl)
+              .doc(userCredential.user!.email)
+              .get();
       // check fetched data
       if (responseData.data() != null) {
         UserModel user = UserModel.fromJson(responseData.data()!);

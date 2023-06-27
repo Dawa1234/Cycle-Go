@@ -22,10 +22,7 @@ class _ProfileSectionContainerState extends State<ProfileSectionContainer> {
   String _currentLastName = "";
   final _formKey = GlobalKey<FormState>();
   String _obscureText(String text) {
-    String obscuredText = "";
-    for (int i = 0; i < text.length; i++) {
-      obscuredText = obscuredText + "*";
-    }
+    String obscuredText = "********";
     return obscuredText;
   }
 

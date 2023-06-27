@@ -199,7 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       borderRadius: BorderRadius.circular(10)),
                                   child: MaterialButton(
                                       splashColor: Colors.transparent,
-                                      onPressed:
+                                      onPressed: () =>
                                           _handleLogin(googleLogin: true),
                                       child: Row(
                                         children: [

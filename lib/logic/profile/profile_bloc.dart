@@ -45,7 +45,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(ProfileFetching());
     try {
       final userData = await userRepository
-          .loginUser(event.email, event.password, useGoogle: false);
+          .loginUser(event.email, event.password, useGoogle: event.googleLogin);
       error = userData['error'] ?? "";
       if (userData['success']) {
         await saveLoginData(event.email, event.password).whenComplete(() =>
